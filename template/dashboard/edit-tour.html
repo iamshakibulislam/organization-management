@@ -1,0 +1,103 @@
+{% extends 'base_file/base_dashboard.html' %}
+
+{% block title %}  Edit tour {% endblock title %}
+
+
+{% block content %}
+{% load static %}
+
+<div class="row justify-content-center">
+	<div class="co-md-7">
+	<div class="card mb-4">			<form action="{% url 'edittoursubmit' %}" method="post">
+											{% csrf_token %}
+
+											<input type="hidden" name="identity" value="{{tourdata.id}}">
+
+									<div class="card-body">
+										<div class="row justify-content-center">
+
+											<div class="col-md-6">
+												<h4 class="mb-3">Edit Tour Schedule</h4>
+											  	<form class="contact-form" action="php/contact-form.php" method="POST">
+													<div class="contact-form-success alert alert-success d-none mt-4">
+														<strong>Success!</strong> Your message has been sent to us.
+													</div>
+
+													<div class="contact-form-error alert alert-danger d-none mt-4">
+														<strong>Error!</strong> There was an error sending your message.
+														<span class="mail-error-message text-1 d-block"></span>
+													</div>
+
+													<div class="row">
+														
+														<div class="form-group col">
+															<label class="form-label">Member</label>
+															<div class="custom-select-1">
+													      		<select class="form-select form-control h-auto py-2" data-msg-required="Please select a city." name="member"  disabled>
+													        		<option value="">Select Member...</option>
+													        		
+													        		<option value="{{tourdata.memberid}}" selected>
+													        			
+													        			{{tourdata.member }} 
+													        		</option>
+													        		
+													      		</select>
+													      	</div>
+														</div>
+
+														<div class="form-group col-lg-6">
+															<label class="form-label mb-1 text-2">Last Visited</label>
+															<input type="date" value="{{tourdata.last_visited}}" data-msg-required="Please Select A Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="last_visited" >
+														</div>
+													
+														
+													</div>
+													
+													<div class="row">
+														<div class="form-group col-lg-6">
+															<label class="form-label mb-1 text-2">Next Visit Date</label>
+															<input type="text" value="{{tourdata.next_visit_date}}" data-msg-required="Please Select Some Dates" placeholder="Select Some Dates" maxlength="100" class="form-control text-3 h-auto py-2 date" name="next_visit_date" >
+														</div>
+
+														<div class="form-group col-lg-6">
+															<label class="form-label mb-1 text-2">Last Meeting Date</label>
+															<input type="date" value="{{tourdata.last_meeting_date}}" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="last_meeting_date" >
+														</div>
+													</div>
+
+													<div class="row">
+														<div class="form-group col-lg-6">
+															<label class="form-label mb-1 text-2">Next Meeting Date</label>
+															<input type="text" value="{{tourdata.next_meeting_date}}" data-msg-required="Please Select Some Dates" placeholder="Select Some Dates" maxlength="100" class="form-control text-3 h-auto py-2 date" name="next_meeting_date" >
+														</div>
+
+														<div class="form-group col-lg-6">
+															<label class="form-label mb-1 text-2">Tour From</label>
+															<input type="text" value="{{tourdata.tour_from}}" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" placeholder="Enter Tour From Address" name="tour_from" >
+														</div>
+
+														<div class="form-group col-lg-8">
+															<label class="form-label mb-1 text-2">Tour To</label>
+															<input type="text" value="{{tourdata.tour_to}}" placeholder="Enter Tour Destination Address" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="tour_to" >
+														</div>
+													</div>
+												
+													
+													
+													<div class="row">
+														<div class="form-group col">
+															<input type="submit" value="Save Tour Information" class="btn btn-primary" data-loading-text="Loading...">
+														</div>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								</form>
+								</div>
+							</div>
+						</div>
+
+
+
+{% endblock content %}

@@ -1,0 +1,647 @@
+
+{% extends 'base_file/base_dashboard.html' %}
+
+{% block title %} Dashboard {% endblock title %}
+
+{% block content %}
+{% load static %}
+                <!--app-content open-->
+				<div class="app-content hor-content">
+					<div class="container">
+
+						<!-- PAGE-HEADER -->
+						<div class="page-header">
+							<div>
+								<h1 class="page-title">Dashboard</h1>
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+								</ol>
+							</div>
+							<div class="ms-auto pageheader-btn">
+								<button  data-bs-target="#memberaddmodal" data-bs-toggle="modal" href="" class="btn btn-primary btn-icon text-white me-2">
+									<span>
+										<i class="fe fe-plus"></i>
+									</span> Add Organization Member
+								</button>
+								<!--
+								<a href="#" class="btn btn-success btn-icon text-white">
+									<span>
+										<i class="fe fe-log-in"></i>
+									</span> Export
+								</a> -->
+							</div>
+						</div>
+						<!-- PAGE-HEADER END -->
+
+						<!-- ROW-1 -->
+						<div class="row">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
+								<div class="row">
+									<div class="col-lg-6 col-md-12 col-sm-12 col-xl-3">
+										<div class="card overflow-hidden">
+											<div class="card-body">
+												<div class="row">
+													<div class="col">
+														<h6 class="">Members Total</h6>
+														<h3 class="mb-2 number-font">{{total_members}}</h3>
+														
+													</div>
+													<div class="col col-auto">
+														<div class="counter-icon bg-primary-gradient box-shadow-primary brround ms-auto">
+															<i class="fa fa-users text-white mb-5"></i></i>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-6 col-md-12 col-sm-12 col-xl-3">
+										<div class="card overflow-hidden">
+											<div class="card-body">
+												<div class="row">
+													<div class="col">
+														<h6 class="">Officers Total</h6>
+														<h3 class="mb-2 number-font">{{total_officers}}</h3>
+														
+													</div>
+													<div class="col col-auto">
+														<div class="counter-icon bg-danger-gradient box-shadow-danger brround  ms-auto">
+															<i class="fa fa-id-badge text-white mb-5"></i>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-6 col-md-12 col-sm-12 col-xl-3">
+										<div class="card overflow-hidden">
+											<div class="card-body">
+												<div class="row">
+													<div class="col">
+														<h6 class="">Administrator Total</h6>
+														<h3 class="mb-2 number-font">{{administrators_total}}</h3>
+														
+													</div>
+													<div class="col col-auto">
+														<div class="counter-icon bg-secondary-gradient box-shadow-secondary brround ms-auto">
+															<i class="fas fa-user-cog text-white mb-5"></i>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-6 col-md-12 col-sm-12 col-xl-3">
+										<div class="card overflow-hidden">
+											<div class="card-body">
+												<div class="row">
+													<div class="col">
+														<h6 class="">Moderators Total</h6>
+														<h3 class="mb-2 number-font">{{total_moderators}}</h3>
+														
+													</div>
+													<div class="col col-auto">
+														<div class="counter-icon bg-success-gradient box-shadow-success brround  ms-auto">
+															<i class="fe fe-briefcase text-white mb-5 "></i>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<!-- ROW-1 END -->
+
+						<!-- ROW-3 -->
+						
+						<!-- ROW-3 END -->
+
+						<!-- ROW-5 -->
+						<div class="row">
+							<div class="col-12 col-sm-12">
+								<div class="card ">
+									<div class="card-header">
+										<h3 class="card-title mb-0">Organization Members</h3>
+									</div>
+									<div class="card-body">
+										<div class="table-responsive">
+											<table id="data-table" class="table table-bordered text-nowrap mb-0">
+												<thead class="border-top">
+												<tr>
+													
+													<th class="bg-transparent border-bottom-0">Name</th>
+													<th class="bg-transparent border-bottom-0">Join Date</th>
+													<th class="bg-transparent border-bottom-0">Role</th>
+													<th class="bg-transparent border-bottom-0">email</th>
+													<th class="bg-transparent border-bottom-0">Action</th>
+												</tr>
+												</thead>
+												<tbody>
+													{% if context.all_members != 0 %}
+
+													{% for cont in all_members %}
+													<tr class="border-bottom">
+														
+														<td>
+															<div class="d-flex">
+																<span class="avatar avatar-md brround mt-1" style="background-image: url({% static 'assets/images/users/11.jpg' %})"></span>
+																<div class="ms-2 mt-0 mt-sm-2 d-block">
+																	<h6 class="mb-0 fs-14 fw-semibold">{{cont.first_name }} {{cont.last_name}} </h6>
+																	
+																</div>
+															</div>
+														</td>
+														<td class="text-muted fs-15 fw-semibold">{{cont.join_date}} </td>
+														<td class="text-muted fs-15 fw-semibold">
+															
+															{% if cont.is_admin %}
+															Administrator
+
+															{% elif cont.is_officer %}
+															Officer
+
+															{% elif cont.is_moderator %}
+															Moderator
+
+															{% endif %}
+														</td>
+														<td class="text-success fs-15 fw-semibold">{{cont.email}}</td>
+														<td class="">
+															<a class="btn btn-primary btn-sm rounded-11 me-2 editbtn" memberid="{{cont.id}}" data-bs-target="#editMemberModal" data-bs-toggle="modal"> <i memberid="{{cont.id}}"><svg class="table-edit" xmlns="http://www.w3.org/2000/svg" memberid="{{cont.id}}" height="20" viewBox="0 0 24 24" width="16"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19zM20.71 5.63l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41z"/></svg></i></a>
+
+															<a class="btn btn-danger btn-sm rounded-11 deletebtn" memberid="{{cont.id}}" data-bs-target="#membersDeleteModal" data-bs-toggle="modal" data-bs-original-title="Delete"><i memberid="{{cont.id}}" ><svg memberid="{{cont.id}}"  class="table-delete" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="16"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5z"/></svg></i></a>
+														</td>
+													</tr>
+
+													{% endfor %}
+
+													{% endif %}
+													
+												</tbody>
+											</table>
+
+
+											
+										</div>
+									</div>
+								</div>
+							</div><!-- COL END -->
+						</div><!-- ROW-5 END -->
+					</div>
+				</div>
+				<!-- CONTAINER END -->
+            </div>
+
+			<!-- Sidebar-right -->
+			<div class="sidebar sidebar-right sidebar-animate">
+				<div class="panel panel-primary card mb-0 shadow-none border-0">
+					<div class="tab-menu-heading border-0 d-flex p-3">
+						<div class="card-title mb-0">Notifications</div>
+						<div class="card-options ms-auto">
+							<a href="#" class="sidebar-icon text-end float-end me-1" data-bs-toggle="sidebar-right" data-target=".sidebar-right"><i class="fe fe-x text-white"></i></a>
+						</div>
+					</div>
+					<div class="panel-body tabs-menu-body latest-tasks p-0 border-0">
+						<div class="tabs-menu border-bottom">
+							<!-- Tabs -->
+							<ul class="nav panel-tabs">
+								<li class=""><a href="#side1" class="active" data-bs-toggle="tab"><i class="fe fe-user me-1"></i> Profile</a></li>
+								<li><a href="#side2" data-bs-toggle="tab"><i class="fe fe-users me-1"></i> Contacts</a></li>
+								<li><a href="#side3" data-bs-toggle="tab"><i class="fe fe-settings me-1"></i> Settings</a></li>
+							</ul>
+						</div>
+						<div class="tab-content">
+							<div class="tab-pane active" id="side1">
+								<div class="card-body text-center">
+									<div class="dropdown user-pro-body">
+										<div class="">
+											<img alt="user-img" class="avatar avatar-xl brround mx-auto text-center" src="{% static 'assets/images/faces/6.jpg' %}"><span class="avatar-status profile-status bg-green"></span>
+										</div>
+										<div class="user-info mg-t-20">
+											<h6 class="fw-semibold  mt-2 mb-0">Mintrona Pechon</h6>
+											<span class="mb-0 text-muted fs-12">Premium Member</span>
+										</div>
+									</div>
+								</div>
+								<a class="dropdown-item d-flex border-bottom border-top" href="profile.html">
+									<div class="d-flex"><i class="fe fe-user me-3 tx-20 text-muted"></i>
+										<div class="pt-1">
+											<h6 class="mb-0">My Profile</h6>
+											<p class="tx-12 mb-0 text-muted">Profile Personal information</p>
+										</div>
+									</div>
+								</a>
+								<a class="dropdown-item d-flex border-bottom" href="chat.html">
+									<div class="d-flex"><i class="fe fe-message-square me-3 tx-20 text-muted"></i>
+										<div class="pt-1">
+											<h6 class="mb-0">My Messages</h6>
+											<p class="tx-12 mb-0 text-muted">Person message information</p>
+										</div>
+									</div>
+								</a>
+								<a class="dropdown-item d-flex border-bottom" href="emailservices.html">
+									<div class="d-flex"><i class="fe fe-mail me-3 tx-20 text-muted"></i>
+										<div class="pt-1">
+											<h6 class="mb-0">My Mails</h6>
+											<p class="tx-12 mb-0 text-muted">Persons mail information</p>
+										</div>
+									</div>
+								</a>
+								<a class="dropdown-item d-flex border-bottom" href="editprofile.html">
+									<div class="d-flex"><i class="fe fe-settings me-3 tx-20 text-muted"></i>
+										<div class="pt-1">
+											<h6 class="mb-0">Account Settings</h6>
+											<p class="tx-12 mb-0 text-muted">Settings Information</p>
+										</div>
+									</div>
+								</a>
+								<a class="dropdown-item d-flex border-bottom" href="login.html">
+									<div class="d-flex"><i class="fe fe-power me-3 tx-20 text-muted"></i>
+										<div class="pt-1">
+											<h6 class="mb-0">Sign Out</h6>
+											<p class="tx-12 mb-0 text-muted">Account Signout</p>
+										</div>
+									</div>
+								</a>
+							</div>
+							<div class="tab-pane" id="side2">
+								<div class="list-group list-group-flush ">
+									<div class="list-group-item d-flex  align-items-center">
+										<div class="me-2">
+											<span class="avatar avatar-md brround cover-image" data-bs-image-src="{% static 'assets/images/faces/9.jpg' %}"><span class="avatar-status bg-success"></span></span>
+										</div>
+										<div class="">
+											<div class="fw-semibold" data-bs-toggle="modal" data-target="#chatmodel">Mozelle Belt</div>
+											<p class="mb-0 tx-12 text-muted">mozellebelt@gmail.com</p>
+										</div>
+									</div>
+									<div class="list-group-item d-flex  align-items-center">
+										<div class="me-2">
+											<span class="avatar avatar-md brround cover-image" data-bs-image-src="{% static 'assets/images/faces/11.jpg' %}"></span>
+										</div>
+										<div class="">
+											<div class="fw-semibold" data-bs-toggle="modal" data-target="#chatmodel">Florinda Carasco</div>
+											<p class="mb-0 tx-12 text-muted">florindacarasco@gmail.com</p>
+										</div>
+									</div>
+									<div class="list-group-item d-flex  align-items-center">
+										<div class="me-2">
+											<span class="avatar avatar-md brround cover-image" data-bs-image-src="{% static 'assets/images/faces/10.jpg' %}"><span class="avatar-status bg-success"></span></span>
+										</div>
+										<div class="">
+											<div class="fw-semibold" data-bs-toggle="modal" data-target="#chatmodel">Alina Bernier</div>
+											<p class="mb-0 tx-12 text-muted">alinaaernier@gmail.com</p>
+										</div>
+									</div>
+									<div class="list-group-item d-flex  align-items-center">
+										<div class="me-2">
+											<span class="avatar avatar-md brround cover-image" data-bs-image-src="{% static 'assets/images/faces/2.jpg' %}"><span class="avatar-status bg-success"></span></span>
+										</div>
+										<div class="">
+											<div class="fw-semibold" data-bs-toggle="modal" data-target="#chatmodel">Zula Mclaughin</div>
+											<p class="mb-0 tx-12 text-muted">zulamclaughin@gmail.com</p>
+										</div>
+									</div>
+									<div class="list-group-item d-flex  align-items-center">
+										<div class="me-2">
+											<span class="avatar avatar-md brround cover-image" data-bs-image-src="{% static 'assets/images/faces/13.jpg' %}"></span>
+										</div>
+										<div class="">
+											<div class="fw-semibold" data-bs-toggle="modal" data-target="#chatmodel">Isidro Heide</div>
+											<p class="mb-0 tx-12 text-muted">isidroheide@gmail.com</p>
+										</div>
+									</div>
+									<div class="list-group-item d-flex  align-items-center">
+										<div class="me-2">
+											<span class="avatar avatar-md brround cover-image" data-bs-image-src="{% static 'assets/images/faces/12.jpg' %}"><span class="avatar-status bg-success"></span></span>
+										</div>
+										<div class="">
+											<div class="fw-semibold" data-bs-toggle="modal" data-target="#chatmodel">Mozelle Belt</div>
+											<p class="mb-0 tx-12 text-muted">mozellebelt@gmail.com</p>
+										</div>
+									</div>
+									<div class="list-group-item d-flex  align-items-center">
+										<div class="me-2">
+											<span class="avatar avatar-md brround cover-image" data-bs-image-src="{% static 'assets/images/faces/4.jpg' %}"></span>
+										</div>
+										<div class="">
+											<div class="fw-semibold" data-bs-toggle="modal" data-target="#chatmodel">Florinda Carasco</div>
+											<p class="mb-0 tx-12 text-muted">florindacarasco@gmail.com</p>
+										</div>
+									</div>
+									<div class="list-group-item d-flex  align-items-center">
+										<div class="me-2">
+											<span class="avatar avatar-md brround cover-image" data-bs-image-src="{% static 'assets/images/faces/7.jpg' %}"></span>
+										</div>
+										<div class="">
+											<div class="fw-semibold" data-bs-toggle="modal" data-target="#chatmodel">Alina Bernier</div>
+											<p class="mb-0 tx-12 text-muted">alinabernier@gmail.com</p>
+										</div>
+									</div>
+									<div class="list-group-item d-flex  align-items-center">
+										<div class="me-2">
+											<span class="avatar avatar-md brround cover-image" data-bs-image-src="{% static 'assets/images/faces/2.jpg' %}"></span>
+										</div>
+										<div class="">
+											<div class="fw-semibold" data-bs-toggle="modal" data-target="#chatmodel">Zula Mclaughin</div>
+											<p class="mb-0 tx-12 text-muted">zulamclaughin@gmail.com</p>
+										</div>
+									</div>
+									<div class="list-group-item d-flex  align-items-center">
+										<div class="me-2">
+											<span class="avatar avatar-md brround cover-image" data-bs-image-src="{% static 'assets/images/faces/14.jpg' %}"><span class="avatar-status bg-success"></span></span>
+										</div>
+										<div class="">
+											<div class="fw-semibold" data-bs-toggle="modal" data-target="#chatmodel">Isidro Heide</div>
+											<p class="mb-0 tx-12 text-muted">isidroheide@gmail.com</p>
+										</div>
+									</div>
+									<div class="list-group-item d-flex  align-items-center">
+										<div class="me-2">
+											<span class="avatar avatar-md brround cover-image" data-bs-image-src="{% static 'assets/images/faces/11.jpg' %}"></span>
+										</div>
+										<div class="">
+											<div class="fw-semibold" data-bs-toggle="modal" data-target="#chatmodel">Florinda Carasco</div>
+											<p class="mb-0 tx-12 text-muted">florindacarasco@gmail.com</p>
+										</div>
+									</div>
+									<div class="list-group-item d-flex  align-items-center">
+										<div class="me-2">
+											<span class="avatar avatar-md brround cover-image" data-bs-image-src="{% static 'assets/images/faces/9.jpg' %}"></span>
+										</div>
+										<div class="">
+											<div class="fw-semibold" data-bs-toggle="modal" data-target="#chatmodel">Alina Bernier</div>
+											<p class="mb-0 tx-12 text-muted">alinabernier@gmail.com</p>
+										</div>
+									</div>
+									<div class="list-group-item d-flex  align-items-center">
+										<div class="me-2">
+											<span class="avatar avatar-md brround cover-image" data-bs-image-src="{% static 'assets/images/faces/15.jpg' %}"><span class="avatar-status bg-success"></span></span>
+										</div>
+										<div class="">
+											<div class="fw-semibold" data-bs-toggle="modal" data-target="#chatmodel">Zula Mclaughin</div>
+											<p class="mb-0 tx-12 text-muted">zulamclaughin@gmail.com</p>
+										</div>
+									</div>
+									<div class="list-group-item d-flex  align-items-center">
+										<div class="me-2">
+											<span class="avatar avatar-md brround cover-image" data-bs-image-src="{% static 'assets/images/faces/4.jpg' %}"></span>
+										</div>
+										<div class="">
+											<div class="fw-semibold" data-bs-toggle="modal" data-target="#chatmodel">Isidro Heide</div>
+											<p class="mb-0 tx-12 text-muted">isidroheide@gmail.com</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="side3">
+								<a class="dropdown-item bg-gray-100 pd-y-10" href="#">
+									Account Settings
+								</a>
+								<div class="card-body">
+									<div class="form-group mg-b-10">
+										<label class="custom-switch ps-0">
+											<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" checked>
+											<span class="custom-switch-indicator"></span>
+											<span class="custom-switch-description mg-l-10">Updates Automatically</span>
+										</label>
+									</div>
+									<div class="form-group mg-b-10">
+										<label class="custom-switch ps-0">
+											<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
+											<span class="custom-switch-indicator"></span>
+											<span class="custom-switch-description mg-l-10">Allow Location Map</span>
+										</label>
+									</div>
+									<div class="form-group mg-b-10">
+										<label class="custom-switch ps-0">
+											<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" checked>
+											<span class="custom-switch-indicator"></span>
+											<span class="custom-switch-description mg-l-10">Show Contacts</span>
+										</label>
+									</div>
+									<div class="form-group mg-b-10">
+										<label class="custom-switch ps-0">
+											<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" checked>
+											<span class="custom-switch-indicator"></span>
+											<span class="custom-switch-description mg-l-10">Show Notication</span>
+										</label>
+									</div>
+									<div class="form-group mg-b-10">
+										<label class="custom-switch ps-0">
+											<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
+											<span class="custom-switch-indicator"></span>
+											<span class="custom-switch-description mg-l-10">Show Tasks Statistics</span>
+										</label>
+									</div>
+									<div class="form-group mg-b-10">
+										<label class="custom-switch ps-0">
+											<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" checked>
+											<span class="custom-switch-indicator"></span>
+											<span class="custom-switch-description mg-l-10">Show Email Notification</span>
+										</label>
+									</div>
+								</div>
+								<a class="dropdown-item bg-gray-100 pd-y-10" href="#">
+									General Settings
+								</a>
+								<div class="card-body">
+									<div class="form-group mg-b-10">
+										<label class="custom-switch ps-0">
+											<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" checked>
+											<span class="custom-switch-indicator"></span>
+											<span class="custom-switch-description mg-l-10">Show User Online</span>
+										</label>
+									</div>
+									<div class="form-group mg-b-10">
+										<label class="custom-switch ps-0">
+											<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
+											<span class="custom-switch-indicator"></span>
+											<span class="custom-switch-description mg-l-10">Website Notication</span>
+										</label>
+									</div>
+									<div class="form-group mg-b-10">
+										<label class="custom-switch ps-0">
+											<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
+											<span class="custom-switch-indicator"></span>
+											<span class="custom-switch-description mg-l-10">Show Recent activity</span>
+										</label>
+									</div>
+									<div class="form-group mg-b-10">
+										<label class="custom-switch ps-0">
+											<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
+											<span class="custom-switch-indicator"></span>
+											<span class="custom-switch-description mg-l-10">Logout Automatically</span>
+										</label>
+									</div>
+									<div class="form-group mg-b-10">
+										<label class="custom-switch ps-0">
+											<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" checked>
+											<span class="custom-switch-indicator"></span>
+											<span class="custom-switch-description mg-l-10">Aloow All Notifications</span>
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+				<!-- Organization member adding modal -->
+				<div class="modal fade"  id="memberaddmodal">
+					<div class="modal-dialog modal-dialog-centered text-center" role="document">
+				<div class="modal-content modal-content-demo">
+					<div class="modal-header">
+						<h6 class="modal-title">Add a member</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
+					</div>
+					<form class="form" id="memberAddForm" method="get" action="#">
+					<div class="modal-body">
+						
+							
+								
+									<div class="form-group">
+										
+										<input type="text" class="form-control" name="first_name" id="first_name"
+										placeholder="Enter First Name" required />
+									</div>
+									<div class="form-group">
+										
+										<input type="text" class="form-control" name="last_name" id="last_name" placeholder="Enter Last Name" required />
+									</div>
+									<div class="form-group">
+										
+										<input type="email" class="form-control" name="email" id="email"
+										placeholder="Enter Email" required />
+									</div>
+
+									<div class="form-group">
+										
+										<input type="phone" class="form-control" name="phone" id="phone"
+										placeholder="Enter Phone Number" required />
+									</div>
+									<div class="form-group">
+								    
+								    <select class="form-select" id="role" name="role" required>
+								    	<option value="">Select Role</option>
+								      <option value="Administrator">Administrator</option>
+								      <option value="Officer">Officer</option>
+								      <option value="Moderator">Moderator</option>
+								      
+								    </select>
+								  </div>
+								  <div class="form-group">
+										
+										<input type="password" class="form-control" name="password" id="password"
+										placeholder="Pick a Password"/>
+									</div>
+									
+								
+							
+						
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary" id="save">Save changes </button> 
+						<a class="btn btn-danger text-white" data-bs-dismiss="modal" >Close</a>
+					</div></form>
+				</div>
+			</div>
+		</div>
+								<!-- end of organization member add modal-->
+
+
+
+<!-- startinig editing modals -->
+    
+    <div class="modal fade"  id="editMemberModal">
+					<div class="modal-dialog modal-dialog-centered text-center" role="document">
+				<div class="modal-content modal-content-demo">
+					<div class="modal-header">
+						<h6 class="modal-title">Edit member</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
+					</div>
+					<form class="form" id="editMemberForm" method="post" action="#">
+					<div class="modal-body">
+						
+							{% csrf_token %}
+								
+									<div class="form-group">
+										
+										<input type="text" class="form-control" name="first_name" id="first_name_edit"
+										placeholder="Enter First Name" required />
+									</div>
+									<div class="form-group">
+										
+										<input type="text" class="form-control" name="last_name" id="last_name_edit" placeholder="Enter Last Name" required />
+									</div>
+									<div class="form-group">
+										
+										<input type="email" class="form-control" name="email" id="email_edit"
+										placeholder="Enter Email" required />
+									</div>
+
+									<div class="form-group">
+										
+										<input type="phone" class="form-control" name="phone" id="phone_edit"
+										placeholder="Enter Phone Number" required />
+									</div>
+									<div class="form-group">
+								    
+								    <select class="form-select" id="role_edit" name="role" required>
+								    	
+								      <option value="Administrator">Administrator</option>
+								      <option value="Officer">Officer</option>
+								      <option value="Moderator">Moderator</option>
+								      
+								    </select>
+
+								  </div>
+								  <input type="hidden" name="userid" id="useridinform"/>
+								  
+							
+									
+								
+							
+						
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary" id="save_edit">Save changes </button> 
+						<a class="btn btn-danger text-white" data-bs-dismiss="modal" >Close</a>
+					</div></form>
+				</div>
+			</div>
+		</div>
+
+<!-- ending editing modals -->
+
+
+<!--starting deleting members modal -->
+
+<div class="modal fade"  id="membersDeleteModal">
+			<div class="modal-dialog modal-dialog-centered text-center" role="document">
+				<div class="modal-content tx-size-sm">
+					<div class="modal-body text-center p-4">
+						<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
+						
+						<i class="fas fs-65 fa-exclamation-triangle lh-1 mb-4 d-inline-block text-danger"></i>
+						<h3 class="text-danger">Are you sure ?</h3>
+						{% csrf_token %}
+						<p class="mg-b-20 mg-x-20 text-danger">you are about to delete a member from the organization</p><button aria-label="Close" class="btn btn-info pd-x-25 m-4" id="confirmbtn">Confirm delete</button><button aria-label="Close" class="btn btn-danger pd-x-25 ml-4" data-bs-dismiss="modal" >Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+<!-- ending deleting members modal -->
+
+			<!-- /Sidebar-right-->
+
+			
+
+
+			
+
+
+			{% endblock content %}

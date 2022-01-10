@@ -1,0 +1,75 @@
+{% extends 'base_file/base_index.html' %}
+{%block title %} Register for an account {% endblock title %}
+{% block content %}
+							<div class="row justify-content-md-center">
+								<div class="col-md-6">
+									<div class="featured-box featured-box-primary text-start mt-0">
+										<div class="box-content">
+											<h4 class="color-primary font-weight-semibold text-4 text-uppercase mb-3">Register An Account</h4><br/>
+											{% if error %}
+
+											<div class="alert alert-dark text-danger">{{error}}</div><br/>
+
+											{% endif %}
+											{% if success %}
+
+											<div class="alert alert-dark text-white">Account has been created ! please <a href="{% url 'login' %}" class="text-success"> Login</a> </div><br/>
+
+											{% endif %}
+											<form action="{% url 'signup'  %}" id="frmSignUp" method="post" class="needs-validation">
+												{% csrf_token %}
+												<div class="row">
+													<div class="form-group col">
+														<label class="form-label">First Name</label>
+														<input type="text" name="first_name" value="" class="form-control form-control-lg" required>
+													</div>
+												</div>
+												<div class="row">
+													<div class="form-group col">
+														<label class="form-label">Last Name</label>
+														<input type="text" name="last_name" value="" class="form-control form-control-lg" required>
+													</div>
+												</div>
+												<div class="row">
+													<div class="form-group col">
+														<label class="form-label">E-mail Address</label>
+														<input type="email" name="email" value="" class="form-control form-control-lg" required>
+													</div>
+												</div>
+												<div class="row">
+													<div class="form-group col">
+														<label class="form-label">Organization Name</label>
+														<input type="text" name="organization" value="" class="form-control form-control-lg" required>
+													</div>
+												</div>
+												
+												<div class="row">
+													<div class="form-group col-lg-6">
+														<label class="form-label">Password</label>
+														<input type="password" name="password" value="" class="form-control form-control-lg" required>
+													</div>
+													<div class="form-group col-lg-6">
+														<label class="form-label">Re-enter Password</label>
+														<input type="password" name="password2" value="" class="form-control form-control-lg" required>
+													</div>
+												</div>
+												<div class="row">
+													<div class="form-group col-lg-9">
+														<div class="custom-control custom-checkbox">
+															<input type="checkbox" name="terms" class="custom-control-input" id="terms">
+															<label class="custom-control-label text-2" for="terms">I have read and agree to the <a href="#">terms of service</a></label>
+														</div>
+													</div>
+													<div class="form-group col-lg-3">
+														<input type="submit" value="Register Now" class="btn btn-primary btn-modern float-end" data-loading-text="Loading...">
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+
+{% endblock content %}

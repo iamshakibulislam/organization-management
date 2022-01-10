@@ -1,0 +1,123 @@
+{% extends 'base_file/base_dashboard.html' %}
+
+{% block title %}  Tour management {% endblock title %}
+
+
+{% block content %}
+{% load static %}
+
+<div class="row">
+							<div class="col-12 col-sm-12">
+								<div class="card ">
+									<div class="card-header">
+										<h3 class="card-title mb-0">Tour Management</h3>
+									</div>
+									<div class="card-body">
+										<div class="table-responsive">
+											<table id="data-table" class="table table-bordered text-nowrap mb-0">
+												<thead class="border-top">
+												<tr>
+													
+													<th class="bg-transparent border-bottom-0">Name</th>
+													<th class="bg-transparent border-bottom-0">Last Visit</th>
+													<th class="bg-transparent border-bottom-0">Next Visit</th>
+													<th class="bg-transparent border-bottom-0">Last Meeting</th>
+													<th class="bg-transparent border-bottom-0">Next Meeting</th>
+
+													<th class="bg-transparent border-bottom-0">Tour From</th>
+													<th class="bg-transparent border-bottom-0">Tour To</th>
+													<th class="bg-transparent border-bottom-0">Action</th>
+												</tr>
+												</thead>
+												<tbody>
+													{% if tourdata %}
+
+													{% for tour in tourdata %}
+													<tr class="border-bottom">
+														
+														<td>
+															<div class="d-flex">
+																<span class="avatar avatar-md brround mt-1" style="background-image: url({% static 'assets/images/users/11.jpg' %})"></span>
+																<div class="ms-2 mt-0 mt-sm-2 d-block">
+																	<h6 class="mb-0 fs-14 fw-semibold">{{tour.member }} </h6>
+																	
+																</div>
+															</div>
+														</td>
+														<td class="text-muted fs-15 fw-semibold">{{tour.last_visited}} </td>
+														<td class="text-muted fs-15 fw-semibold">
+															
+															{% if tour.next_visit_date %}
+															
+																{% for tourdate in tour.next_visit_date %}
+
+																<li>{{tourdate}}</li>
+
+																{% endfor %}
+															
+
+															{% endif %}
+														</td>
+
+														<td class="text-muted fs-15 fw-semibold">{{tour.last_meeting_date}} </td>
+
+														<td class="text-muted fs-15 fw-semibold">
+															
+															{% if tour.next_meeting_date %}
+															
+																{% for tournxtdate in tour.next_meeting_date %}
+
+																<li>{{tournxtdate}}</li>
+
+																{% endfor %}
+															
+
+															{% endif %}
+														</td>
+
+														<td class="text-muted fs-15 fw-semibold">{{tour.tour_from}} </td>
+
+														<td class="text-muted fs-15 fw-semibold">{{tour.tour_to}} </td>
+
+
+														
+														<td class="">
+															<a class="btn btn-primary btn-sm rounded-11 me-2 " memberid="{{tourdata.id}}" 
+															href="{% url 'edittour' tour.id %}" 
+															> <i memberid="{{tour.id}}"><svg class="table-edit" xmlns="http://www.w3.org/2000/svg" memberid="{{tour.id}}" height="20" viewBox="0 0 24 24" width="16"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19zM20.71 5.63l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41z"/></svg></i></a>
+
+															<a class="btn btn-danger btn-sm rounded-11 deletebtntour" tourid="{{tour.id}}" data-bs-target="#membersDeleteModal" data-bs-toggle="modal" data-bs-original-title="Delete"><i memberid="{{tour.id}}" ><svg tourid="{{tour.id}}"  class="table-delete" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="16"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5z"/></svg></i></a>
+														</td>
+													</tr>
+
+													{% endfor %}
+
+													{% endif %}
+													
+												</tbody>
+											</table>
+
+
+											
+										</div>
+									</div>
+								</div>
+							</div><!-- COL END -->
+						</div><!-- ROW-5 END -->
+
+
+<div class="modal fade"  id="membersDeleteModal">
+			<div class="modal-dialog modal-dialog-centered text-center" role="document">
+				<div class="modal-content tx-size-sm">
+					<div class="modal-body text-center p-4">
+						<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
+						
+						<i class="fas fs-65 fa-exclamation-triangle lh-1 mb-4 d-inline-block text-danger"></i>
+						<h3 class="text-danger">Are you sure ?</h3>
+						{% csrf_token %}
+						<p class="mg-b-20 mg-x-20 text-danger">you are about to delete a tour schedule</p><button aria-label="Close" class="btn btn-info pd-x-25 m-4" id="confirmbtn">Confirm delete</button><button aria-label="Close" class="btn btn-danger pd-x-25 ml-4" data-bs-dismiss="modal" >Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+{% endblock content %}
