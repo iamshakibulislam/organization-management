@@ -1,0 +1,109 @@
+{% extends 'base_file/base_dashboard.html' %}
+
+{% block title %}Upload files {% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div class="row" style="margin-top:5rem">
+	<div class="col-md-6">
+
+<h2>Upload Files For This Tour</h2>
+<form action=""  method="post" enctype="multipart/form-data">
+
+	{% csrf_token %}
+  <div id="drop_zone" class="drop-zone">
+    <p class="title">Drop file here</p>
+    <div class="preview-container"></div>
+  </div>
+  <input id="file_input" accept="*" type="file" multiple="true" name="file">
+  <button id="upload_images">Upload Now</button>
+  <div id="result_images" class="result-images"></div>
+</form>
+
+</div>
+
+
+<div class="col-md-6">
+	
+	<!-- file list starting here -->
+
+		<div class="table-responsive">
+											<table id="data-table" class="table table-bordered text-nowrap mb-0 bg-white">
+												<thead class="border-top">
+												<tr>
+													
+													<th class="bg-transparent border-bottom-0">Member</th>
+													
+													<th class="bg-transparent border-bottom-0">Uploaded Files</th>
+													<!--
+													<th class="bg-transparent border-bottom-0">Action</th> -->
+												</tr>
+												</thead>
+												<tbody>
+													{% if tour_file_data %}
+
+													{% for data in tour_file_data %}
+													<tr class="border-bottom">
+														
+														
+														<td class="text-muted fs-15 fw-semibold">{{data.member}} </td>
+														
+														
+
+														<td class="text-muted fs-15 fw-semibold ">
+															
+															{% if data.files %}
+															
+																{% for fileurl in data.files %}
+																<ul style="list-style-position: inside;">
+																<li class="text-left" ><a href="{{fileurl.file.url}}">{{ request.META.HTTP_HOST }}{{fileurl.file.url}}</a>
+																</li>
+															</ul>
+															
+															    
+
+																{% endfor %}
+															<style>
+																	ul li {
+																		  list-style-type: circle;
+																		  list-style-position: outside;
+																		}
+																		</style>
+															{% endif %}
+														</td>
+
+														
+
+
+														<!-- delte button 
+														<td class="">
+															
+															
+
+															
+															<a class="btn btn-danger btn-sm rounded-11 deletebtntour" memberid="{{data.id}}" data-bs-target="#membersDeleteModal" data-bs-toggle="modal" data-bs-original-title="Delete"><i memberid="{{data.id}}" ><svg tourid="{{data.id}}"  class="table-delete" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="16"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5z"/></svg></i></a>
+														</td>
+													-->
+													</tr>
+
+													{% endfor %}
+
+													{% endif %}
+													
+												</tbody>
+											</table>
+
+
+											
+										</div>
+
+
+	<!-- file list ending here -->
+
+
+</div>
+
+</div>
+
+{% endblock content %}

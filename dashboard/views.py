@@ -130,7 +130,8 @@ def tour(request):
 
 	if request.method == 'POST':
 
-		member_id = request.POST['member']
+		member_id = request.POST.getlist('member')
+		
 		last_visited = request.POST['last_visited']
 		next_visit_date = request.POST['next_visit_date']
 		last_meeting_date = request.POST['last_meeting_date']
@@ -138,9 +139,9 @@ def tour(request):
 		tour_from = request.POST['tour_from']
 		tour_to = request.POST['tour_to']
 
-		sel_user = User.objects.get(id=int(member_id))
-		TourManagement.objects.create(
-			member=sel_user,
+		
+		creating_tour=TourManagement.objects.create(
+			organization = request.user.organization,
 			last_visited = last_visited,
 			next_visit_date = next_visit_date,
 			last_meeting_date = last_meeting_date,
@@ -148,6 +149,22 @@ def tour(request):
 			tour_from = tour_from,
 			tour_to = tour_to
 			)
+
+		for members in member_id:
+			try:
+				sel_mem = User.objects.get(id=int(members))
+			except:
+				return redirect('tour')
+
+			creating_tour.tour_members.add(sel_mem)
+
+
+
+
+
+
+
+
 
 
 
@@ -159,14 +176,16 @@ def tour(request):
 
 def tourmanagement(request):
 	if request.method == 'GET':
-		get_tour = TourManagement.objects.filter(member__organization = request.user.organization)
+		get_tour = TourManagement.objects.filter(organization = request.user.organization)
+		print(get_tour)
 
 		tourdata =  []
 
 		for data in get_tour:
 			tourdata.append({'id':data.id,
-				'member':str(data.member.first_name)+' '+str(data.member.last_name),
-				'memberid':data.member.id,
+				'members':[name.first_name+' '+name.last_name for name in data.tour_members.all()],
+				#'memberid':data.member.id,
+				'status':data.status,
 
 				'last_visited':data.last_visited,
 				'next_visit_date':data.next_visit_date.split(','),
@@ -176,6 +195,8 @@ def tourmanagement(request):
 				'tour_to':data.tour_to
 
 				})
+
+		print('tourdata is ',tourdata)
 
 
 		return render(request,'dashboard/tourmanagement.html',{'tourdata':tourdata})
@@ -192,8 +213,11 @@ def touredit(request,pk):
 
 		data = TourManagement.objects.get(id=int(pk))
 		tourdata={'id':data.id,
-				'member':str(data.member.first_name)+' '+str(data.member.last_name),
-				'memberid':data.member.id,
+				'all_members':User.objects.filter(organization=request.user.organization),
+				'assigned_members':[x.id for x in data.tour_members.all()],
+				'status_list':['pending approval','approved','finished'],
+				'curr_status':data.status,
+				#'memberid':data.member.id,
 
 				'last_visited':data.last_visited,
 				'next_visit_date':data.next_visit_date,
@@ -213,8 +237,9 @@ def edittoursubmit(request):
 
 
 	if request.method == "POST":
-		#member_id = request.POST['member']
+		member_ids = request.POST.getlist('members')
 		identity = request.POST['identity']
+		status = request.POST['status']
 		last_visited = request.POST['last_visited']
 		next_visit_date = request.POST['next_visit_date']
 		last_meeting_date = request.POST['last_meeting_date']
@@ -225,6 +250,13 @@ def edittoursubmit(request):
 		#sel_user = User.objects.get(id=int(member_id))
 
 		sel_tour = TourManagement.objects.get(id=int(identity))
+
+		sel_tour.tour_members.clear()
+
+		sel_tour.status = status
+
+		for ids in member_ids:
+			sel_tour.tour_members.add(User.objects.get(id=int(ids)))
 
 
 		if(sel_tour.last_visited != last_visited):
@@ -267,6 +299,39 @@ def delete_tour(request):
 	sel.delete()
 
 	return JsonResponse({'status':'deleted'})
+
+
+
+def upload_files(request,pk):
+	if request.method == "GET":
+		tour_file_data = []
+		sel_tour = TourManagement.objects.get(id=int(pk))
+
+		all_members = sel_tour.tour_members.all()
+
+		for member in all_members:
+			sel_mem = User.objects.get(id=int(member.id))
+			all_uploaded_files = tour_files.objects.filter(Q(user=sel_mem) & Q(tour=sel_tour))
+			tour_file_data.append({'memberid':member.id,'member':member.first_name+' '+member.last_name,'files':all_uploaded_files})
+
+
+
+		return render(request,'dashboard/file_upload.html',{'tour_file_data':tour_file_data})
+
+
+	if request.method == "POST":
+		getfiles = request.FILES.getlist('file')
+		
+
+		sel_tour = TourManagement.objects.get(id=int(pk))
+
+		for file in getfiles:
+			tour_files.objects.create(user=request.user,tour=sel_tour,file=file)
+
+
+		return redirect('upload_files',pk)
+
+
 
 
 

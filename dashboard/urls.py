@@ -11,6 +11,7 @@ path('tour/',views.tour,name='tour'),
 path('tourmanagement/',views.tourmanagement,name='tourmanagement'),
 path('touredit/<int:pk>',views.touredit,name='edittour'),
 path('edittoursubmit/',views.edittoursubmit,name='edittoursubmit'),
-path('delete_tour/',views.delete_tour,name='delete_tour')
+path('delete_tour/',views.delete_tour,name='delete_tour'),
+path('upload_files/<int:pk>/',views.upload_files,name='upload_files')
 
 ]
