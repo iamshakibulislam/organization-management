@@ -135,5 +135,5 @@ AUTH_USER_MODEL = 'users.User'
 
 
 
-djanog-heroku settings 
+#djanog_heroku settings 
 django_heroku.settings(locals())
