@@ -9,6 +9,8 @@ class TourManagement(models.Model):
 				('approved','approved'),
 				('finished','finished')
 	]
+	
+	date = models.DateField(auto_now_add=True,null=True)
 	tour_members = models.ManyToManyField(User,through='tour_member_data')
 	organization = models.CharField(max_length=200,null=True,blank=False)
 	last_visited = models.CharField(max_length=100,null=True,blank=True)

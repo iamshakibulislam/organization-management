@@ -100,12 +100,12 @@ def addMember(request):
 
 
 		if(role == 'Officer'):
-			User.objects.create_user(first_name=first_name,last_name=last_name,email=email,is_officer=True,is_admin=False,password=password,organization=request.user.organization,phone=phone,added_by_user_id=request.user.id)
+			User.objects.create_user(first_name=first_name,last_name=last_name,email=email,is_moderator=False,is_officer=True,is_admin=False,password=password,organization=request.user.organization,phone=phone,added_by_user_id=request.user.id)
 
 
 
 		if(role == 'Moderator'):
-			User.objects.create_user(first_name=first_name,last_name=last_name,email=email,is_moderator=True,is_admin=False,password=password,organization=request.user.organization,phone=phone,added_by_user_id=request.user.id)
+			User.objects.create_user(first_name=first_name,last_name=last_name,email=email,is_officer=False,is_moderator=True,is_admin=False,password=password,organization=request.user.organization,phone=phone,added_by_user_id=request.user.id)
 
 
 

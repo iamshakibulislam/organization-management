@@ -9,8 +9,35 @@
 <div class="row">
 							<div class="col-12 col-sm-12">
 								<div class="card ">
-									<div class="card-header">
-										<h3 class="card-title mb-0">Tour Management</h3>
+									<div class="card-header d-flex flex-row justify-content-between">
+										<h3 class="card-title mb-0">
+										{% if singleMode == True %}
+										Tour History Of <b>{{name}}</b>
+										{% else %}
+										Tour Management
+										{% endif %}
+									</h3>
+										<div class="filter">
+											<form class="form-inline" method="get" action="">
+												<div class="form-group ml-4" >
+													<label for="from" class="mr-4" style="margin-right:1rem">From</label>
+													<input type="date" name="from" class="form-control mr-3" style="margin-right:1rem">
+												</div>
+												{% if singleMode %}
+												<input type="hidden" name="user" value={{identity}}>
+												{% endif %}
+
+												<div class="form-group ml-4 ">
+													<label for="to" class="mr-4" style="margin-right:1rem">To</label>
+													<input type="date" name="to" class="form-control ml-4" style="margin-right:1rem">
+												</div>
+
+												<div class="form-group ml-4">
+													<input type="submit" name="submit" value="Filter" class="ml-4 btn btn-danger">
+												</div>
+												
+											</form>
+										</div>
 									</div>
 									<div class="card-body">
 										<div class="table-responsive">
@@ -21,8 +48,10 @@
 													<th class="bg-transparent border-bottom-0">Members</th>
 													<th class="bg-transparent border-bottom-0">Last Visit</th>
 													<th class="bg-transparent border-bottom-0">Next Visit</th>
+													<!--
 													<th class="bg-transparent border-bottom-0">Last Meeting</th>
 													<th class="bg-transparent border-bottom-0">Next Meeting</th>
+												-->
 
 													<th class="bg-transparent border-bottom-0">Tour From</th>
 													<th class="bg-transparent border-bottom-0">Tour To</th>
@@ -64,8 +93,9 @@
 															{% endif %}
 														</td>
 
-														<td class="text-muted fs-15 fw-semibold">{{tour.last_meeting_date}} </td>
-
+														<!--
+														<td class="text-muted fs-15 fw-semibold">{{tour.last_meeting_date}} </td> -->
+														<!--
 														<td class="text-muted fs-15 fw-semibold">
 															
 															{% if tour.next_meeting_date %}
@@ -78,7 +108,7 @@
 															
 
 															{% endif %}
-														</td>
+														</td> -->
 
 														<td class="text-muted fs-15 fw-semibold">{{tour.tour_from}} </td>
 
@@ -98,6 +128,10 @@
 															<a class="btn btn-primary btn-sm rounded-11 me-2 " memberid="{{tourdata.id}}" 
 															href="{% url 'upload_files' tour.id %}" 
 															> <i style="font-size:1.6rem" class="fas fa-file-medical text-white"></i></a>
+
+															<a class="btn btn-primary btn-sm rounded-11 me-2 " memberid="{{tourdata.id}}" 
+															href="{% url 'show_files' tour.id %}" 
+															> <i style="font-size:1.6rem" class="fas fa-folder-open text-white"></i></a>
 
 															
 

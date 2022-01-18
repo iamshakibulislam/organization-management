@@ -33,8 +33,8 @@
 														<div class="form-group col">
 															<label class="form-label">Member</label>
 															<div class="custom-select-1">
-													      		<select class="form-select form-control h-auto py-2" data-msg-required="Please select a city." name="members"  multiple>
-													        		<option value="">...........Edit Member..........</option>
+													      		<select multiple class="form control chosen-select" data-placeholder="Start Typing a Member's Name"  name="members"  required style="width:99%">
+													        		
 													        		{% for mem in tourdata.all_members %}
 													        		{% if mem.id in tourdata.assigned_members %}
 													        		<option value="{{mem.id}}" selected>
@@ -68,30 +68,24 @@
 															<label class="form-label mb-1 text-2">Next Visit Date</label>
 															<input type="text" value="{{tourdata.next_visit_date}}" data-msg-required="Please Select Some Dates" placeholder="Select Some Dates" maxlength="100" class="form-control text-3 h-auto py-2 date" name="next_visit_date" autocomplete="off">
 														</div>
-
-														<div class="form-group col-lg-6">
-															<label class="form-label mb-1 text-2">Last Meeting Date</label>
-															<input type="date" value="{{tourdata.last_meeting_date}}" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="last_meeting_date" autocomplete="off">
-														</div>
-													</div>
-
-													<div class="row">
-														<div class="form-group col-lg-6">
-															<label class="form-label mb-1 text-2">Next Meeting Date</label>
-															<input type="text" value="{{tourdata.next_meeting_date}}" data-msg-required="Please Select Some Dates" placeholder="Select Some Dates" maxlength="100" class="form-control text-3 h-auto py-2 date" name="next_meeting_date" autocomplete="off">
-														</div>
-
 														<div class="form-group col-lg-6">
 															<label class="form-label mb-1 text-2">Tour From</label>
 															<input type="text" value="{{tourdata.tour_from}}" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" placeholder="Enter Tour From Address" name="tour_from" autocomplete="off">
 														</div>
 
-														<div class="form-group col-lg-5">
+														
+													</div>
+
+													<div class="row">
+														
+														
+
+														<div class="form-group col-lg-6">
 															<label class="form-label mb-1 text-2">Tour To</label>
 															<input type="text" value="{{tourdata.tour_to}}" placeholder="Enter Tour Destination Address" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="tour_to" autocomplete="off">
 														</div>
 
-														<div class="form-group col-lg-5">
+														<div class="form-group col-lg-6">
 															<label class="form-label">Change Status</label>
 															<div class="custom-select-1">
 													      		<select class="form-select form-control h-auto py-2" data-msg-required="Please select a city." name="status"  >

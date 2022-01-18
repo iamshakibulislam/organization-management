@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
+from datetime import datetime, timedelta
 from users.models import User
 from .models import *
 from django.db.models import Q
@@ -17,8 +18,34 @@ def home(request):
 
 		if len(members) != 0:
 			all_members=members
+		member_data = []
+
+		for mem in members:
+
+			role = ""
+
+			if mem.is_admin == 1:
+				role = "Administrator"
+			elif mem.is_officer == 1:
+				role = "Officer"
+
+			elif mem.is_moderator == 1:
+				role = "Moderator"
+
+			print(role)
+			three_months_status = False
+			check_tour = len(TourManagement.objects.filter(Q(date__gte=datetime.now()-timedelta(days=92)) & Q(tour_members=mem)))
+
+			if check_tour > 0:
+				three_months_status = True
+
+
+			member_data.append({'id':mem.id,'email':mem.email,
+				'first_name':mem.first_name,'last_name':mem.last_name,
+				'join_date':mem.join_date,'role':role,'tour_in_three_months':three_months_status})
+
 		context = {
-				'all_members':all_members,
+				'all_members':member_data,
 				'total_members':len(members),
 				'total_officers':officers_total,
 				'total_moderators':moderators_total,
@@ -46,7 +73,7 @@ def edit_members(request):
 			role = 'Moderator'
 
 		user_data={'first_name':sel_user.first_name,'last_name':sel_user.last_name,'email':sel_user.email,'phone':sel_user.phone,'role':role,'id':sel_user.id}
-		print('userid',userid)
+		
 
 		return JsonResponse({'userdata':user_data})
 
@@ -93,13 +120,13 @@ def edit_members(request):
 		if(role == "Officer"):
 			sel_user.is_officer = True
 			sel_user.is_moderator = False
-			sel_user.is_admin == False
+			sel_user.is_admin = False
 
 
 		if(role == "Moderator"):
 			sel_user.is_officer = False
 			sel_user.is_moderator = True
-			sel_user.is_admin == False
+			sel_user.is_admin = False
 
 
 
@@ -134,8 +161,11 @@ def tour(request):
 		
 		last_visited = request.POST['last_visited']
 		next_visit_date = request.POST['next_visit_date']
-		last_meeting_date = request.POST['last_meeting_date']
-		next_meeting_date = request.POST['next_meeting_date']
+		try:
+			last_meeting_date = request.POST['last_meeting_date']
+			next_meeting_date = request.POST['next_meeting_date']
+		except:
+			pass
 		tour_from = request.POST['tour_from']
 		tour_to = request.POST['tour_to']
 
@@ -144,8 +174,7 @@ def tour(request):
 			organization = request.user.organization,
 			last_visited = last_visited,
 			next_visit_date = next_visit_date,
-			last_meeting_date = last_meeting_date,
-			next_meeting_date = next_meeting_date,
+			
 			tour_from = tour_from,
 			tour_to = tour_to
 			)
@@ -176,8 +205,39 @@ def tour(request):
 
 def tourmanagement(request):
 	if request.method == 'GET':
+
+		from_date = ''
+		to_date = ''
+		userid = 0
+		singleMode = False
+		name =''
+
+		
+		userid = request.GET.get('user',0)
+		if userid != 0:
+			singleMode = True
+			name = User.objects.get(id=int(userid)).first_name+' '+User.objects.get(id=int(userid)).last_name
+		print('userid ',userid)
+		try:
+			from_date = request.GET['from']
+			to_date = request.GET['to']
+
+			
+
+		except:
+			pass
 		get_tour = TourManagement.objects.filter(organization = request.user.organization)
-		print(get_tour)
+
+		if len(from_date) != 0 and len(to_date) != 0:
+			get_tour = TourManagement.objects.filter(Q(organization = request.user.organization) & Q(date__gte=from_date) & Q(date__lte=to_date) )
+
+		if int(userid) > 0 and from_date != '' and to_date != '':
+			get_tour = TourManagement.objects.filter(Q(organization = request.user.organization) & Q(date__gte=from_date) & Q(date__lte=to_date)  & Q(tour_members = User.objects.get(id=int(userid))))
+
+		if (int(userid) > 0 and from_date =='' and to_date==''):
+			get_tour = TourManagement.objects.filter(Q(organization = request.user.organization)   & Q(tour_members = User.objects.get(id=int(userid))))
+
+		
 
 		tourdata =  []
 
@@ -189,17 +249,16 @@ def tourmanagement(request):
 
 				'last_visited':data.last_visited,
 				'next_visit_date':data.next_visit_date.split(','),
-				'last_meeting_date':data.last_meeting_date,
-				'next_meeting_date':data.next_meeting_date.split(','),
+				
 				'tour_from':data.tour_from,
 				'tour_to':data.tour_to
 
 				})
 
-		print('tourdata is ',tourdata)
+		
 
 
-		return render(request,'dashboard/tourmanagement.html',{'tourdata':tourdata})
+		return render(request,'dashboard/tourmanagement.html',{'tourdata':tourdata,'singleMode':singleMode,'name':name,'identity':userid})
 
 
 
@@ -221,8 +280,7 @@ def touredit(request,pk):
 
 				'last_visited':data.last_visited,
 				'next_visit_date':data.next_visit_date,
-				'last_meeting_date':data.last_meeting_date,
-				'next_meeting_date':data.next_meeting_date,
+				
 				'tour_from':data.tour_from,
 				'tour_to':data.tour_to
 
@@ -242,8 +300,7 @@ def edittoursubmit(request):
 		status = request.POST['status']
 		last_visited = request.POST['last_visited']
 		next_visit_date = request.POST['next_visit_date']
-		last_meeting_date = request.POST['last_meeting_date']
-		next_meeting_date = request.POST['next_meeting_date']
+		
 		tour_from = request.POST['tour_from']
 		tour_to = request.POST['tour_to']
 
@@ -266,11 +323,7 @@ def edittoursubmit(request):
 		if(sel_tour.next_visit_date != next_visit_date):
 			sel_tour.next_visit_date = next_visit_date
 
-		if(sel_tour.last_meeting_date != last_meeting_date):
-			sel_tour.last_meeting_date = last_meeting_date
-
-		if(sel_tour.next_meeting_date != next_meeting_date):
-			sel_tour.next_meeting_date = next_meeting_date
+		
 
 		if(sel_tour.tour_from != tour_from):
 			sel_tour.tour_from = tour_from
@@ -304,19 +357,10 @@ def delete_tour(request):
 
 def upload_files(request,pk):
 	if request.method == "GET":
-		tour_file_data = []
-		sel_tour = TourManagement.objects.get(id=int(pk))
-
-		all_members = sel_tour.tour_members.all()
-
-		for member in all_members:
-			sel_mem = User.objects.get(id=int(member.id))
-			all_uploaded_files = tour_files.objects.filter(Q(user=sel_mem) & Q(tour=sel_tour))
-			tour_file_data.append({'memberid':member.id,'member':member.first_name+' '+member.last_name,'files':all_uploaded_files})
+		
 
 
-
-		return render(request,'dashboard/file_upload.html',{'tour_file_data':tour_file_data})
+		return render(request,'dashboard/file_upload.html',{'tourid':int(pk)})
 
 
 	if request.method == "POST":
@@ -329,9 +373,24 @@ def upload_files(request,pk):
 			tour_files.objects.create(user=request.user,tour=sel_tour,file=file)
 
 
-		return redirect('upload_files',pk)
+		return redirect('show_files',pk)
 
 
 
 
 
+def show_files(request,pk):
+	if request.method == "GET":
+		tour_file_data = []
+		sel_tour = TourManagement.objects.get(id=int(pk))
+
+		all_members = sel_tour.tour_members.all()
+
+		for member in all_members:
+			sel_mem = User.objects.get(id=int(member.id))
+			all_uploaded_files = tour_files.objects.filter(Q(user=sel_mem) & Q(tour=sel_tour))
+			tour_file_data.append({'memberid':member.id,'member':member.first_name+' '+member.last_name,'files':all_uploaded_files})
+
+
+
+		return render(request,'dashboard/file_show.html',{'tour_file_data':tour_file_data})
