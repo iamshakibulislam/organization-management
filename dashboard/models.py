@@ -9,7 +9,7 @@ class TourManagement(models.Model):
 				('approved','approved'),
 				('finished','finished')
 	]
-	
+
 	date = models.DateField(auto_now_add=True,null=True)
 	tour_members = models.ManyToManyField(User,through='tour_member_data')
 	organization = models.CharField(max_length=200,null=True,blank=False)
@@ -19,6 +19,8 @@ class TourManagement(models.Model):
 	next_meeting_date = models.CharField(max_length=100,null=True,blank=True)
 	tour_from = models.CharField(max_length=200,null=True,blank=True)
 	tour_to = models.CharField(max_length=200,null=True,blank=True)
+	sub_sector = models.CharField(max_length=100,null=True,blank=True)
+	comment = models.CharField(max_length=500,null=True,blank=True)
 	status = models.CharField(max_length=90,default='pending approval',choices=tourstatus,blank=True)
 
 	def __str__(self):

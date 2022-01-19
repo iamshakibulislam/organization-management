@@ -155,19 +155,24 @@ def tour(request):
 		return render(request,'dashboard/tour.html',{'members':sel_org_members})
 
 
-	if request.method == 'POST':
+	if request.method == 'POST' :
 
 		member_id = request.POST.getlist('member')
 		
 		last_visited = request.POST['last_visited']
 		next_visit_date = request.POST['next_visit_date']
+
 		try:
 			last_meeting_date = request.POST['last_meeting_date']
 			next_meeting_date = request.POST['next_meeting_date']
 		except:
 			pass
+
 		tour_from = request.POST['tour_from']
 		tour_to = request.POST['tour_to']
+
+		comment = request.GET.get('comment','No Comment')
+		sub_sector = request.POST.get('sub_sector',' No Sub Sector')
 
 		
 		creating_tour=TourManagement.objects.create(
@@ -176,6 +181,8 @@ def tour(request):
 			next_visit_date = next_visit_date,
 			
 			tour_from = tour_from,
+			comment = comment,
+			sub_sector = sub_sector,
 			tour_to = tour_to
 			)
 
@@ -217,7 +224,7 @@ def tourmanagement(request):
 		if userid != 0:
 			singleMode = True
 			name = User.objects.get(id=int(userid)).first_name+' '+User.objects.get(id=int(userid)).last_name
-		print('userid ',userid)
+		
 		try:
 			from_date = request.GET['from']
 			to_date = request.GET['to']
@@ -228,14 +235,26 @@ def tourmanagement(request):
 			pass
 		get_tour = TourManagement.objects.filter(organization = request.user.organization)
 
-		if len(from_date) != 0 and len(to_date) != 0:
-			get_tour = TourManagement.objects.filter(Q(organization = request.user.organization) & Q(date__gte=from_date) & Q(date__lte=to_date) )
+		if(request.user.is_officer == True and from_date != '' and to_date != ''):
+			get_tour = TourManagement.objects.filter(Q(tour_members = request.user) & Q(date__gte=from_date) & Q(date__lte=to_date))
 
-		if int(userid) > 0 and from_date != '' and to_date != '':
-			get_tour = TourManagement.objects.filter(Q(organization = request.user.organization) & Q(date__gte=from_date) & Q(date__lte=to_date)  & Q(tour_members = User.objects.get(id=int(userid))))
+		elif request.user.is_officer == True and from_date=='' and to_date=='':
+			get_tour = TourManagement.objects.filter(Q(tour_members = request.user))
 
-		if (int(userid) > 0 and from_date =='' and to_date==''):
-			get_tour = TourManagement.objects.filter(Q(organization = request.user.organization)   & Q(tour_members = User.objects.get(id=int(userid))))
+		else:
+			pass
+
+
+		if request.user.is_officer != True:
+
+			if len(from_date) != 0 and len(to_date) != 0:
+				get_tour = TourManagement.objects.filter(Q(organization = request.user.organization) & Q(date__gte=from_date) & Q(date__lte=to_date) )
+
+			if int(userid) > 0 and from_date != '' and to_date != '':
+				get_tour = TourManagement.objects.filter(Q(organization = request.user.organization) & Q(date__gte=from_date) & Q(date__lte=to_date)  & Q(tour_members = User.objects.get(id=int(userid))))
+
+			if (int(userid) > 0 and from_date =='' and to_date==''):
+				get_tour = TourManagement.objects.filter(Q(organization = request.user.organization)   & Q(tour_members = User.objects.get(id=int(userid))))
 
 		
 
@@ -251,7 +270,9 @@ def tourmanagement(request):
 				'next_visit_date':data.next_visit_date.split(','),
 				
 				'tour_from':data.tour_from,
-				'tour_to':data.tour_to
+				'tour_to':data.tour_to,
+				'sub_sector':data.sub_sector,
+				'comment':data.comment
 
 				})
 
@@ -282,7 +303,9 @@ def touredit(request,pk):
 				'next_visit_date':data.next_visit_date,
 				
 				'tour_from':data.tour_from,
-				'tour_to':data.tour_to
+				'tour_to':data.tour_to,
+				'sub_sector':data.sub_sector,
+				'comment':data.comment
 
 				}
 
@@ -300,6 +323,9 @@ def edittoursubmit(request):
 		status = request.POST['status']
 		last_visited = request.POST['last_visited']
 		next_visit_date = request.POST['next_visit_date']
+
+		sub_sector = request.POST['sub_sector']
+		comment = request.POST['comment']
 		
 		tour_from = request.POST['tour_from']
 		tour_to = request.POST['tour_to']
@@ -330,6 +356,13 @@ def edittoursubmit(request):
 
 		if(sel_tour.tour_to != tour_to):
 			sel_tour.tour_to = tour_to
+
+
+		if(sel_tour.sub_sector != sub_sector):
+			sel_tour.sub_sector = sub_sector
+
+		if(sel_tour.comment != comment):
+			sel_tour.comment = comment
 
 
 		sel_tour.save()
@@ -371,6 +404,15 @@ def upload_files(request,pk):
 
 		for file in getfiles:
 			tour_files.objects.create(user=request.user,tour=sel_tour,file=file)
+
+		total_member_for_this_tour = len(sel_tour.tour_members.all())
+
+		unique_files_per_user = len(list(set([userid.user.id for userid in tour_files.objects.filter(tour=sel_tour)])))
+
+		if total_member_for_this_tour == unique_files_per_user:
+			sel_tour.status = "finished"
+
+			sel_tour.save()
 
 
 		return redirect('show_files',pk)
