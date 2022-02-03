@@ -1,3 +1,4 @@
+from operator import mod
 from django.db import models
 from users.models import User
 
@@ -17,6 +18,8 @@ class TourManagement(models.Model):
 	next_visit_date = models.CharField(max_length=100,null=True,blank=True)
 	last_meeting_date = models.CharField(max_length=100,null=True,blank=True)
 	next_meeting_date = models.CharField(max_length=100,null=True,blank=True)
+	actual_visit_date = models.CharField(max_length=100,null=True,blank=True)
+	report_submission_date = models.CharField(max_length=200,null=True,blank=True)
 	tour_from = models.CharField(max_length=200,null=True,blank=True)
 	tour_to = models.CharField(max_length=200,null=True,blank=True)
 	sub_sector = models.CharField(max_length=100,null=True,blank=True)
@@ -51,3 +54,31 @@ class tour_files(models.Model):
 		return str(self.user.first_name)
 
 
+
+class tour_places(models.Model):
+	organization = models.CharField(max_length=300,null=True,blank=False)
+	place_name = models.CharField(max_length=300,null=True)
+	
+
+	def __str__(self):
+		return str(self.place_name)
+
+
+
+class sub_sectors(models.Model):
+	organization = models.CharField(max_length=300,null=True,blank=False)
+	sector_name = models.CharField(max_length=300,null=True)
+	
+
+	def __str__(self):
+		return str(self.sector_name)
+
+
+class logs(models.Model):
+	user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+	tour = models.ForeignKey(TourManagement,on_delete=models.CASCADE,null=True,blank=True)
+	action = models.CharField(max_length=600,null=True,blank=True)
+	date = models.DateTimeField(auto_now_add=True,null=True)
+
+	def __str__(self):
+		return str(self.user.first_name)

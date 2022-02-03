@@ -13,6 +13,9 @@ path('touredit/<int:pk>',views.touredit,name='edittour'),
 path('edittoursubmit/',views.edittoursubmit,name='edittoursubmit'),
 path('delete_tour/',views.delete_tour,name='delete_tour'),
 path('upload_files/<int:pk>/',views.upload_files,name='upload_files'),
-path('show_files/<int:pk>/',views.show_files,name='show_files')
+path('show_files/<int:pk>/',views.show_files,name='show_files'),
+path('add_tour_place/',views.add_tour_place,name='add_tour_place'),
+path('add_sub_sector/',views.add_sub_sector,name='add_sub_sector'),
+path('logs/<int:pk>/',views.get_logs,name='logs')
 
 ]

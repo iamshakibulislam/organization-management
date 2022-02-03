@@ -65,25 +65,45 @@
 													
 													<div class="row">
 														<div class="form-group col-lg-6">
-															<label class="form-label mb-1 text-2">Next Visit Date</label>
+															<label class="form-label mb-1 text-2">Proposed Visit Date</label>
 															<input type="text" value="{{tourdata.next_visit_date}}" data-msg-required="Please Select Some Dates" placeholder="Select Some Dates" maxlength="100" class="form-control text-3 h-auto py-2 date" name="next_visit_date" autocomplete="off">
 														</div>
 														<div class="form-group col-lg-6">
-															<label class="form-label mb-1 text-2">Tour From</label>
-															<input type="text" value="{{tourdata.tour_from}}" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" placeholder="Enter Tour From Address" name="tour_from" autocomplete="off">
+															<label class="form-label mb-1 text-2">Actual Visit Date</label>
+															<input type="date" value="{{tourdata.actual_visit_date}}"  placeholder="Enter actual visit date" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="actual_visit_date" autocomplete="off">
+																
+															
 														</div>
 
 														
 													</div>
 
+													
+
 													<div class="row">
-														<div class="form-group col-lg-6">
+														<div class="form-group col-lg-4">
+															<label class="form-label mb-1 text-2">Report Submission Date</label>
+															<input type="date" value="{{tourdata.report_submission_date}}"  placeholder="Enter actual visit date" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="report_submission_date" autocomplete="off">
+																
+															
+														</div>
+														<div class="form-group col-lg-4">
 															<label class="form-label mb-1 text-2">Sub Sector</label>
-															<input type="text" value="{{tourdata.sub_sector}}" placeholder="Enter Tour Destination Address" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="sub_sector" autocomplete="off">
+															<select   placeholder="Enter Tour Destination Address" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="sub_sector" autocomplete="off">
+																{% for item in all_sub_sectors %}
+																{% if item == tourdata.sub_sector %}
+																<option value="{{item.sector_name}}" selected>{{item.sector_name}}</option>
+
+																{% else %}
+																<option value="{{item.sector_name}}" >{{item.sector_name}}</option>
+
+																{% endif%}
+															{% endfor %}
+															</select>
 														</div>
 
 
-														<div class="form-group col-lg-6">
+														<div class="form-group col-lg-4">
 															<label class="form-label mb-1 text-2">Comment</label>
 															<input type="text" value="{{tourdata.comment}}" placeholder="Enter Tour Destination Address" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="comment" autocomplete="off">
 														</div>
@@ -95,8 +115,18 @@
 														
 
 														<div class="form-group col-lg-6">
-															<label class="form-label mb-1 text-2">Tour To</label>
-															<input type="text" value="{{tourdata.tour_to}}" placeholder="Enter Tour Destination Address" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="tour_to" autocomplete="off">
+															<label class="form-label mb-1 text-2">Tour Destination</label>
+															<select value="{{tourdata.tour_to}}" placeholder="Enter Tour Destination Address" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="tour_to" autocomplete="off">
+																{% for item in all_places %}
+																{% if item.place_name == tourdata.tour_to %}
+																<option value="{{item.place_name}}" selected>{{item.place_name}}</option>
+
+																{% else %}
+																<option value="{{item.place_name}}" >{{item.place_name}}</option>
+
+																{% endif%}
+															{% endfor %}
+															</select>
 														</div>
 
 														<div class="form-group col-lg-6">
@@ -106,7 +136,7 @@
 													        		
 													        		{% for status in tourdata.status_list %}
 													        		{% if status == tourdata.curr_status  %}
-													        		<option value="tourdata.curr_status" selected>
+													        		<option value="{{tourdata.curr_status}}" selected>
 													        			
 													        			{{tourdata.curr_status }}
 													        		</option>

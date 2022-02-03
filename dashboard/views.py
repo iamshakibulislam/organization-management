@@ -1,10 +1,14 @@
+import re
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from datetime import datetime, timedelta
+from django.contrib import messages
 from users.models import User
 from .models import *
 from django.db.models import Q
 from django.http import JsonResponse
+
+
 @login_required(login_url = '/users/login/')
 def home(request):
 	if(request.method == 'GET'):
@@ -152,7 +156,9 @@ def delete_members(request):
 def tour(request):
 	if request.method == "GET":
 		sel_org_members = User.objects.filter(organization = request.user.organization)
-		return render(request,'dashboard/tour.html',{'members':sel_org_members})
+		all_places = tour_places.objects.filter(organization=request.user.organization)
+		all_sub_sectors = sub_sectors.objects.filter(organization=request.user.organization)
+		return render(request,'dashboard/tour.html',{'members':sel_org_members,'all_places':all_places,'all_sub_sectors':all_sub_sectors})
 
 
 	if request.method == 'POST' :
@@ -168,19 +174,23 @@ def tour(request):
 		except:
 			pass
 
-		tour_from = request.POST['tour_from']
+		#tour_from = request.POST['tour_from']
 		tour_to = request.POST['tour_to']
 
 		comment = request.GET.get('comment','No Comment')
 		sub_sector = request.POST.get('sub_sector',' No Sub Sector')
+		actual_visit_date = request.POST['actual_visit_date']
+		report_submission_date=request.POST['report_submission_date']
 
 		
 		creating_tour=TourManagement.objects.create(
 			organization = request.user.organization,
 			last_visited = last_visited,
 			next_visit_date = next_visit_date,
+			actual_visit_date = actual_visit_date,
+			report_submission_date = report_submission_date,
 			
-			tour_from = tour_from,
+			
 			comment = comment,
 			sub_sector = sub_sector,
 			tour_to = tour_to
@@ -268,6 +278,8 @@ def tourmanagement(request):
 
 				'last_visited':data.last_visited,
 				'next_visit_date':data.next_visit_date.split(','),
+				'actual_visit_date':data.actual_visit_date,
+				'report_submission_date':data.report_submission_date,
 				
 				'tour_from':data.tour_from,
 				'tour_to':data.tour_to,
@@ -276,10 +288,13 @@ def tourmanagement(request):
 
 				})
 
+		all_places = tour_places.objects.all()
+		all_sub_sectors = sub_sectors.objects.all()
+
 		
 
 
-		return render(request,'dashboard/tourmanagement.html',{'tourdata':tourdata,'singleMode':singleMode,'name':name,'identity':userid})
+		return render(request,'dashboard/tourmanagement.html',{'tourdata':tourdata,'singleMode':singleMode,'name':name,'identity':userid,'all_places':all_places,'all_sub_sectors':all_sub_sectors})
 
 
 
@@ -291,12 +306,17 @@ def touredit(request,pk):
 
 		tourdata = {}
 
+		all_places = tour_places.objects.filter(organization=request.user.organization)
+		all_sub_sectors = sub_sectors.objects.filter(organization=request.user.organization)
+
 		data = TourManagement.objects.get(id=int(pk))
 		tourdata={'id':data.id,
 				'all_members':User.objects.filter(organization=request.user.organization),
 				'assigned_members':[x.id for x in data.tour_members.all()],
 				'status_list':['pending approval','approved','finished'],
 				'curr_status':data.status,
+				'actual_visit_date':data.actual_visit_date,
+				'report_submission_date':data.report_submission_date,
 				#'memberid':data.member.id,
 
 				'last_visited':data.last_visited,
@@ -309,8 +329,9 @@ def touredit(request,pk):
 
 				}
 
+		
 
-		return render(request,'dashboard/edit-tour.html',{'tourdata':tourdata})
+		return render(request,'dashboard/edit-tour.html',{'tourdata':tourdata,'all_places':all_places,'all_sub_sectors':all_sub_sectors})
 
 
 
@@ -327,45 +348,68 @@ def edittoursubmit(request):
 		sub_sector = request.POST['sub_sector']
 		comment = request.POST['comment']
 		
-		tour_from = request.POST['tour_from']
+		#tour_from = request.POST['tour_from']
 		tour_to = request.POST['tour_to']
 
+		actual_visit_date = request.POST['actual_visit_date']
+		report_submission_date = request.POST['report_submission_date']
+
 		#sel_user = User.objects.get(id=int(member_id))
+
+		logs_data = ""
 
 		sel_tour = TourManagement.objects.get(id=int(identity))
 
 		sel_tour.tour_members.clear()
 
-		sel_tour.status = status
+		if sel_tour.status != status:
+			logs_data=logs_data + ','+'Status changed from '+sel_tour.status+' to '+status
+			sel_tour.status = status
 
 		for ids in member_ids:
 			sel_tour.tour_members.add(User.objects.get(id=int(ids)))
 
+		if sel_tour.actual_visit_date != actual_visit_date:
+			logs_data = logs_data + ','+'Changed Actual visit date from '+sel_tour.actual_visit_date+' to '+actual_visit_date
+
+			sel_tour.actual_visit_date = actual_visit_date
+
+		if sel_tour.report_submission_date != report_submission_date:
+			logs_data = logs_data + ','+'Changed report submission date from '+sel_tour.report_submission_date+' to '+report_submission_date
+			sel_tour.report_submission_date = report_submission_date
 
 		if(sel_tour.last_visited != last_visited):
+			logs_data = logs_data + ','+'Changed Last visit date from '+sel_tour.last_visited+' to '+last_visited
 			sel_tour.last_visited = last_visited
 
 
 		if(sel_tour.next_visit_date != next_visit_date):
+			logs_data = logs_data + ','+'Changed Proposed visit date from '+sel_tour.next_visit_date+' to '+next_visit_date
 			sel_tour.next_visit_date = next_visit_date
 
 		
 
-		if(sel_tour.tour_from != tour_from):
-			sel_tour.tour_from = tour_from
+		#if(sel_tour.tour_from != tour_from):
+			#sel_tour.tour_from = tour_from
 
 		if(sel_tour.tour_to != tour_to):
+			logs_data = logs_data + ','+'Changed tour destination from '+sel_tour.tour_to+' to '+tour_to
 			sel_tour.tour_to = tour_to
 
 
 		if(sel_tour.sub_sector != sub_sector):
+			logs_data = logs_data + ','+'Changed Sub-Sector from '+sel_tour.sub_sector+' to '+sub_sector
 			sel_tour.sub_sector = sub_sector
 
 		if(sel_tour.comment != comment):
+			logs_data = logs_data + ','+'Changed tour comment from '+sel_tour.comment+' to '+comment
 			sel_tour.comment = comment
 
 
 		sel_tour.save()
+
+		if logs_data != "":
+			logs.objects.create(user=request.user,tour=sel_tour,action=logs_data[1:])
 
 
 		
@@ -436,3 +480,61 @@ def show_files(request,pk):
 
 
 		return render(request,'dashboard/file_show.html',{'tour_file_data':tour_file_data})
+
+
+
+@login_required(login_url = '/users/login/')
+def add_tour_place(request):
+	if request.method == "GET":
+		return render(request,'dashboard/add_tour_places.html')
+
+
+	if request.method == "POST":
+		place_name = request.POST['place']
+		
+
+		tour_places.objects.create(place_name=place_name,organization=request.user.organization)
+
+		messages.info(request,'Tour place added successfully')
+
+		return redirect('add_tour_place')
+
+
+
+@login_required(login_url = '/users/login/')
+def add_sub_sector(request):
+	if request.method == "GET":
+		return render(request,'dashboard/add-sub-sector.html')
+
+
+	if request.method == "POST":
+		sector_name = request.POST['sector_name']
+		
+
+		sub_sectors.objects.create(sector_name=sector_name,organization=request.user.organization)
+
+		messages.info(request,'Sub Sector added successfully')
+
+		return redirect('add_sub_sector')
+
+
+@login_required(login_url = '/users/login/')
+def get_logs(request,pk):
+	if request.method == "GET":
+		sel_tour = TourManagement.objects.get(id=int(pk))
+		sel_log = logs.objects.filter(tour=sel_tour)
+
+		log_data = []
+
+		for data in sel_log:
+			action = []
+			act = data.action.split(',')
+			for change in act:
+				action.append(change)
+			log_data.append({'user':data.user.first_name+' '+data.user.last_name,'date':data.date,'action':action})
+			
+
+		return render(request,'dashboard/logs.html',{'logdata':log_data})
+
+
+

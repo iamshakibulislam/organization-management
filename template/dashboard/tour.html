@@ -53,7 +53,7 @@
 													
 													<div class="row">
 														<div class="form-group col-lg-6">
-															<label class="form-label mb-1 text-2">Next Visit Date</label>
+															<label class="form-label mb-1 text-2">Proposed Visit Date</label>
 															<input type="text" value="" data-msg-required="Please Select Some Dates" placeholder="Select Some Dates" maxlength="100" class="form-control text-3 h-auto py-2 date" name="next_visit_date" autocomplete="off">
 														</div>
 														<!--
@@ -61,28 +61,59 @@
 															<label class="form-label mb-1 text-2">Last Meeting Date</label>
 															<input type="date" value="" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="last_meeting_date" autocomplete="off">
 														</div> -->
+														<!--
 														<div class="form-group col-lg-6 mb-4">
 															<label class="form-label mb-1 text-2">Tour From</label>
-															<input type="text" value="" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" placeholder="Enter Tour From Address" name="tour_from" autocomplete="off">
+															<select  data-msg-required="Last Meeting Date"   class="form-control text-3 h-auto py-2" placeholder="Enter Tour From Address" name="tour_from" autocomplete="off">
+															{% for item in all_places %}
+																<option value="{{item.place_name}}">{{item.place_name}}</option>
+															{% endfor %}
+															</select>
+														</div>-->
+
+														<div class="form-group col-lg-6">
+															<label class="form-label mb-1 text-2">Actual Visit Date</label>
+															<input type="date" value=""  placeholder="Select  Date" maxlength="100" class="form-control text-3 h-auto py-2 date" name="actual_visit_date" autocomplete="off" disabled>
 														</div>
 													</div>
 
 													<div class="row">
 														
 															<div class="form-group col-lg-6">
-															<label class="form-label mb-1 text-2">Tour To</label>
-															<input type="text" value="" placeholder="Enter Tour Destination Address" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="tour_to" autocomplete="off">
+															<label class="form-label mb-1 text-2">Tour Destination</label>
+															<select type="text" placeholder="Enter Tour Destination Address" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="tour_to" autocomplete="off">
+																{% for item in all_places %}
+																<option value="{{item.place_name}}">{{item.place_name}}</option>
+															{% endfor %}
+															</select>
 														</div>
 														
 														
 															
 															<div class="form-group col-lg-6">
 															<label class="form-label mb-1 text-2">Sub Sector</label>
-															<input type="text" value="" placeholder="Enter Sub Sector" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="sub_sector" autocomplete="off">
+															<select  value="" placeholder="Enter Sub Sector" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="sub_sector" autocomplete="off">
+																{% for item in all_sub_sectors %}
+																<option value="{{item.sector_name}}">{{item.sector_name}}</option>
+															{% endfor %}
+															</select>
 														</div>
 														
 
 													
+													</div>
+
+													<div class="row">
+														<div class="form-group col-lg-6">
+															<label class="form-label mb-1 text-2">Report Submission Date</label>
+															<input type="date"  placeholder="Select  Dates" maxlength="100" class="form-control text-3 h-auto py-2 " name="report_submission_date" autocomplete="off" disabled>
+														</div>
+
+														<div class="form-group col-lg-6">
+															<label class="form-label mb-1 text-2">Comment</label>
+															<input type="text"  placeholder="Enter A Comment" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="comment" autocomplete="off" disabled>
+														</div>
+														
 													</div>
 													<div class="row">
 														<!--
@@ -93,18 +124,14 @@
 
 														
 															
-															<div class="form-group col-lg-6">
-															<label class="form-label mb-1 text-2">Comment</label>
-															<input type="text"  placeholder="Enter A Comment" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="comment" autocomplete="off">
-														</div>
 														
 
 														
 
 														
-														<div class="form-group col-lg-6 mt-4" style="margin-top:3rem">
+														<div class="form-group col-lg-4 mt-4">
 															
-															<input type="submit" value="Save Tour Information" class="btn btn-primary" data-loading-text="Loading..." class="mt-3" style="margin-top:1rem">
+															<input type="submit" value="Save Tour Information" class="btn btn-primary" data-loading-text="Loading..." class="mt-3" >
 														</div> 
 													</div>
 												

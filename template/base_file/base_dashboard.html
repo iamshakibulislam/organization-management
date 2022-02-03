@@ -303,6 +303,16 @@
 									Tour Management</a></li>
 									<li aria-haspopup="true"><a href="index.html"><i class="fa fa-sitemap"></i> Add Procurement Data</a></li>
 									<li aria-haspopup="true"><a href="index.html"><i class="fa fa-sitemap"></i> Procurement Management</a></li>
+										{% if request.user.is_admin == 1 %}
+									<li aria-haspopup="true"><a href="#" class="sub-icon"><i class="fe fe-globe"></i>Add Information <i class="fa fa-angle-down horizontal-icon"></i></a>
+										<ul class="sub-menu">
+											<li aria-haspopup="true"><a href="{% url 'add_tour_place' %}">Add tour places</a></li>
+											<li aria-haspopup="true"><a href="{% url 'add_sub_sector' %}">Add Sub Sectors</a></li>
+											
+										</ul>
+									</li>
+
+									{% endif %}
 
 
 
@@ -330,7 +340,7 @@
 				<div class="container">
 					<div class="row align-items-center flex-row-reverse">
 						<div class="col-md-12 col-sm-12 text-center">
-							 Copyright org © 2021 .  All rights reserved
+							 Copyright org © 2022 .  All rights reserved
 						</div>
 					</div>
 				</div>

@@ -1,0 +1,104 @@
+{% extends 'base_file/base_dashboard.html' %}
+
+{% block title %}  Tour Edit History {% endblock title %}
+
+
+{% block content %}
+{% load static %}
+
+<div class="row">
+							<div class="col-12 col-sm-12">
+								<div class="card ">
+									<div class="card-header d-flex flex-row justify-content-between">
+										<h3 class="card-title mb-0">
+										{% if singleMode == True %}
+										Tour History Of <b>{{name}}</b>
+										{% else %}
+										Tour Edit Historys
+										{% endif %}
+									</h3>
+                                    <!--
+										<div class="filter">
+											<form class="form-inline" method="get" action="">
+												<div class="form-group ml-4" >
+													<label for="from" class="mr-4" style="margin-right:1rem">From</label>
+													<input type="date" name="from" class="form-control mr-3" style="margin-right:1rem">
+												</div>
+												{% if singleMode %}
+												<input type="hidden" name="user" value={{identity}}>
+												{% endif %}
+
+												<div class="form-group ml-4 ">
+													<label for="to" class="mr-4" style="margin-right:1rem">To</label>
+													<input type="date" name="to" class="form-control ml-4" style="margin-right:1rem">
+												</div>
+
+												<div class="form-group ml-4">
+													<input type="submit" name="submit" value="Filter" class="ml-4 btn btn-danger">
+												</div>
+												
+											</form>
+										</div> -->
+									</div>
+
+									<div class="card-body">
+										<div class="table-responsive">
+											<table id="data-table" class="table table-bordered text-nowrap mb-0">
+												<thead class="border-top">
+												<tr>
+													
+													<th class="bg-transparent border-bottom-0">Edit Date</th>
+													<th class="bg-transparent border-bottom-0">Edited By</th>
+													<th class="bg-transparent border-bottom-0">Changed Data</th>
+													
+													
+												</tr>
+												</thead>
+												<tbody>
+													{% if logdata %}
+
+													{% for data in logdata %}
+													<tr class="border-bottom">
+														
+														
+														
+
+														<td class="text-muted fs-15 fw-semibold">{{data.date}} </td>
+
+														<td class="text-muted fs-15 fw-semibold">{{data.user}} </td>
+
+														<td class="text-muted fs-15 fw-semibold">
+                                                            {% if data.action %}
+															
+																{% for act in data.action %}
+
+																<li>{{act}}</li>
+
+																{% endfor %}
+															
+
+															{% endif %} </td>
+														
+
+														 
+
+														
+													</tr>
+
+													{% endfor %}
+
+													{% endif %}
+													
+												</tbody>
+											</table>
+
+
+											
+										</div>
+									</div>
+								</div>
+							</div><!-- COL END -->
+						</div><!-- ROW-5 END -->
+
+
+{% endblock content %}
