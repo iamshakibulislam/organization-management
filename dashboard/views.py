@@ -177,21 +177,21 @@ def tour(request):
 		#tour_from = request.POST['tour_from']
 		tour_to = request.POST['tour_to']
 
-		comment = request.GET.get('comment','No Comment')
+		#comment = request.GET.get('comment','No Comment')
 		sub_sector = request.POST.get('sub_sector',' No Sub Sector')
-		actual_visit_date = request.POST['actual_visit_date']
-		report_submission_date=request.POST['report_submission_date']
+		#actual_visit_date = request.POST['actual_visit_date']
+		#report_submission_date=request.POST['report_submission_date']
 
 		
 		creating_tour=TourManagement.objects.create(
 			organization = request.user.organization,
 			last_visited = last_visited,
 			next_visit_date = next_visit_date,
-			actual_visit_date = actual_visit_date,
-			report_submission_date = report_submission_date,
+			#actual_visit_date = actual_visit_date,
+			#report_submission_date = report_submission_date,
 			
 			
-			comment = comment,
+			#comment = comment,
 			sub_sector = sub_sector,
 			tour_to = tour_to
 			)
@@ -370,16 +370,16 @@ def edittoursubmit(request):
 			sel_tour.tour_members.add(User.objects.get(id=int(ids)))
 
 		if sel_tour.actual_visit_date != actual_visit_date:
-			logs_data = logs_data + ','+'Changed Actual visit date from '+sel_tour.actual_visit_date+' to '+actual_visit_date
+			logs_data = logs_data + ','+'Changed Actual visit date from '+str(sel_tour.actual_visit_date)+' to '+actual_visit_date
 
 			sel_tour.actual_visit_date = actual_visit_date
 
 		if sel_tour.report_submission_date != report_submission_date:
-			logs_data = logs_data + ','+'Changed report submission date from '+sel_tour.report_submission_date+' to '+report_submission_date
+			logs_data = logs_data + ','+'Changed report submission date from '+str(sel_tour.report_submission_date)+' to '+report_submission_date
 			sel_tour.report_submission_date = report_submission_date
 
 		if(sel_tour.last_visited != last_visited):
-			logs_data = logs_data + ','+'Changed Last visit date from '+sel_tour.last_visited+' to '+last_visited
+			logs_data = logs_data + ','+'Changed Last visit date from '+str(sel_tour.last_visited)+' to '+last_visited
 			sel_tour.last_visited = last_visited
 
 
@@ -402,7 +402,7 @@ def edittoursubmit(request):
 			sel_tour.sub_sector = sub_sector
 
 		if(sel_tour.comment != comment):
-			logs_data = logs_data + ','+'Changed tour comment from '+sel_tour.comment+' to '+comment
+			logs_data = logs_data + ','+'Changed tour comment from '+str(sel_tour.comment)+' to '+comment
 			sel_tour.comment = comment
 
 
