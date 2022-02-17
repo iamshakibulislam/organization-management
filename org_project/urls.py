@@ -24,7 +24,8 @@ urlpatterns = [
     path('',views.IndexPage,name='index_page'),
     path('users/',include('users.urls')),
 
-    path('dashboard/',include('dashboard.urls'))
+    path('dashboard/',include('dashboard.urls')),
+    path('procurements/',include('procurements.urls')),
 ]
 
 

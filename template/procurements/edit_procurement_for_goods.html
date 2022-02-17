@@ -1,0 +1,253 @@
+{% extends 'base_file/base_dashboard.html' %}
+
+{% block title %}  Update Procurement Data For Goods {% endblock title %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="row mt-4">
+    <div class="col-12 col-sm-12">
+        <div class="card ">
+            <div class="card-header">
+                <h3 class="card-title mb-0">Update Procurement Plan</h3>
+            </div>
+            <div class="card-body">
+               <form action = "" method="post">
+
+                {% csrf_token %}
+                   <div class="row d-flex justify-content-start">
+                   <div class="form-group col-md-3 text-left">
+                       <div>
+                       <label  class="text-left" style="float: left;margin-left:0.5rem">Contract Package Number</label>
+                       <input type="text" class="form-control"  aria-describedby="emailHelp" value="{{procurement_data.contract_package_number}}" placeholder="Contract Package Number" name="contract_package_number">
+                     </div>
+                     </div>
+                    <div class="form-group col-md-3">
+                    <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Contract Description</label>
+                    <input type="text" class="form-control" value="{{procurement_data.contract_description}}" aria-describedby="emailHelp" placeholder="Contract Description" name="contract_description">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Unit</label>
+                        <input type="text" class="form-control"  aria-describedby="emailHelp" value="{{procurement_data.unit}}" placeholder="Enter Unit" name="unit">
+                    </div>
+
+                    <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Quantity</label>
+                        <input type="number" class="form-control"  aria-describedby="emailHelp" placeholder="Quantity" value="{{procurement_data.quantity}}" name="quantity">
+                      </div>
+                      </div>
+
+                </div>
+
+                <div class="row d-flex justify-content-start">
+                    
+                     <div class="form-group col-md-3">
+                     <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Estimated Price (BDT)</label>
+                     <input type="number" class="form-control"  aria-describedby="emailHelp" placeholder="Estimated Price" value="{{procurement_data.estimated_price}}" name="estimated_price">
+                     </div>
+                     <div class="form-group col-md-3">
+                         <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Actual Amount Of Contract (BDT)</label>
+                         <input type="number" class="form-control" id="actual_contract_amount" aria-describedby="emailHelp" value="{{procurement_data.actual_contract_amount}}" placeholder="Enter Actual Amount Of Contract" name="actual_contract_amount">
+                     </div>
+                     <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Procedure Method</label>
+                           <select class="form-control" name="procedure_method">
+                               {% if procurement_data.procedure_method == 'RFQ' %}
+                               <option value="0">Select Procedure Method</option>
+                                 <option value="RFQ" selected>RFQ</option>
+                                <option value="OTM">OTM</option>
+
+                                {% endif %}
+
+                                {% if procurement_data.procedure_method == 'OTM' %}
+                                <option value="0">Select Procedure Method</option>
+                                  <option value="RFQ">RFQ</option>
+                                 <option value="OTM" selected>OTM</option>
+ 
+                                 {% endif %}
+                            </select>
+                      </div>
+                      </div>
+
+                      <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Procurement Guidelines</label>
+                           <select class="form-control" name="procurement_guidelines">
+
+                            {% if procurement_data.procurement_guidelines == 'PPR' %}
+                               <option value="0">Select Procurement Guideline</option>
+                                 <option value="PPR" selected>PPR</option>
+                                <option value="BG">BG</option>
+                                <option value="PK">PK</option>
+
+                                {% endif %}
+
+                                {% if procurement_data.procurement_guidelines == 'BG' %}
+                               <option value="0">Select Procurement Guideline</option>
+                                 <option value="PPR" selected>PPR</option>
+                                <option value="BG" selected>BG</option>
+                                <option value="PK">PK</option>
+
+                                {% endif %}
+
+                                {% if procurement_data.procurement_guidelines == 'PK' %}
+                               <option value="0">Select Procurement Guideline</option>
+                                 <option value="PPR" selected>PPR</option>
+                                <option value="BG">BG</option>
+                                <option value="PK" selected>PK</option>
+
+                                {% endif %}
+                            </select>
+                      </div>
+                      </div>
+ 
+                 </div>
+
+
+
+                 <div class="row d-flex justify-content-start">
+                   
+                      
+
+
+                      <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Prior Review</label>
+                           <select class="form-control" name="prior_review" >
+
+                            {% if procurement_data.prior_review == True %}
+                               <option value="0">Select Prior Review Type</option>
+                                 <option value="True" selected>YES</option>
+                                <option value="False">NO</option>
+
+                            {% endif %}
+
+                            {% if procurement_data.prior_review == False %}
+                            <option value="0">Select Prior Review Type</option>
+                              <option value="True">YES</option>
+                             <option value="False" selected>NO</option>
+
+                         {% endif %}
+                               
+                            </select>
+
+                            <style>
+                                select{
+                                    -webkit-appearance: listbox !important
+                                    }
+                            </style>
+                      </div>
+                      </div>
+
+                      <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Contract Approving Authority</label>
+                           <select class="form-control"  name="contract_approving_authority">
+                               {% if procurement_data.contract_approving_authority == 'Head Executive' %}
+                               <option value="0">Select Approving Authority</option>
+                                 <option value="Head Executive" selected>Head Executive</option>
+                                <option value="CEO of PO">CEO of PO</option>
+
+                                {% endif %}
+
+
+                                {% if procurement_data.contract_approving_authority == 'CEO of PO' %}
+                                <option value="0">Select Approving Authority</option>
+                                  <option value="Head Executive" selected>Head Executive</option>
+                                 <option value="CEO of PO" selected>CEO of PO</option>
+ 
+                                 {% endif %}
+                                
+                            </select>
+                      </div>
+                      </div>
+
+
+                      <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Planned Date Of IFB Publication</label>
+                        <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Planed Date Of IFB Publication" value="{{procurement_data.planned_date_of_ifb_publication | date:'Y-m-d'}}" name="planned_date_of_ifb_publication">
+                        </div>
+
+
+                    
+
+                        <div class="form-group col-md-3">
+                            <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Actual Date Of IFB Publication</label>
+                            <input type="date" class="form-control" id="actual_date_of_ifb_publication" aria-describedby="emailHelp" value="{{procurement_data.actual_date_of_ifb_publication | date:'Y-m-d'}}" placeholder="Enter Actual Amount Of Contract" name="actual_date_of_ifb_publication">
+                        </div>
+
+                    
+ 
+                 </div>
+
+                 
+                
+
+
+                 <div class="row d-flex justify-content-start">
+                    <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Planned Date Of Bid Opening</label>
+                           <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Planned Date Of Bid Opening" value="{{procurement_data.planned_date_of_bid_opening | date:'Y-m-d'}}" name="planned_date_of_bid_opening">
+                      </div>
+                      </div>
+
+                     <div class="form-group col-md-3">
+                     <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Actual Date Of Bid Opening</label>
+                     <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Actual Date Of Bid Opening" value="{{procurement_data.actual_date_of_bid_opening | date:'Y-m-d'}}" name="actual_date_of_bid_opening">
+                     </div>
+                     <div class="form-group col-md-3">
+                         <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Planned Date Of Contract Signing</label>
+                         <input type="date" class="form-control" aria-describedby="emailHelp" placeholder="Planeed Date Of Contract Signing" value="{{procurement_data.planned_date_of_contract_singning | date:'Y-m-d'}}" name="planned_date_of_contract_singning">
+                     </div>
+
+                     <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Actual Date Of Contract Signing</label>
+                           <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Actual Date Of Contract Signing" value="{{procurement_data.actual_date_of_contract_signing | date:'Y-m-d'}}" name="actual_date_of_contract_signing">
+                      </div>
+                      </div>
+ 
+                 </div>
+
+
+                 <div class="row d-flex justify-content-start">
+
+                    
+
+                     <div class="form-group col-md-3">
+                     <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Planned Date Of Delivery</label>
+                     <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="planned date of delivery" value="{{procurement_data.planned_date_of_delivery | date:'Y-m-d' }}" name="planned_date_of_delivery">
+                     </div>
+                     <div class="form-group col-md-3">
+                         <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Actual Date Of Delivery</label>
+                         <input type="date" class="form-control" aria-describedby="emailHelp" placeholder="Actual Date Of Delivery" value="{{procurement_data.actual_date_of_delivery | date:'Y-m-d'}}" name="actual_date_of_delivery">
+                     </div>
+                     <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Supplier Name</label>
+                        <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Name Of The Supplier" value="{{procurement_data.supplier_name}}" name="supplier_name">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Remarks</label>
+                        <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Remarks" value="{{procurement_data.remarks}}" name="remarks">
+                    </div>
+
+                 </div>
+
+                 <div class="row justify-content-end">
+                 <div class="form-group col-md-2 text-center">
+                    <button type="submit" class="btn btn-lg btn-primary">Save Procurement Data</button>
+                </div>
+                </div>
+
+               </form>
+            </div>
+        </div>
+    </div><!-- COL END -->
+</div><!-- ROW-5 END -->
+
+{% endblock content %}

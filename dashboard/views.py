@@ -36,7 +36,7 @@ def home(request):
 			elif mem.is_moderator == 1:
 				role = "Moderator"
 
-			print(role)
+			
 			three_months_status = False
 			check_tour = len(TourManagement.objects.filter(Q(date__gte=datetime.now()-timedelta(days=92)) & Q(tour_members=mem)))
 

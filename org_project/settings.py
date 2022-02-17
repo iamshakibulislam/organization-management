@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'dashboard',
+    'procurements',
 ]
 
 MIDDLEWARE = [
@@ -136,4 +137,6 @@ AUTH_USER_MODEL = 'users.User'
 
 
 #djanog_heroku settings 
+
+
 #django_heroku.settings(locals())

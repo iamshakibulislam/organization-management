@@ -1,0 +1,252 @@
+
+{% extends 'base_file/base_dashboard.html' %}
+
+{% block title %}  Procurement Details {% endblock title %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row mt-4">
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Contract Package Number</h4>
+                </div>
+                <div class="card-body">{{procurement_data.contract_package_number}}</div>
+
+            </div>
+
+            
+        </div>
+
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Description</h4>
+                </div>
+                <div class="card-body">{{procurement_data.contract_description}}</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Contract Unit</h4>
+                </div>
+                <div class="card-body">{{procurement_data.unit}}</div>
+
+            </div>
+        </div>
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center" style="float: center;">Quantity</h4>
+                </div>
+                <div class="card-body">{{procurement_data.quantity}}</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Estimated Price</h4>
+                </div>
+                <div class="card-body">{{procurement_data.estimated_price}} (BDT)</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Actual Contract Amount</h4>
+                </div>
+                <div class="card-body">{{procurement_data.actual_contract_amount}} (BDT)</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Procedure Method</h4>
+                </div>
+                <div class="card-body">{{procurement_data.procedure_method}}</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Procurement Guideline</h4>
+                </div>
+                <div class="card-body">{{procurement_data.procurement_guidelines}}</div>
+
+            </div>
+        </div>
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Prior Review ?</h4>
+                </div>
+                <div class="card-body">{% if procurement_data.prior_review == 1 %}YES {% else %} NO {% endif %}</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Approving Authority</h4>
+                </div>
+                <div class="card-body">{{procurement_data.contract_approving_authority}}</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Planned Date Of IFB Pub</h4>
+                </div>
+                <div class="card-body">{{procurement_data.planned_date_of_ifb_publication}}</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Actual Date Of IFB Pub</h4>
+                </div>
+                <div class="card-body">{{procurement_data.actual_date_of_ifb_publication}}</div>
+
+            </div>
+        </div>
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Planned Date Of Bid Opening</h4>
+                </div>
+                <div class="card-body">{{procurement_data.planned_date_of_bid_opening}}</div>
+
+            </div>
+        </div>
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Actual Date of Bid Opening</h4>
+                </div>
+                <div class="card-body">{{procurement_data.actual_date_of_bid_opening}}</div>
+
+            </div>
+        </div>
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Planned Date Of Contract Signing</h4>
+                </div>
+                <div class="card-body">{{procurement_data.planned_date_of_contract_singning}}</div>
+
+            </div>
+        </div>
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Actual Date Of Contract Signing</h4>
+                </div>
+                <div class="card-body">{{procurement_data.actual_date_of_contract_signing}}</div>
+
+            </div>
+        </div>
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Planned Date Of Delivery</h4>
+                </div>
+                <div class="card-body">{{procurement_data.planned_date_of_delivery}}</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Actual Date Of Delivery</h4>
+                </div>
+                <div class="card-body">{{procurement_data.actual_date_of_delivery}}</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Supplier Name</h4>
+                </div>
+                <div class="card-body">{{procurement_data.supplier_name}}</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Remarks</h4>
+                </div>
+                <div class="card-body">{{procurement_data.remarks}}</div>
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+
+{% endblock content %}

@@ -54,7 +54,7 @@
 													<div class="row">
 														<div class="form-group col-lg-6">
 															<label class="form-label mb-1 text-2">Proposed Visit Date</label>
-															<input type="text" value="" data-msg-required="Please Select Some Dates" placeholder="Select Some Dates" maxlength="100" class="form-control text-3 h-auto py-2 date" name="next_visit_date" autocomplete="off">
+															<input type="date" value="" data-msg-required="Please Select Some Dates" placeholder="Select Some Dates" maxlength="100" class="form-control text-3 h-auto py-2" name="next_visit_date" autocomplete="off">
 														</div>
 														<!--
 														<div class="form-group col-lg-6">
@@ -81,22 +81,26 @@
 														
 															<div class="form-group col-lg-6">
 															<label class="form-label mb-1 text-2">Tour Destination</label>
-															<select type="text" placeholder="Enter Tour Destination Address" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="tour_to" autocomplete="off">
+															<input list="place_list" placeholder="Enter Tour Destination Address" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" autocomplete="off" name="tour_to" />
+															<datalist id="place_list">
 																{% for item in all_places %}
-																<option value="{{item.place_name}}">{{item.place_name}}</option>
-															{% endfor %}
-															</select>
+																<option value="{{item.place_name}}"></option>
+																{% endfor %}
+
+																</datalist>
+															
 														</div>
 														
 														
 															
 															<div class="form-group col-lg-6">
 															<label class="form-label mb-1 text-2">Sub Sector</label>
-															<select  value="" placeholder="Enter Sub Sector" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="sub_sector" autocomplete="off">
+															<input  value="" placeholder="Enter Sub Sector" data-msg-required="Last Meeting Date"  maxlength="100" class="form-control text-3 h-auto py-2" name="sub_sector" autocomplete="off" list="sector_list"/>
+															<datalist id="sector_list">
 																{% for item in all_sub_sectors %}
-																<option value="{{item.sector_name}}">{{item.sector_name}}</option>
+																<option value="{{item.sector_name}}"></option>
 															{% endfor %}
-															</select>
+															</datalist>
 														</div>
 														
 

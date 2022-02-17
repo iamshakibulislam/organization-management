@@ -1,0 +1,201 @@
+{% extends 'base_file/base_dashboard.html' %}
+
+{% block title %}  Add Procurement Data For Goods {% endblock title %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="row mt-4">
+    <div class="col-12 col-sm-12">
+        <div class="card ">
+            <div class="card-header">
+                <h3 class="card-title mb-0">Create Procurement Plan For Goods</h3>
+            </div>
+            <div class="card-body">
+               <form action = "{% url 'add_procurements_for_goods' %}" method="post">
+
+                {% csrf_token %}
+                   <div class="row d-flex justify-content-start">
+                   <div class="form-group col-md-3 text-left">
+                       <div>
+                       <label  class="text-left" style="float: left;margin-left:0.5rem">Contract Package Number</label>
+                       <input type="text" class="form-control"  aria-describedby="emailHelp" placeholder="Contract Package Number" name="contract_package_number">
+                     </div>
+                     </div>
+                    <div class="form-group col-md-3">
+                    <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Contract Description</label>
+                    <input type="text" class="form-control"  aria-describedby="emailHelp" placeholder="Contract Description" name="contract_description">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Unit</label>
+                        <input type="text" class="form-control"  aria-describedby="emailHelp" placeholder="Enter Unit" name="unit">
+                    </div>
+
+                    <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Quantity</label>
+                        <input type="number" class="form-control"  aria-describedby="emailHelp" placeholder="Quantity" name="quantity">
+                      </div>
+                      </div>
+
+                </div>
+
+                <div class="row d-flex justify-content-start">
+                    
+                     <div class="form-group col-md-3">
+                     <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Estimated Price</label>
+                     <input type="number" class="form-control"  aria-describedby="emailHelp" placeholder="Estimated Price" name="estimated_price">
+                     </div>
+                     <div class="form-group col-md-3">
+                         <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Actual Amount Of Contract</label>
+                         <input type="number" class="form-control" id="actual_contract_amount" aria-describedby="emailHelp" placeholder="Enter Actual Amount Of Contract" name="actual_contract_amount">
+                     </div>
+                     <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Procedure Method</label>
+                           <select class="form-control" name="procedure_method">
+                               <option value="0">Select Procedure Method</option>
+                                 <option value="RFQ">RFQ</option>
+                                <option value="OTM">OTM</option>
+                            </select>
+                      </div>
+                      </div>
+
+                      <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Procurement Guidelines</label>
+                           <select class="form-control" name="procurement_guidelines">
+                               <option value="0">Select Procurement Guideline</option>
+                                 <option value="PPR">PPR</option>
+                                <option value="BG">BG</option>
+                                <option value="PK">PK</option>
+                            </select>
+                      </div>
+                      </div>
+ 
+                 </div>
+
+
+
+                 <div class="row d-flex justify-content-start">
+                   
+                      
+
+
+                      <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Prior Review</label>
+                           <select class="form-control" name="prior_review" >
+                               <option value="0">Select Prior Review Type</option>
+                                 <option value="True">YES</option>
+                                <option value="False">NO</option>
+                               
+                            </select>
+
+                            <style>
+                                select{
+                                    -webkit-appearance: listbox !important
+                                    }
+                            </style>
+                      </div>
+                      </div>
+
+                      <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Contract Approving Authority</label>
+                           <select class="form-control" name="contract_approving_authority">
+                               <option value="0">Select Approving Authority</option>
+                                 <option value="Head Executive">Head Executive</option>
+                                <option value="CEO of PO">CEO of PO</option>
+                                
+                            </select>
+                      </div>
+                      </div>
+
+
+                      <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Planned Date Of IFB Publication</label>
+                        <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Planed Date Of IFB Publication" name="planned_date_of_ifb_publication">
+                        </div>
+
+
+                    
+
+                        <div class="form-group col-md-3">
+                            <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Actual Date Of IFB Publication</label>
+                            <input type="date" class="form-control" id="actual_date_of_ifb_publication" aria-describedby="emailHelp" placeholder="Enter Actual Amount Of Contract" name="actual_date_of_ifb_publication">
+                        </div>
+
+                    
+ 
+                 </div>
+
+                 
+                
+
+
+                 <div class="row d-flex justify-content-start">
+                    <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Planned Date Of Bid Opening</label>
+                           <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Planned Date Of Bid Opening" name="planned_date_of_bid_opening">
+                      </div>
+                      </div>
+
+                     <div class="form-group col-md-3">
+                     <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Actual Date Of Bid Opening</label>
+                     <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Actual Date Of Bid Opening" name="actual_date_of_bid_opening">
+                     </div>
+                     <div class="form-group col-md-3">
+                         <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Planned Date Of Contract Signing</label>
+                         <input type="date" class="form-control" aria-describedby="emailHelp" placeholder="Planeed Date Of Contract Signing" name="planned_date_of_contract_singning">
+                     </div>
+
+                     <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Actual Date Of Contract Signing</label>
+                           <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Actual Date Of Contract Signing" name="actual_date_of_contract_signing">
+                      </div>
+                      </div>
+ 
+                 </div>
+
+
+                 <div class="row d-flex justify-content-start">
+
+                    
+
+                     <div class="form-group col-md-3">
+                     <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Planned Date Of Delivery</label>
+                     <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="planned date of delivery" name="planned_date_of_delivery">
+                     </div>
+                     <div class="form-group col-md-3">
+                         <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Actual Date Of Delivery</label>
+                         <input type="date" class="form-control" aria-describedby="emailHelp" placeholder="Actual Date Of Delivery" name="actual_date_of_delivery">
+                     </div>
+                     <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Supplier Name</label>
+                        <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Name Of The Supplier" name="supplier_name">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Remarks</label>
+                        <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Remarks" name="remarks">
+                    </div>
+
+                 </div>
+
+                 <div class="row justify-content-end">
+                 <div class="form-group col-md-2 text-center">
+                    <button type="submit" class="btn btn-lg btn-primary">Save Procurement Data</button>
+                </div>
+                </div>
+
+               </form>
+            </div>
+        </div>
+    </div><!-- COL END -->
+</div><!-- ROW-5 END -->
+
+{% endblock content %}
