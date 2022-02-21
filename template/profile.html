@@ -1,0 +1,88 @@
+{% extends 'base_file/base_dashboard.html' %}
+    
+    {% block title %} Update Profile {% endblock title %}
+    
+    {% block content %}
+    
+    {% load static %}
+
+    <div class="container">
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Update Profile</h4>
+                    </div>
+                    <div class="card-body">
+                        {% if messages %}
+                        <div class="alert alert-success">
+                            <strong>Success!</strong> Profile updated successfully.
+                        </div>
+                        {% endif %}
+                        <form action="" method="post" enctype="multipart/form-data">
+
+                            {% csrf_token %}
+
+                            <div class="form-group">
+                                <label for="first_name" style="float: left;">First Name</label>
+                                <input type="text" name="first_name" class="form-control" placeholder="Enter First Name" value="{{request.user.first_name}}"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="last_name" style="float: left;">Last Name</label>
+                                <input type="text" name="last_name" class="form-control" placeholder="Enter Last Name" value="{{request.user.last_name}}"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" style="float: left;">Email</label>
+                                <input type="text" name="email" class="form-control" placeholder="enter email" value="{{request.user.email}}" disabled/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone" style="float: left;">Phone Number</label>
+                                <input type="text" name="phone_number" class="form-control" placeholder="Enter Phone number" value="{{request.user.phone}}"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="address" style="float: left;">Home Address</label>
+                                <textarea name="address" class="form-control" placeholder="Enter address">{{request.user.address}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="pic" style="float: left;">Upload Profile Picture</label>
+                                <input type="file" name="profile_picture" class="form-control" placeholder="Upload Profile Picture"/>
+                            </div>
+
+                            <div class="form-group">
+                               
+                                <input type="submit"  class="btn btn-danger btn-lg" value="Update Profile Information"/>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        Current Profile Picture
+                    </div>
+                    <div class="card-body">
+                
+                <img src="{{request.user.profile_picture.url}}" class="img-responsive" alt="profile picture" id="profilepic" style="width: 300px;height: 400px;"/>
+
+                <style>
+                    #profilepic{
+                        border: 50px solid transparent;
+                        padding: 15px;
+                        border-image: url("{% static 'img/profile_pic_border.jpg' %}") 300 round;
+                    }
+                </style>
+                
+                </div>
+                </div>
+            </div>
+    </div>
+
+    {% endblock content %}

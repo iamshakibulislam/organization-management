@@ -231,19 +231,43 @@
 									<div class="card-header">
 										<h3 class="card-title mb-0">Procurements Data For Goods</h3>
 									</div>
+									<div class="card-header justify-content-center">
+										<form class="form-inline" method="get" action="{% url 'summery_for_goods' %}">
+											<div class="form-group">
+											<label for="fromdate" class="ml-4 mr-2" style="margin-right:1rem;">From</label>
+											<input type="date" class="form-control mr-2 ml-3" id="fromdate" name="fromdate" style="margin-right:1rem">
+											</div>
+
+											<div class="form-group ml-4 mr-2">
+												<label for="todate" class="mr-2 ml-2" style="margin-right: 1rem;">To</label>
+												<input type="date" class="form-control mr-2 ml-3" id="todate" name="todate" style="margin-right:1rem">
+											</div>
+
+											<div class="form-group ml-4" style="margin-right: 1rem;">
+												<input type="submit" class="btn btn-danger ml-3 mr-3" id="filter" value="Show Summery For Goods">
+											</div>
+
+											<style>
+												#filter:hover{
+													border-top-right-radius: 80%;
+													border-bottom-right-radius: 80%;
+												}
+											</style>
+										</form>
+									</div>
 									<div class="card-body">
 										<div class="table-responsive">
 											<table id="tableone" class="table datatabletwo table-bordered text-nowrap mb-0">
 												<thead class="border-top">
 												<tr>
-													
+													<th class="bg-transparent border-bottom-0">  Created By </th>
 													<th class="bg-transparent border-bottom-0">Package Number</th>
 													<th class="bg-transparent border-bottom-0" > Procedure Method </th>
 													<th class="bg-transparent border-bottom-0">Unit</th>
 													<th class="bg-transparent border-bottom-0">Quantity</th>
 													<th class="bg-transparent border-bottom-0">Estimated Price</th>
 													<th class="bg-transparent border-bottom-0">Actual Amount</th>
-													<th class="bg-transparent border-bottom-0">Approving Authority</th>
+													
 													{% if request.user.is_admin == 1 or request.user.is_moderator == 1 %}
 													<th class="bg-transparent border-bottom-0">Action</th>
 
@@ -255,7 +279,16 @@
 
 													{% for cont in all_procurments_for_goods %}
 													<tr class="border-bottom">
-														
+														<td>
+															<div class="d-flex">
+																
+																<div class="ms-2 mt-0 mt-sm-2 d-block">
+
+																	<h6 class="mb-0 fs-14 fw-semibold">{{cont.user.first_name }} {{cont.user.last_name}}</h6>
+																	
+																</div>
+															</div>
+														</td>
 														<td>
 															<div class="d-flex">
 																
@@ -273,7 +306,7 @@
 
 														<td class="text-danger fs-15 fw-semibold">{{cont.estimated_price}}</td>
 														<td class="text-danger fs-15 fw-semibold">{{cont.actual_contract_amount}}</td>
-														<td class="text-danger fs-15 fw-semibold">{{cont.contract_approving_authority}}</td>
+														
 														
 
 

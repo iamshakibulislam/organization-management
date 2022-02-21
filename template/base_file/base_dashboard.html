@@ -126,11 +126,11 @@
 											</div>
 										</div>
 										<div class="dropdown-divider m-0"></div>
-										<a class="dropdown-item" href="profile.html">
+										<a class="dropdown-item" href="{% url 'profile' %}">
 	<i class="dropdown-icon fe fe-user"></i> Profile
 										</a>
 									
-										<a class="dropdown-item" href="login.html">
+										<a class="dropdown-item" href="{% url 'logout' %}">
 											<i class="dropdown-icon fe fe-alert-circle"></i> Sign out
 										</a>
 									</div>
@@ -316,16 +316,16 @@
 									<li aria-haspopup="true"><a href="index.html" class="sub-icon"><i class="fe fe-globe"></i> Add Procurement Data  <i class="fa fa-angle-down horizontal-icon"></i></a>
 										<ul class="sub-menu">
 											<li aria-haspopup="true"><a href="{% url 'add_procurements_for_goods' %}">Create Plan For Goods</a></li>
-											<li aria-haspopup="true"><a href="#">Create Plan For Services</a></li>
-											<li aria-haspopup="true"><a href="#">Create Plan For Work</a></li>
+											<li aria-haspopup="true"><a href="{% url 'add_procurements_for_services' %}">Create Plan For Services</a></li>
+											<li aria-haspopup="true"><a href="{% url 'add_procurements_for_work' %}">Create Plan For Work</a></li>
 											
 										</ul>
 									</li>
 									<li aria-haspopup="true"><a href="index.html"><i class="fa fa-sitemap"></i> Procurement Management</a>
 										<ul class="sub-menu">
 											<li aria-haspopup="true"><a href="{% url 'main_procurement_page' %}">Goods</a></li>
-											<li aria-haspopup="true"><a href="#">Services</a></li>
-											<li aria-haspopup="true"><a href="#">Work</a></li>
+											<li aria-haspopup="true"><a href="{% url 'procurement_list_for_services' %}">Services</a></li>
+											<li aria-haspopup="true"><a href="{% url 'procurement_list_for_work' %}">Work</a></li>
 											
 										</ul>
 									</li>
@@ -775,6 +775,136 @@
 
 			//ending deleting procurements data
 	
+
+
+
+			
+//starting deleting procurements service data
+
+			
+$(document).ready(function(){
+
+var delid = 0;
+
+$('.deletebtnpro').on('click',function(){
+
+	delid = $(this).attr('procurementid');
+
+
+	//console.log(delid);
+});
+
+
+$('.confirmbtnforservice').on('click',function(event){
+
+	event.preventDefault();
+	$(this).text('Please Wait.....');
+
+
+	//ajax delete requesting is there
+
+		$.ajax({
+dataType:'json',
+data:{
+		
+		'procurementid':delid,
+		'csrfmiddlewaretoken':$('[name="csrfmiddlewaretoken"]').val(),
+
+	},
+type:'POST',
+url:'/procurements/delete_procurements_for_service/'
+
+}).done(function(result){
+
+		if(result.status != 'deleted'){
+			alert('No Tour selected');
+			$(this).text('Confirm Delete');
+			
+			return false
+		}
+		else{
+			
+			window.location.href="{% url 'procurement_list_for_services' %}";
+
+		}
+}).fail(function(){alert('Something went wrong ! Please try again later ');
+$(this).text('Confirm Delete');});
+
+
+
+})
+
+})
+
+
+
+//ending deleting procurements service data
+
+
+
+
+
+
+//starting deleting procurements work data
+
+			
+$(document).ready(function(){
+
+var delid = 0;
+
+$('.deletebtnpro').on('click',function(){
+
+	delid = $(this).attr('procurementid');
+
+
+	//console.log(delid);
+});
+
+
+$('.confirmbtnforwork').on('click',function(event){
+
+	event.preventDefault();
+	$(this).text('Please Wait.....');
+
+
+	//ajax delete requesting is there
+
+		$.ajax({
+dataType:'json',
+data:{
+		
+		'procurementid':delid,
+		'csrfmiddlewaretoken':$('[name="csrfmiddlewaretoken"]').val(),
+
+	},
+type:'POST',
+url:'/procurements/delete_procurements_for_work/'
+
+}).done(function(result){
+
+		if(result.status != 'deleted'){
+			alert('No Tour selected');
+			$(this).text('Confirm Delete');
+			
+			return false
+		}
+		else{
+			
+			window.location.href="{% url 'procurement_list_for_work' %}";
+
+		}
+}).fail(function(){alert('Something went wrong ! Please try again later ');
+$(this).text('Confirm Delete');});
+
+
+
+})
+
+})
+
+
+
+//ending deleting procurements service data
 
 			
 			</script>

@@ -1,6 +1,6 @@
 {% extends 'base_file/base_dashboard.html' %}
 
-{% block title %}  Add Procurement Data For Goods {% endblock title %}
+{% block title %}  Add Procurement Data For Services {% endblock title %}
 
 {% block content %}
 
@@ -10,10 +10,10 @@
     <div class="col-12 col-sm-12">
         <div class="card ">
             <div class="card-header">
-                <h3 class="card-title mb-0">Create Procurement Plan For Goods</h3>
+                <h3 class="card-title mb-0">Create Procurement Plan For Services</h3>
             </div>
             <div class="card-body">
-               <form action = "{% url 'add_procurements_for_goods' %}" method="post">
+               <form action = "{% url 'add_procurements_for_services' %}" method="post">
 
                 {% csrf_token %}
                    <div class="row d-flex justify-content-start">
@@ -56,8 +56,8 @@
                         <label  class="text-left" style="float: left;margin-left:0.5rem">Procedure Method</label>
                            <select class="form-control" name="procedure_method">
                                <option value="0">Select Procedure Method</option>
-                                 <option value="RFQ">RFQ</option>
-                                <option value="OTM">OTM</option>
+                                 <option value="ICS">ICS</option>
+                                <option value="CQS">CQS</option>
                             </select>
                       </div>
                       </div>
@@ -115,16 +115,16 @@
 
 
                       <div class="form-group col-md-3">
-                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Planned Date Of IFB Publication</label>
-                        <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Planed Date Of IFB Publication" name="planned_date_of_ifb_publication">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Planned Date Of EOI Publication</label>
+                        <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Planed Date Of IFB Publication" name="planned_date_of_eoi_publication">
                         </div>
 
 
                     
 
                         <div class="form-group col-md-3">
-                            <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Actual Date Of IFB Publication</label>
-                            <input type="date" class="form-control" id="actual_date_of_ifb_publication" aria-describedby="emailHelp" placeholder="Enter Actual Amount Of Contract" name="actual_date_of_ifb_publication">
+                            <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Actual Date Of EOI Publication</label>
+                            <input type="date" class="form-control" id="actual_date_of_ifb_publication" aria-describedby="emailHelp" placeholder="Enter Actual Amount Of Contract" name="actual_date_of_eoi_publication">
                         </div>
 
                     
@@ -138,14 +138,14 @@
                  <div class="row d-flex justify-content-start">
                     <div class="form-group col-md-3 text-left">
                         <div>
-                        <label  class="text-left" style="float: left;margin-left:0.5rem">Planned Date Of Bid Opening</label>
-                           <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Planned Date Of Bid Opening" name="planned_date_of_bid_opening">
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Planned Date Of EOI Opening</label>
+                           <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Planned Date Of Bid Opening" name="planned_date_of_eoi_opening">
                       </div>
                       </div>
 
                      <div class="form-group col-md-3">
-                     <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Actual Date Of Bid Opening</label>
-                     <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Actual Date Of Bid Opening" name="actual_date_of_bid_opening">
+                     <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Actual Date Of EOI Opening</label>
+                     <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Actual Date Of Bid Opening" name="actual_date_of_eoi_opening">
                      </div>
                      <div class="form-group col-md-3">
                          <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Planned Date Of Contract Signing</label>
@@ -175,8 +175,8 @@
                          <input type="date" class="form-control" aria-describedby="emailHelp" placeholder="Actual Date Of Delivery" name="actual_date_of_delivery">
                      </div>
                      <div class="form-group col-md-3">
-                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Supplier Name</label>
-                        <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Name Of The Supplier" name="supplier_name">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Consultant Name</label>
+                        <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Name Of The Supplier" name="consultant_name">
                     </div>
 
                     <div class="form-group col-md-3">

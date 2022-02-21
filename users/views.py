@@ -1,7 +1,10 @@
 from django.shortcuts import render,redirect
 from .models import User
 from django.contrib import auth
+#import django messages
+from django.contrib import messages
 import json
+
 from django.http import JsonResponse
 
 def signup(request):
@@ -110,4 +113,40 @@ def addMember(request):
 
 
 		return JsonResponse({'status':'user created'})
+
+
+def logout(requst):
+	auth.logout(requst)
+	return redirect('index_page')
+
+
+def profile(request):
+	if request.method == 'GET':
+		return render(request,'profile.html')
+
+	if request.method == "POST":
+		first_name = request.POST['first_name']
+		last_name= request.POST['last_name']
+		phone = request.POST['phone_number']
+		address = request.POST['address']
+		try:
+			profile_picture = request.FILES['profile_picture']
+		except:
+			pass
+
+
+		user = User.objects.get(id=request.user.id)
+		user.first_name = first_name
+		user.last_name = last_name
+		user.phone = phone
+		user.address = address
+		try:
+			user.profile_picture = profile_picture
+		except:
+			pass
+		user.save()
+
+		messages.success(request,'Profile has been updated !')
+
+		return redirect('profile')
 

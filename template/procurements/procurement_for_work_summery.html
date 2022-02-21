@@ -1,0 +1,100 @@
+{% extends 'base_file/base_dashboard.html' %}
+
+{% block title %}  Procurement For Work Summery {% endblock title %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="card bg-white mt-3">
+    <div class="card-header justify-content-center">
+        <h4 class="card-title">Showing Data Summery For Work {% if fromdate %} From {{fromdate}} To {{todate}} {% endif %}</h4>
+        
+    </div>
+
+    <div class="card-body">
+        <div class="row justify-content-center">
+            <div class="col-md-9">
+                <table class="table table-striped table-hover table-bordered">
+                    <tr>
+                        <th colspan="2" style="border-bottom:1px solid black;border-right:1px solid black">
+                            <h5>
+                                <b>
+                                    No. Of Packages
+                                </b>
+                            </h5>
+                        </th>
+
+                        <th style="border-bottom: 1px solid black;border-right: 1px solid black;">
+                            <h5>
+                                <b>
+                                    Estimated Values
+                                </b>
+                            </h5>
+                        </th>
+
+                        <th colspan="2" style="border-bottom: 1px solid black;border-right: 1px solid black;">
+                            <h5>
+                                <b>
+                                    No. Of Contract Awarded
+                                </b>
+                            </h5>
+                        </th>
+
+                        <th style="border-bottom: 1px solid black">
+                            <h5>
+                                <b>
+                                   Total Contract Values
+                                </b>
+                            </h5>
+                        </th>
+                    </tr>
+
+                    <tr>
+                        <td>Total</td>
+                        <td>{{total_package}}</td>
+                        <td>{{total_estimated_values}}</td>
+                        <td>Total</td>
+                        <td>{{contract_awarded_total}}</td>
+                        <td>{{contract_actual_total_value}}</td>
+                    </tr>
+
+                    <tr>
+                        <td>OTM</td>
+                        <td>{{total_otm}}</td>
+                        <td>{{total_otm_estimated_values}}</td>
+                        <td>OTM</td>
+                        <td>{{contract_awarded_otm_total}}</td>
+                        <td>{{contract_otm_actual_total_value}}</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>RFQ</td>
+                        <td>{{total_rfq}}</td>
+                        <td>{{total_rfq_estimated_values}}</td>
+                        <td>RFQ</td>
+                        <td>{{contract_awarded_rfq_total}}</td>
+                        <td>{{contract_rfq_actual_total_value}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+       
+    </div>
+</div>
+
+<style>
+    tr:hover{
+        background-color: #151516 !important;
+        color: white !important;
+    }
+
+    td:hover{
+        background-color: #8f4805 !important;
+        color: white !important;
+        border:2px groove rgb(80, 7, 7) !important;
+    }
+</style>
+
+{% endblock content %}

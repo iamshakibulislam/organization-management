@@ -1,6 +1,6 @@
 {% extends 'base_file/base_dashboard.html' %}
 
-{% block title %}  Update Procurement Data For Goods {% endblock title %}
+{% block title %}  Update Procurement Data For Services {% endblock title %}
 
 {% block content %}
 
@@ -55,17 +55,17 @@
                         <div>
                         <label  class="text-left" style="float: left;margin-left:0.5rem">Procedure Method</label>
                            <select class="form-control" name="procedure_method">
-                               {% if procurement_data.procedure_method == 'RFQ' %}
+                               {% if procurement_data.procedure_method == 'ICS' %}
                                <option value="0">Select Procedure Method</option>
-                                 <option value="RFQ" selected>RFQ</option>
-                                <option value="OTM">OTM</option>
+                                 <option value="ICS" selected>ICS</option>
+                                <option value="CQS">CQS</option>
 
                                 {% endif %}
 
-                                {% if procurement_data.procedure_method == 'OTM' %}
+                                {% if procurement_data.procedure_method == 'CQS' %}
                                 <option value="0">Select Procedure Method</option>
-                                  <option value="RFQ">RFQ</option>
-                                 <option value="OTM" selected>OTM</option>
+                                  <option value="ICS">ICS</option>
+                                 <option value="CQS" selected>CQS</option>
  
                                  {% endif %}
                             </select>
@@ -167,16 +167,16 @@
 
 
                       <div class="form-group col-md-3">
-                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Planned Date Of IFB Publication</label>
-                        <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Planed Date Of IFB Publication" value="{{procurement_data.planned_date_of_ifb_publication | date:'Y-m-d'}}" name="planned_date_of_ifb_publication">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Planned Date Of EOI Publication</label>
+                        <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Planed Date Of EOI Publication" value="{{procurement_data.planned_date_of_eoi_publication | date:'Y-m-d'}}" name="planned_date_of_eoi_publication">
                         </div>
 
 
                     
 
                         <div class="form-group col-md-3">
-                            <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Actual Date Of IFB Publication</label>
-                            <input type="date" class="form-control" id="actual_date_of_ifb_publication" aria-describedby="emailHelp" value="{{procurement_data.actual_date_of_ifb_publication | date:'Y-m-d'}}" placeholder="Enter Actual Amount Of Contract" name="actual_date_of_ifb_publication">
+                            <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Actual Date Of EOI Publication</label>
+                            <input type="date" class="form-control" id="actual_date_of_ifb_publication" aria-describedby="emailHelp" value="{{procurement_data.actual_date_of_eoi_publication | date:'Y-m-d'}}" placeholder="Enter Actual Amount Of Contract" name="actual_date_of_eoi_publication">
                         </div>
 
                     
@@ -190,14 +190,14 @@
                  <div class="row d-flex justify-content-start">
                     <div class="form-group col-md-3 text-left">
                         <div>
-                        <label  class="text-left" style="float: left;margin-left:0.5rem">Planned Date Of Bid Opening</label>
-                           <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Planned Date Of Bid Opening" value="{{procurement_data.planned_date_of_bid_opening | date:'Y-m-d'}}" name="planned_date_of_bid_opening">
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Planned Date Of EOI Opening</label>
+                           <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Planned Date Of EOI Opening" value="{{procurement_data.planned_date_of_eoi_opening | date:'Y-m-d'}}" name="planned_date_of_eoi_opening">
                       </div>
                       </div>
 
                      <div class="form-group col-md-3">
-                     <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Actual Date Of Bid Opening</label>
-                     <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Actual Date Of Bid Opening" value="{{procurement_data.actual_date_of_bid_opening | date:'Y-m-d'}}" name="actual_date_of_bid_opening">
+                     <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Actual Date Of EOI Opening</label>
+                     <input type="date" class="form-control"  aria-describedby="emailHelp" placeholder="Actual Date Of EOI Opening" value="{{procurement_data.actual_date_of_eoi_opening | date:'Y-m-d'}}" name="actual_date_of_eoi_opening">
                      </div>
                      <div class="form-group col-md-3">
                          <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Planned Date Of Contract Signing</label>
@@ -227,8 +227,8 @@
                          <input type="date" class="form-control" aria-describedby="emailHelp" placeholder="Actual Date Of Delivery" value="{{procurement_data.actual_date_of_delivery | date:'Y-m-d'}}" name="actual_date_of_delivery">
                      </div>
                      <div class="form-group col-md-3">
-                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Supplier Name</label>
-                        <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Name Of The Supplier" value="{{procurement_data.supplier_name}}" name="supplier_name">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Consultant Name</label>
+                        <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Name Of The Consultant" value="{{procurement_data.consultant_name}}" name="consultant_name">
                     </div>
 
                     <div class="form-group col-md-3">
