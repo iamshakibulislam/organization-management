@@ -1,0 +1,335 @@
+{% extends 'base_file/base_dashboard.html' %}
+
+{% block title %} Edit Training Data {% endblock title %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="row mt-4">
+    <div class="col-12 col-sm-12">
+        <div class="card ">
+            <div class="card-header">
+                <h3 class="card-title mb-0">Edit Training Plan </h3>
+            </div>
+            <div class="card-body">
+               <form action = "" method="post">
+
+                {% csrf_token %}
+                   <div class="row d-flex justify-content-start">
+                   <div class="form-group col-md-3 text-left">
+                       <div>
+                       <label  class="text-left" style="float: left;margin-left:0.5rem">Po Name</label>
+                       <input type="text" class="form-control"  aria-describedby="emailHelp" placeholder="Po Name" value="{{cont.po_name}}" name="po_name">
+                     </div>
+                     </div>
+                    <div class="form-group col-md-3">
+                    <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Sub Sector</label>
+                    <input type="text" class="form-control"  aria-describedby="emailHelp" placeholder="Sub sector" name="sub_sector" value="{{cont.sub_sector}}">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Budget Head</label>
+                        <input type="text" class="form-control"  aria-describedby="emailHelp" placeholder="budget head" name="budget_head" value="{{cont.budget_head}}">
+                    </div>
+
+                    <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Sub Budget Head1</label>
+                        <input type="text" class="form-control"  aria-describedby="emailHelp" placeholder="sub budget head1" name="sub_budget_head1" value="{{cont.sub_budget_head1}}">
+                      </div>
+                      </div>
+
+                </div>
+
+                <div class="row d-flex justify-content-start">
+                    
+                     <div class="form-group col-md-3">
+                     <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Training Title</label>
+                     <input type="text" class="form-control"  aria-describedby="emailHelp" placeholder="Training Title" name="training_title" value="{{cont.training_title}}">
+                     </div>
+                     <div class="form-group col-md-3">
+                         <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Training Topic</label>
+                         <input type="text" class="form-control" id="actual_contract_amount" aria-describedby="emailHelp" placeholder="Training Topic" name="training_topic" value="{{cont.training_topic}}">
+                     </div>
+                     <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Category</label>
+                           <select class="form-control" name="category" id="sel">
+                               <option class="cat" value="0">Select Category</option>
+
+                               {% for cat in categories %}
+                                 <option class="cat" value="{{cat.id}}">{{cat.name}}</option>
+                           
+                                {% endfor %}
+                            </select>
+                      </div>
+                      </div>
+
+                      
+                      <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Budget</label>
+                          <input type="number" class="form-control"  aria-describedby="emailHelp" placeholder="Budget" name="budget" value="{{cont.budget}}">
+                      </div>
+                      </div>
+ 
+                 </div>
+
+
+
+                 <div class="row d-flex justify-content-start">
+                   
+                      
+
+
+                      <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Cost</label>
+                           
+                            <input type="number" class="form-control"  aria-describedby="emailHelp" placeholder="Cost" name="cost" value="{{cont.cost}}">
+
+                            <style>
+                                select{
+                                    -webkit-appearance: listbox !important
+                                    }
+                            </style>
+                      </div>
+                      </div>
+
+                      <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Date</label>
+                           <input type="date" name="date" placeholder="Date" value="{{cont.date | date:'Y-m-d'}}" class="form-control">
+                      </div>
+                      </div>
+
+
+                      <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Duration</label>
+                        <input type="text" class="form-control" value="{{cont.duration}}" aria-describedby="emailHelp" placeholder="Duration" name="duration">
+                        </div>
+
+
+                    
+
+                        <div class="form-group col-md-3">
+                            <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Batch</label>
+                            <input type="text" class="form-control" id="actual_date_of_ifb_publication" aria-describedby="emailHelp" placeholder="Enter Batch" name="batch" value="{{cont.batch}}">
+                        </div>
+
+                    
+ 
+                 </div>
+
+                 
+                
+
+
+                 <div class="row d-flex justify-content-start">
+                    <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">Total Session Conducted</label>
+                           <input type="total_session_conducted" class="form-control"  aria-describedby="emailHelp" placeholder="Total Session Conducted" name="total_session_conducted" value="{{cont.total_session_conducted}}">
+                      </div>
+                      </div>
+
+                     <div class="form-group col-md-3">
+                     <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">No Of Facilitator Official</label>
+                     <input type="number" class="form-control"  aria-describedby="emailHelp" placeholder="No of facilitator Official" name="no_of_facilitator_official" value="{{cont.no_of_facilitator_official}}">
+                     </div>
+                     <div class="form-group col-md-3">
+                         <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">No Of Facilitator Private</label>
+                         <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="No Of Private Facilitator" name="no_of_facilitator_private" value="{{cont.no_of_facilitator_private}}">
+                     </div>
+
+                     <div class="form-group col-md-3 text-left">
+                        <div>
+                        <label  class="text-left" style="float: left;margin-left:0.5rem">No Of Facilitator Internal</label>
+                           <input type="number" class="form-control"  aria-describedby="emailHelp" placeholder="No Of Facilitator Internal" name="no_of_facilitator_internal" value="{{cont.no_of_facilitator_internal}}">
+                      </div>
+                      </div>
+ 
+                 </div>
+
+
+
+
+
+                 <div class="row d-flex justify-content-start">
+
+                    <div class="form-group col-md-3">
+                     <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Information Of Facilitator Official Name  </label>
+                     <input type="text" class="form-control"  aria-describedby="emailHelp" placeholder="Information Of Facilitator Official Name" name="information_of_facilitator_official_name" value="{{cont.information_of_facilitator_official_name}}">
+                     </div>
+                     <div class="form-group col-md-2">
+                         <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Information Of Facilitator Official Designation</label>
+                         <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Information Of Facilitator Official Designation" name="information_of_facilitator_official_designation" value="{{cont.information_of_facilitator_official_designation}}">
+                     </div>
+                     <div class="form-group col-md-2">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Information Of Facilitator Official Organization</label>
+                        <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Information Of Facilitator Official Organization" name="information_of_facilitator_official_organization" value="{{cont.information_of_facilitator_official_organization}}">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Information Of Facilitator Official Contact</label>
+                        <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Information Of Facilitator Contact" name="information_of_facilitator_official_contact" value="{{cont.information_of_facilitator_official_contact}}">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Total Number Of Trainer</label>
+                        <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Total Number Of Trainer" name="total_number_of_trainer" value="{{cont.total_number_of_trainer}}"></input>
+                    </div>
+
+                 </div>
+
+
+
+                 
+
+                 <div class="row d-flex justify-content-start">
+
+                    <div class="form-group col-md-3">
+                     <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Information Of Facilitator Internal Name  </label>
+                     <input type="text" class="form-control"  aria-describedby="emailHelp" placeholder="Information Of Facilitator Internal" name="information_of_facilitator_internal_name" value="{{cont.information_of_facilitator_internal_name}}">
+                     </div>
+                     <div class="form-group col-md-3">
+                         <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Information Of Facilitator Internal Designation</label>
+                         <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Information Of Facilitator Internal Designation" name="information_of_facilitator_internal_designation" value="{{cont.information_of_facilitator_internal_designation}}">
+                     </div>
+                     <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Information Of Facilitator Internal Organization</label>
+                        <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Information Of Facilitator Internal Organization" name="information_of_facilitator_internal_organization" value="{{cont.information_of_facilitator_internal_organization}}">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Information Of Facilitator Internal Contact</label>
+                        <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Information Of Facilitator Contact" name="information_of_facilitator_internal_contact" value="{{cont.information_of_facilitator_internal_contact}}">
+                    </div>
+
+                    
+
+                 </div>
+
+
+
+
+                 <div class="row d-flex justify-content-start">
+
+                    <div class="form-group col-md-3">
+                     <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Information Of Facilitator Private Name  </label>
+                     <input type="text" class="form-control"  aria-describedby="emailHelp" placeholder="Information Of Facilitator Private Name" name="information_of_facilitator_private_name" value="{{cont.information_of_facilitator_private_name}}">
+                     </div>
+                     <div class="form-group col-md-3">
+                         <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Information Of Facilitator Private Designation</label>
+                         <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Information Of Facilitator Private Designation" name="information_of_facilitator_private_designation" value="{{cont.information_of_facilitator_private_designation}}">
+                     </div>
+                     <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Information Of Facilitator Private Organization</label>
+                        <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Information Of Facilitator Private Organization" name="information_of_facilitator_private_organization" value="{{cont.information_of_facilitator_private_organization}}">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Information Of Facilitator Private Contact</label>
+                        <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Information Of Facilitator Private Contact" name="information_of_facilitator_private_contact" value="{{cont.information_of_facilitator_private_contact}}">
+                    </div>
+
+                    
+
+                 </div> 
+
+
+                 
+                 <div class="row d-flex justify-content-start">
+
+                    <div class="form-group col-md-3">
+                     <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Po Male Perticipent</label>
+                     <input type="number" class="form-control"  aria-describedby="emailHelp" placeholder="Po Male Perticipent" name="po_male_perticipent" value="{{cont.po_male_perticipent}}">
+                     </div>
+                     <div class="form-group col-md-3">
+                         <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Po Female Perticipent</label>
+                         <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Po Female Perticipent " name="po_female_perticipent" value="{{cont.po_female_perticipent}}">
+                     </div>
+                     <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Po Total Perticipent</label>
+                        <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Po Total Perticipent" name="po_total_perticipent" value="{{cont.po_total_perticipent}}">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Me Male Perticipent</label>
+                        <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Me Male Perticipent" name="me_male_perticipent" value="{{cont.me_male_perticipent}}"></input>
+                    </div>
+
+                 </div>
+
+
+
+
+                 
+                 <div class="row d-flex justify-content-start">
+
+                    <div class="form-group col-md-3">
+                     <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Me Female Perticipent</label>
+                     <input type="number" class="form-control"  aria-describedby="emailHelp" placeholder="Me Female Perticipent" name="me_female_perticipent" value="{{cont.me_female_perticipent}}">
+                     </div>
+                     <div class="form-group col-md-3">
+                         <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Me Total Perticipent</label>
+                         <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Me Total Perticipent " name="me_total_perticipent" value="{{cont.me_total_perticipent}}">
+                     </div>
+                     <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Other Male Perticipent</label>
+                        <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Other Male Perticipent" name="other_male_perticipent" value="{{cont.other_male_perticipent}}">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Other Female Perticipent</label>
+                        <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Other Female Perticipent" name="other_female_perticipent" value="{{cont.other_female_perticipent}}"></input>
+                    </div>
+
+                 </div>
+
+
+                 <div class="row d-flex justify-content-start">
+
+                    <div class="form-group col-md-4">
+                     <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Other Total Perticipent</label>
+                     <input type="number" class="form-control"  aria-describedby="emailHelp" placeholder="Other Total Perticipent" name="other_total_perticipent" value="{{cont.other_total_perticipent}}">
+                     </div>
+                     <div class="form-group col-md-4">
+                         <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Total Perticipent</label>
+                         <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Total  Perticipent " name="total_perticipent" value="{{cont.total_perticipent}}">
+                     </div>
+
+                     <div class="form-group col-md-4 text-center mt-3">
+                        <button type="submit" id="submitbtn" class="btn btn-lg btn-primary form-control mt-4">Save Training Data</button>
+                    </div>
+                     
+                    <style>
+                        #submitbtn{
+                            transition-duration: 1s !important;
+                        }
+
+                        #submitbtn:hover{
+                            background-color: gray !important;
+                            border-top-right-radius: 70%;
+                            border-bottom-right-radius: 70%;
+                        }
+                    </style>
+
+                 </div>
+
+
+
+
+
+
+
+                 <div class="row justify-content-end">
+                
+                </div>
+
+               </form>
+            </div>
+        </div>
+    </div><!-- COL END -->
+</div><!-- ROW-5 END -->
+
+
+
+{% endblock content %}

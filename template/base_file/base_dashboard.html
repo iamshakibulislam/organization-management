@@ -337,11 +337,15 @@
 										<ul class="sub-menu">
 											<li aria-haspopup="true"><a href="{% url 'add_tour_place' %}">Add tour places</a></li>
 											<li aria-haspopup="true"><a href="{% url 'add_sub_sector' %}">Add Sub Sectors</a></li>
+											<li aria-haspopup="true"><a href="{% url 'add_training_category' %}">Add Training Category</a></li>
 											
 										</ul>
 									</li>
 
 									{% endif %}
+
+									<li aria-haspopup="true"><a href="{% url 'training_list' %}"><i class="fas fa-user-graduate"></i> Training Home</a></li>
+									<li aria-haspopup="true"><a href="{% url 'add_training' %}"><i class="fas fa-user-graduate"></i>  Add Training</a></li>
 
 
 
@@ -906,6 +910,69 @@ $(this).text('Confirm Delete');});
 
 //ending deleting procurements service data
 
+
+
+//starting deleting procurements training data
+
+			
+$(document).ready(function(){
+
+var delid = 0;
+
+$('.deletebtnpro').on('click',function(){
+
+	delid = $(this).attr('procurementid');
+
+
+	//console.log(delid);
+});
+
+
+$('.confirmbtnfortraining').on('click',function(event){
+
+	event.preventDefault();
+	$(this).text('Please Wait.....');
+
+
+	//ajax delete requesting is there
+
+		$.ajax({
+dataType:'json',
+data:{
+		
+		'procurement_id':delid,
+		'csrfmiddlewaretoken':$('[name="csrfmiddlewaretoken"]').val(),
+
+	},
+type:'POST',
+url:'/training/training_delete/'
+
+}).done(function(result){
+
+		if(result.status != 'deleted'){
+			alert('No data selected');
+			$(this).text('Confirm Delete');
+			
+			return false
+		}
+		else{
+			
+			window.location.href="{% url 'training_list' %}";
+
+		}
+}).fail(function(){alert('Something went wrong ! Please try again later ');
+$(this).text('Confirm Delete');});
+
+
+
+})
+
+})
+
+
+
+//ending deleting procurements training data
+
 			
 			</script>
 			<script src="https://code.jquery.com/ui/1.13.0-rc.3/jquery-ui.min.js" integrity="sha256-R6eRO29lbCyPGfninb/kjIXeRjMOqY3VWPVk6gMhREk=" crossorigin="anonymous"></script>
@@ -932,7 +999,12 @@ $(this).text('Confirm Delete');});
 
 			 
 
-
+<script>
+    $(document).ready(function(){
+       $(".cat[value={{cont.category.id}}]").attr('selected',true);
+    });
+  
+</script>
 <script>
 $("#file_input").withDropZone("#drop_zone", {
   action: {

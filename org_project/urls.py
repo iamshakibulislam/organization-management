@@ -26,6 +26,7 @@ urlpatterns = [
 
     path('dashboard/',include('dashboard.urls')),
     path('procurements/',include('procurements.urls')),
+    path('training/',include('training.urls')),
 ]
 
 

@@ -1,0 +1,176 @@
+{% extends 'base_file/base_dashboard.html' %}
+
+{% block title %} Training List  {% endblock title %}
+
+
+{% block content %} 
+
+
+						<!--procurements data table starting-->
+
+						
+						<div class="row mt-4">
+							<div class="col-12 col-sm-12">
+								<div class="card ">
+									<div class="card-header">
+										<h3 class="card-title mb-0">Training Data</h3>
+									</div>
+
+                                    <!-- 
+									<div class="card-header justify-content-center">
+										<form class="form-inline" method="get" action="{% url 'summery_for_work' %}">
+											<div class="form-group">
+											<label for="fromdate" class="ml-4 mr-2" style="margin-right:1rem;">From</label>
+											<input type="date" class="form-control mr-2 ml-3" id="fromdate" name="fromdate" style="margin-right:1rem">
+											</div>
+
+											<div class="form-group ml-4 mr-2">
+												<label for="todate" class="mr-2 ml-2" style="margin-right: 1rem;">To</label>
+												<input type="date" class="form-control mr-2 ml-3" id="todate" name="todate" style="margin-right:1rem">
+											</div>
+
+											<div class="form-group ml-4" style="margin-right: 1rem;">
+												<input type="submit" class="btn btn-danger ml-3 mr-3" id="filter" value="Show Summery For Services">
+											</div>
+
+											<style>
+                                                 #filter{
+                                                    transition-duration:all 2s ease-in-out !important;
+                                                }
+
+												#filter:hover{
+													border-top-right-radius: 80%;
+													border-bottom-right-radius: 80%;
+                                                    
+												}
+
+                                               
+											</style>
+										</form>
+									</div> -->
+									<div class="card-body">
+										<div class="table-responsive">
+											<table id="tableone" class="table datatabletwo table-bordered text-nowrap mb-0">
+												<thead class="border-top">
+												<tr>
+													<th class="bg-transparent border-bottom-0">  Created By </th>
+													<th class="bg-transparent border-bottom-0">Date</th>
+													<th class="bg-transparent border-bottom-0" > PO Name </th>
+													<th class="bg-transparent border-bottom-0">Title</th>
+													<th class="bg-transparent border-bottom-0">Topic</th>
+													<th class="bg-transparent border-bottom-0">Budget</th>
+													<th class="bg-transparent border-bottom-0">Total Perticipent</th>
+													
+													{% if request.user.is_admin == 1 or request.user.is_moderator == 1 %}
+													<th class="bg-transparent border-bottom-0">Action</th>
+
+													{% endif %}
+												</tr>
+												</thead>
+												<tbody>
+													{% if training_list %}
+
+													{% for cont in training_list %}
+													<tr class="border-bottom">
+														<td>
+															<div class="d-flex">
+																
+																<div class="ms-2 mt-0 mt-sm-2 d-block">
+
+																	<h6 class="mb-0 fs-14 fw-semibold">{{cont.user.first_name }} {{cont.user.last_name}}</h6>
+																	
+																</div>
+															</div>
+														</td>
+														<td>
+															<div class="d-flex">
+																
+																<div class="ms-2 mt-0 mt-sm-2 d-block">
+																	<h6 class="mb-0 fs-14 fw-semibold">{{cont.date }}</h6>
+																	
+																</div>
+															</div>
+														</td>
+														<td class="text-muted fs-15 fw-semibold" style="overflow-y: scroll;overflow-x:scroll;">{{cont.po_name}} </td>
+														
+														<td class="text-success fs-15 fw-semibold">{{cont.training_title}}</td>
+														
+														<td class="text-success fs-15 fw-semibold">{{cont.training_topic}}</td>
+
+														<td class="text-danger fs-15 fw-semibold">{{cont.budget}}</td>
+														<td class="text-danger fs-15 fw-semibold">{{cont.total_perticipent}}</td>
+														
+														
+
+
+														
+														
+
+														<td class="d-flex justify-content-between">
+															
+															<a class="btn btn-primary btn-sm rounded-11 me-2"   href="{% url 'training_edit' cont.id %}" > <i memberid="{{cont.id}}"><svg class="table-edit" xmlns="http://www.w3.org/2000/svg" memberid="{{cont.id}}" height="20" viewBox="0 0 24 24" width="16"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19zM20.71 5.63l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41z"/></svg></i></a>
+
+															
+
+														
+
+															<a class="btn btn-success mr-3" href="{% url 'training_details' cont.id %}">Details</a>
+
+															
+
+															{% if request.user.is_admin == 1 %}
+
+															<a class="btn btn-danger btn-sm rounded-11 deletebtnpro ml-1" procurementid="{{cont.id}}"  data-bs-target="#trainingDeleteModal" data-bs-toggle="modal" data-bs-original-title="Delete"><i memberid="{{cont.id}}" ><svg memberid="{{cont.id}}"  class="table-delete ml-1" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="16"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5z"/></svg></i></a>
+
+															{% endif %}
+
+															
+														</td>
+
+														
+													</tr>
+
+													{% endfor %}
+
+													{% endif %}
+													
+												</tbody>
+											</table>
+
+
+											
+										</div>
+									</div>
+								</div>
+							</div><!-- COL END -->
+						</div><!-- ROW-5 END -->
+					
+
+						
+
+						
+
+						<!-- end of procurements data showing -->
+
+                        
+<!--starting deleting procurements modal -->
+
+<div class="modal fade"  id="trainingDeleteModal">
+	<div class="modal-dialog modal-dialog-centered text-center" role="document">
+		<div class="modal-content tx-size-sm">
+			<div class="modal-body text-center p-4">
+				<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
+				
+				<i class="fas fs-65 fa-exclamation-triangle lh-1 mb-4 d-inline-block text-danger"></i>
+				<h3 class="text-danger">Are you sure ?</h3>
+				{% csrf_token %}
+				<p class="mg-b-20 mg-x-20 text-danger">you are about to delete a procurement data</p><button aria-label="Close" class="btn btn-info pd-x-25 m-4 confirmbtnfortraining" >Confirm delete</button><button aria-label="Close" class="btn btn-danger pd-x-25 ml-4" data-bs-dismiss="modal" >Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- ending deleting procurements modal -->
+
+
+{% endblock content %}

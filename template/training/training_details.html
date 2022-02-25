@@ -1,0 +1,472 @@
+
+{% extends 'base_file/base_dashboard.html' %}
+
+{% block title %}  Training Details {% endblock title %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row mt-4">
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Created By</h4>
+                </div>
+                <div class="card-body">{{procurement_data.user.first_name}} {{procurement_data.user.last_name}}</div>
+
+            </div>
+
+            
+        </div>
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">PO Name</h4>
+                </div>
+                <div class="card-body">{{procurement_data.po_name}}</div>
+
+            </div>
+
+            
+        </div>
+
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Sub Sector</h4>
+                </div>
+                <div class="card-body">{{procurement_data.sub_sector}}</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Budget Head</h4>
+                </div>
+                <div class="card-body">{{procurement_data.budget_head}}</div>
+
+            </div>
+        </div>
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center" style="float: center;">Sub Budget Head 1</h4>
+                </div>
+                <div class="card-body">{{procurement_data.sub_budget_head1}}</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Training Title</h4>
+                </div>
+                <div class="card-body">{{procurement_data.training_title}} (BDT)</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Training Topic</h4>
+                </div>
+                <div class="card-body">{{procurement_data.training_topic}} </div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Category</h4>
+                </div>
+                <div class="card-body">{{procurement_data.category}}</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Budget</h4>
+                </div>
+                <div class="card-body">{{procurement_data.budget}}</div>
+
+            </div>
+        </div>
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Cost</h4>
+                </div>
+                <div class="card-body">{{procurement_data.cost}}</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Date</h4>
+                </div>
+                <div class="card-body">{{procurement_data.date}}</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Duration</h4>
+                </div>
+                <div class="card-body">{{procurement_data.duration}}</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Batch</h4>
+                </div>
+                <div class="card-body">{{procurement_data.batch}}</div>
+
+            </div>
+        </div>
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Total Session Conducted</h4>
+                </div>
+                <div class="card-body">{{procurement_data.total_session_conducted}}</div>
+
+            </div>
+        </div>
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">No Of Facilitator Official</h4>
+                </div>
+                <div class="card-body">{{procurement_data.no_of_facilitator_official}}</div>
+
+            </div>
+        </div>
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">No of Facilitator Private</h4>
+                </div>
+                <div class="card-body">{{procurement_data.no_of_facilitator_private}}</div>
+
+            </div>
+        </div>
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">No Of Facilitator Internal</h4>
+                </div>
+                <div class="card-body">{{procurement_data.no_of_facilitator_internal}}</div>
+
+            </div>
+        </div>
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Information Of Facilitator Official Name</h4>
+                </div>
+                <div class="card-body">{{procurement_data.information_of_facilitator_official_name}}</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Information Of Facilitator Official Designation</h4>
+                </div>
+                <div class="card-body">{{procurement_data.information_of_facilitator_official_designation}}</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Information Of Facilitator Official Organization</h4>
+                </div>
+                <div class="card-body">{{procurement_data.information_of_facilitator_official_organization}}</div>
+
+            </div>
+        </div>
+
+
+        
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Information Of Facilitator Official Contact</h4>
+                </div>
+                <div class="card-body">{{procurement_data.information_of_facilitator_official_contact}}</div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Information Of Facilitator Private Name</h4>
+                </div>
+                <div class="card-body">{{procurement_data.information_of_facilitator_private_name}}</div>
+
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Information Of Facilitator Private Designationt</h4>
+                </div>
+                <div class="card-body">{{procurement_data.information_of_facilitator_private_designation}}</div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Information Of Facilitator Private Organization</h4>
+                </div>
+                <div class="card-body">{{procurement_data.information_of_facilitator_private_organization}}</div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Information Of Facilitator Private Contact</h4>
+                </div>
+                <div class="card-body">{{procurement_data.information_of_facilitator_private_contact}}</div>
+
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Information Of Facilitator Internal Name</h4>
+                </div>
+                <div class="card-body">{{procurement_data.information_of_facilitator_internal_name}}</div>
+
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Information Of Facilitator Internal Designation</h4>
+                </div>
+                <div class="card-body">{{procurement_data.information_of_facilitator_internal_designation}}</div>
+
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Information Of Facilitator Internal Organization</h4>
+                </div>
+                <div class="card-body">{{procurement_data.information_of_facilitator_internal_organization}}</div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Information Of Facilitator Internal Contact</h4>
+                </div>
+                <div class="card-body">{{procurement_data.information_of_facilitator_internal_contact}}</div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Total Number Of Trainer</h4>
+                </div>
+                <div class="card-body">{{procurement_data.total_number_of_trainer}}</div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Po Male Perticipent</h4>
+                </div>
+                <div class="card-body">{{procurement_data.po_male_perticipent}}</div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Po Female Perticipent</h4>
+                </div>
+                <div class="card-body">{{procurement_data.po_female_perticipent}}</div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Po Total Perticipent</h4>
+                </div>
+                <div class="card-body">{{procurement_data.po_total_perticipent}}</div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Me Male Perticipent</h4>
+                </div>
+                <div class="card-body">{{procurement_data.me_male_perticipent}}</div>
+
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center"> Me Female Perticipent</h4>
+                </div>
+                <div class="card-body">{{procurement_data.me_female_perticipent}}</div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center"> Me Total Perticipent</h4>
+                </div>
+                <div class="card-body">{{procurement_data.me_total_perticipent}}</div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center"> Other Male Perticipent</h4>
+                </div>
+                <div class="card-body">{{procurement_data.other_male_perticipent}}</div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center"> Other Female Perticipent</h4>
+                </div>
+                <div class="card-body">{{procurement_data.other_female_perticipent}}</div>
+
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center">Other Total Perticipent</h4>
+                </div>
+                <div class="card-body">{{procurement_data.other_total_perticipent}}</div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header justify-content-center">
+                    <h4 class="card-title text-center"> Total Perticipent</h4>
+                </div>
+                <div class="card-body">{{procurement_data.total_perticipent}}</div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+
+
+{% endblock content %}
