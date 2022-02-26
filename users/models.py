@@ -63,6 +63,15 @@ class User(AbstractBaseUser, PermissionsMixin):
       created_at = models.DateTimeField(auto_now_add=True)
       updated_at=models.DateTimeField(auto_now=True)
 
+      has_tour_perm = models.BooleanField(default=True)
+      has_training_perm = models.BooleanField(default=False)
+      has_procurement_perm = models.BooleanField(default=False)
+
+      has_edit_perm = models.BooleanField(default=False)
+      has_delete_perm = models.BooleanField(default=False)
+      
+
+
       objects = UserManager()
 
       USERNAME_FIELD = 'email'

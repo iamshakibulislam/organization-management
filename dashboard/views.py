@@ -1,3 +1,4 @@
+from importlib.metadata import requires
 import re
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
@@ -7,6 +8,37 @@ from users.models import User
 from .models import *
 from django.db.models import Q
 from django.http import JsonResponse
+from django.http import Http404
+from functools import wraps
+
+
+
+
+def requires_tour_perm(view):
+    @wraps(view)
+    def _view(request, *args, **kwargs):
+        if request.user.has_tour_perm != True and request.user.is_admin != True:   
+            raise Http404
+        return view(request, *args, **kwargs)
+    return _view
+
+
+def requires_edit_perm(view):
+    @wraps(view)
+    def _view(request, *args, **kwargs):
+        if request.user.has_edit_perm != True and request.user.is_admin != True:  
+            raise Http404
+        return view(request, *args, **kwargs)
+    return _view
+
+
+def requires_delete_perm(view):
+    @wraps(view)
+    def _view(request, *args, **kwargs):
+        if request.user.has_delete_perm != True and request.user.is_admin != True:  
+            raise Http404
+        return view(request, *args, **kwargs)
+    return _view
 
 
 @login_required(login_url = '/users/login/')
@@ -46,7 +78,7 @@ def home(request):
 
 			member_data.append({'id':mem.id,'email':mem.email,
 				'first_name':mem.first_name,'last_name':mem.last_name,
-				'join_date':mem.join_date,'role':role,'tour_in_three_months':three_months_status})
+				'join_date':mem.join_date,'role':role,'tour_in_three_months':three_months_status,'profile_picture':mem.profile_picture.url})
 
 		context = {
 				'all_members':member_data,
@@ -60,12 +92,13 @@ def home(request):
 
 
 def edit_members(request):
-	if request.method == 'GET':
+	if request.method == 'GET' and request.user.is_admin == True:
 		userid = int(request.GET['userid'])
 
 
 
 		sel_user = User.objects.get(id=userid)
+		
 		role = ''
 		if sel_user.is_admin == True:
 			role = 'Administrator'
@@ -76,7 +109,19 @@ def edit_members(request):
 		if sel_user.is_moderator == True:
 			role = 'Moderator'
 
-		user_data={'first_name':sel_user.first_name,'last_name':sel_user.last_name,'email':sel_user.email,'phone':sel_user.phone,'role':role,'id':sel_user.id}
+		user_data={'first_name':sel_user.first_name,
+		'last_name':sel_user.last_name,
+		'email':sel_user.email,
+		'phone':sel_user.phone,
+		'role':role,
+		'id':sel_user.id,
+		'has_tour_perm':sel_user.has_tour_perm,
+		'has_procurement_perm':sel_user.has_procurement_perm,
+		'has_training_perm':sel_user.has_training_perm,
+		'has_edit_perm':sel_user.has_edit_perm,
+		'has_delete_perm':sel_user.has_delete_perm,
+		
+		}
 		
 
 		return JsonResponse({'userdata':user_data})
@@ -97,6 +142,18 @@ def edit_members(request):
 		sel_user = User.objects.get(id=int(userid))
 
 
+		has_tour_perm_edit = int(request.POST['has_tour_perm_edit'])
+		has_procurement_perm_edit = int(request.POST['has_procurement_perm_edit'])
+		has_training_perm_edit = int(request.POST['has_training_perm_edit'])
+		has_edit_perm_edit = int(request.POST['has_edit_perm_edit'])
+		has_delete_perm_edit = int(request.POST['has_delete_perm_edit'])
+
+
+		sel_user.has_tour_perm = has_tour_perm_edit
+		sel_user.has_procurement_perm = has_procurement_perm_edit
+		sel_user.has_training_perm = has_training_perm_edit
+		sel_user.has_edit_perm = has_edit_perm_edit
+		sel_user.has_delete_perm = has_delete_perm_edit
 
 		if(sel_user.first_name != first_name):
 			sel_user.first_name = first_name
@@ -142,7 +199,7 @@ def edit_members(request):
 
 
 def delete_members(request):
-	if request.method == "POST":
+	if request.method == "POST" and request.user.is_admin == True:
 		userid = request.POST['userid']
 
 		sel_user = User.objects.get(id=userid)
@@ -152,7 +209,7 @@ def delete_members(request):
 
 
 
-
+@requires_tour_perm
 def tour(request):
 	if request.method == "GET":
 		sel_org_members = User.objects.filter(organization = request.user.organization)
@@ -219,7 +276,7 @@ def tour(request):
 
 
 
-
+@requires_tour_perm
 def tourmanagement(request):
 	if request.method == 'GET':
 
@@ -299,7 +356,8 @@ def tourmanagement(request):
 
 
 
-
+@requires_tour_perm
+@requires_edit_perm
 def touredit(request,pk):
 
 	if request.method == 'GET':
@@ -334,7 +392,8 @@ def touredit(request,pk):
 		return render(request,'dashboard/edit-tour.html',{'tourdata':tourdata,'all_places':all_places,'all_sub_sectors':all_sub_sectors})
 
 
-
+@requires_tour_perm
+@requires_edit_perm
 def edittoursubmit(request):
 
 
@@ -420,7 +479,8 @@ def edittoursubmit(request):
 
 
 
-
+@requires_tour_perm
+@requires_delete_perm
 def delete_tour(request):
 
 	tourid = request.POST['tourid']
@@ -431,7 +491,8 @@ def delete_tour(request):
 	return JsonResponse({'status':'deleted'})
 
 
-
+@requires_tour_perm
+@requires_edit_perm
 def upload_files(request,pk):
 	if request.method == "GET":
 		
@@ -464,7 +525,7 @@ def upload_files(request,pk):
 
 
 
-
+@requires_tour_perm
 def show_files(request,pk):
 	if request.method == "GET":
 		tour_file_data = []

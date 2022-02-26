@@ -92,23 +92,70 @@ def addMember(request):
 		password = request.GET['password']
 		phone = request.GET['phone']
 
+		has_tour_perm = int(request.GET['has_tour_perm'])
+		has_procurement_perm = int(request.GET['has_procurement_perm'])
+		has_training_perm = int(request.GET['has_training_perm'])
+		has_edit_perm = int(request.GET['has_edit_perm'])
+		has_delete_perm = int(request.GET['has_delete_perm'])
+
 		if(len(User.objects.filter(email=email))!=0):
 			return JsonResponse({'status':'user exists'})
 
 
 		
 		if(role == 'Administrator'):
-			User.objects.create_user(first_name=first_name,last_name=last_name,email=email,is_admin=True,password=password,organization=request.user.organization,phone=phone,added_by_user_id=request.user.id)
+			User.objects.create_user(first_name=first_name,
+			last_name=last_name,
+			email=email,
+			is_admin=True,
+			password=password,
+			organization=request.user.organization,
+			phone=phone,
+			added_by_user_id=request.user.id,
+			has_tour_perm=has_tour_perm,
+			has_procurement_perm=has_procurement_perm,
+			has_training_perm=has_training_perm,
+			has_edit_perm=has_edit_perm,
+			has_delete_perm=has_delete_perm)
+
 
 
 
 		if(role == 'Officer'):
-			User.objects.create_user(first_name=first_name,last_name=last_name,email=email,is_moderator=False,is_officer=True,is_admin=False,password=password,organization=request.user.organization,phone=phone,added_by_user_id=request.user.id)
+			User.objects.create_user(first_name=first_name,
+			last_name=last_name,
+			email=email,
+			is_moderator=False,
+			is_officer=True,
+			is_admin=False,
+			password=password,
+			organization=request.user.organization,
+			phone=phone,
+			added_by_user_id=request.user.id,
+			has_tour_perm=has_tour_perm,
+			has_procurement_perm=has_procurement_perm,
+			has_training_perm=has_training_perm,
+			has_edit_perm=has_edit_perm,
+			has_delete_perm=has_delete_perm)
 
 
 
 		if(role == 'Moderator'):
-			User.objects.create_user(first_name=first_name,last_name=last_name,email=email,is_officer=False,is_moderator=True,is_admin=False,password=password,organization=request.user.organization,phone=phone,added_by_user_id=request.user.id)
+			User.objects.create_user(first_name=first_name,
+			last_name=last_name,
+			email=email,
+			is_officer=False,
+			is_moderator=True,
+			is_admin=False,
+			password=password,
+			organization=request.user.organization,
+			phone=phone,
+			added_by_user_id=request.user.id,
+			has_tour_perm=has_tour_perm,
+			has_procurement_perm=has_procurement_perm,
+			has_training_perm=has_training_perm,
+			has_edit_perm=has_edit_perm,
+			has_delete_perm=has_delete_perm)
 
 
 

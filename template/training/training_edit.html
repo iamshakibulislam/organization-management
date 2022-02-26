@@ -240,20 +240,20 @@
 
                     <div class="form-group col-md-3">
                      <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Po Male Perticipent</label>
-                     <input type="number" class="form-control"  aria-describedby="emailHelp" placeholder="Po Male Perticipent" name="po_male_perticipent" value="{{cont.po_male_perticipent}}">
+                     <input type="number" class="form-control"  aria-describedby="emailHelp" placeholder="Po Male Perticipent" id="male_pert" name="po_male_perticipent" value="{{cont.po_male_perticipent}}">
                      </div>
                      <div class="form-group col-md-3">
                          <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Po Female Perticipent</label>
-                         <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Po Female Perticipent " name="po_female_perticipent" value="{{cont.po_female_perticipent}}">
+                         <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Po Female Perticipent " id="female_pert" name="po_female_perticipent" value="{{cont.po_female_perticipent}}">
                      </div>
                      <div class="form-group col-md-3">
                         <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Po Total Perticipent</label>
-                        <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Po Total Perticipent" name="po_total_perticipent" value="{{cont.po_total_perticipent}}">
+                        <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Po Total Perticipent" name="po_total_perticipent" id="total_pert" value="{{cont.po_total_perticipent}}" readonly>
                     </div>
 
                     <div class="form-group col-md-3">
                         <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Me Male Perticipent</label>
-                        <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Me Male Perticipent" name="me_male_perticipent" value="{{cont.me_male_perticipent}}"></input>
+                        <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Me Male Perticipent" name="me_male_perticipent" id="mes_male_pert" value="{{cont.me_male_perticipent}}"></input>
                     </div>
 
                  </div>
@@ -266,20 +266,20 @@
 
                     <div class="form-group col-md-3">
                      <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Me Female Perticipent</label>
-                     <input type="number" class="form-control"  aria-describedby="emailHelp" placeholder="Me Female Perticipent" name="me_female_perticipent" value="{{cont.me_female_perticipent}}">
+                     <input type="number" class="form-control"  aria-describedby="emailHelp" placeholder="Me Female Perticipent" name="me_female_perticipent" id="mes_female_pert" value="{{cont.me_female_perticipent}}">
                      </div>
                      <div class="form-group col-md-3">
                          <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Me Total Perticipent</label>
-                         <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Me Total Perticipent " name="me_total_perticipent" value="{{cont.me_total_perticipent}}">
+                         <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Me Total Perticipent " name="me_total_perticipent" id="mes_total_pert" value="{{cont.me_total_perticipent}}" readonly>
                      </div>
                      <div class="form-group col-md-3">
                         <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Other Male Perticipent</label>
-                        <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Other Male Perticipent" name="other_male_perticipent" value="{{cont.other_male_perticipent}}">
+                        <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Other Male Perticipent" name="other_male_perticipent" id="other_male_pert" value="{{cont.other_male_perticipent}}">
                     </div>
 
                     <div class="form-group col-md-3">
                         <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Other Female Perticipent</label>
-                        <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Other Female Perticipent" name="other_female_perticipent" value="{{cont.other_female_perticipent}}"></input>
+                        <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Other Female Perticipent" name="other_female_perticipent" id="other_female_pert" value="{{cont.other_female_perticipent}}"></input>
                     </div>
 
                  </div>
@@ -289,11 +289,11 @@
 
                     <div class="form-group col-md-4">
                      <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Other Total Perticipent</label>
-                     <input type="number" class="form-control"  aria-describedby="emailHelp" placeholder="Other Total Perticipent" name="other_total_perticipent" value="{{cont.other_total_perticipent}}">
+                     <input type="number" class="form-control"  aria-describedby="emailHelp" placeholder="Other Total Perticipent" name="other_total_perticipent" id="other_total_pert" value="{{cont.other_total_perticipent}}" readonly>
                      </div>
                      <div class="form-group col-md-4">
                          <label for="exampleInputEmail1" class="text-left" style="float: left;margin-left:0.5rem">Total Perticipent</label>
-                         <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Total  Perticipent " name="total_perticipent" value="{{cont.total_perticipent}}">
+                         <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Total  Perticipent " name="total_perticipent" id="total_pert_all" value="{{cont.total_perticipent}}" readonly>
                      </div>
 
                      <div class="form-group col-md-4 text-center mt-3">

@@ -1,14 +1,52 @@
+from importlib.metadata import requires
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.db.models import Q,Sum,Avg
 
 from datetime import datetime
 from .models import *
+from django.http import Http404
+from functools import wraps
+
+
+
+def requires_procurement_perm(view):
+    @wraps(view)
+    def _view(request, *args, **kwargs):
+        if request.user.has_procurement_perm == False and request.user.is_admin == False:   
+            raise Http404
+        return view(request, *args, **kwargs)
+    return _view
+
+
+def requires_edit_perm(view):
+    @wraps(view)
+    def _view(request, *args, **kwargs):
+        if request.user.has_edit_perm == False and request.user.is_admin == False:  
+            raise Http404
+        return view(request, *args, **kwargs)
+    return _view
+
+
+def requires_delete_perm(view):
+    @wraps(view)
+    def _view(request, *args, **kwargs):
+        if request.user.has_delete_perm != True and request.user.is_admin != True:  
+            raise Http404
+        return view(request, *args, **kwargs)
+    return _view
+
 # create a django view
+
+@requires_procurement_perm
 def main_page(request):
     all_procurments_for_goods = procurement_plan_for_goods.objects.filter(organization=request.user.organization)
+
+    if request.user.is_officer == True:
+        all_procurments_for_goods = procurement_plan_for_goods.objects.filter(Q(user=request.user) & Q(organization=request.user.organization))
     return render(request, 'dashboard/index.html', {'all_procurments_for_goods': all_procurments_for_goods})
 
+@requires_procurement_perm
 def add_procurements_for_goods(request):
 
     if request.method == "GET":
@@ -44,13 +82,14 @@ def add_procurements_for_goods(request):
         return redirect('main_procurement_page')
 
 
-
+@requires_procurement_perm
 def procurement_details(request,pk):
     procurement_plan_for_goods_instance=procurement_plan_for_goods.objects.get(pk=pk)
     return render(request, 'procurements/procurement-details.html', {'procurement_data': procurement_plan_for_goods_instance})
 
 
-
+@requires_procurement_perm
+@requires_edit_perm
 def update_procurements_for_goods(request,pk):
     if request.method == "GET":
         sel_proc = procurement_plan_for_goods.objects.get(pk=pk)
@@ -83,7 +122,8 @@ def update_procurements_for_goods(request,pk):
 
         return redirect('main_procurement_page')
 
-
+@requires_procurement_perm
+@requires_delete_perm
 def delete_procurements_for_goods(request):
     if request.user.is_admin == True and request.method == "POST":
         getid = request.POST['procurementid']
@@ -91,7 +131,7 @@ def delete_procurements_for_goods(request):
         procurement_plan_for_goods_instance.delete()
         return JsonResponse({'status': 'deleted'})
 
-
+@requires_procurement_perm
 def summery_for_goods(request):
     if request.method == "GET":
         fromdate = request.GET.get('fromdate', datetime.today().strftime("%Y-%m-%d"))
@@ -139,7 +179,7 @@ def summery_for_goods(request):
         return render(request, 'procurements/procurement_for_goods_summery.html', datas)
 
 
-
+@requires_procurement_perm
 def add_procurements_for_services(request):
     if request.method == "GET":
         
@@ -176,14 +216,18 @@ def add_procurements_for_services(request):
     
 
 
-
+@requires_procurement_perm
 def procurement_list_for_services(request):
     if request.method == "GET":
         all_procurments_for_services = procurement_plan_for_services.objects.filter(organization=request.user.organization)
+        if request.user.is_officer == True:
+            all_procurments_for_services = procurement_plan_for_services.objects.filter(Q(organization=request.user.organization) & Q(user=request.user))
         return render(request, 'procurements/procurement_list_for_services.html',{'all_procurments_for_services':all_procurments_for_services})
 
 
 
+@requires_procurement_perm
+@requires_edit_perm
 def update_procurements_for_services(request,pk):
     if request.method == "GET":
         procurement_id = int(pk)
@@ -220,14 +264,15 @@ def update_procurements_for_services(request,pk):
         return redirect('procurement_list_for_services')
 
 
-
+@requires_procurement_perm
 def procurement_details_for_services(request,pk):
     procurement_plan_for_services_instance=procurement_plan_for_services.objects.get(pk=pk)
     return render(request, 'procurements/procurement_details_for_services.html', {'procurement_data': procurement_plan_for_services_instance})
 
 
 
-
+@requires_procurement_perm
+@requires_delete_perm
 def delete_procurements_for_service(request):
     if request.user.is_admin == True and request.method == "POST":
         getid = request.POST['procurementid']
@@ -235,7 +280,7 @@ def delete_procurements_for_service(request):
         procurement_plan_for_service_instance.delete()
         return JsonResponse({'status': 'deleted'})
 
-
+@requires_procurement_perm
 def summery_for_services(request):
     if request.method == "GET":
         fromdate = request.GET.get('fromdate', datetime.today().strftime("%Y-%m-%d"))
@@ -319,15 +364,18 @@ def add_procurements_for_work(request):
         procurement_plan_for_work_instance.save()
         return redirect('procurement_list_for_work')
 
-
+@requires_procurement_perm
 def procurement_list_for_work(request):
      if request.method == "GET":
         all_procurments_for_work = procurement_plan_for_work.objects.filter(organization=request.user.organization)
+        if request.user.is_officer == True:
+            all_procurments_for_work = procurement_plan_for_work.objects.filter(Q(organization=request.user.organization) & Q(user=request.user))
         return render(request, 'procurements/procurement_list_for_work.html',{'all_procurments_for_work':all_procurments_for_work})
 
 
 
-
+@requires_procurement_perm
+@requires_edit_perm
 def update_procurements_for_work(request,pk):
     if request.method == "GET":
         sel_proc = procurement_plan_for_work.objects.get(pk=int(pk))
@@ -361,14 +409,15 @@ def update_procurements_for_work(request,pk):
         return redirect('procurement_list_for_work')
 
 
-
+@requires_procurement_perm
 def procurement_details_for_work(request,pk):
     procurement_plan_for_goods_instance=procurement_plan_for_work.objects.get(pk=pk)
     return render(request, 'procurements/procurement_details_for_work.html', {'procurement_data': procurement_plan_for_goods_instance})
 
 
 
-
+@requires_procurement_perm
+@requires_delete_perm
 def delete_procurements_for_work(request):
     if request.user.is_admin == True and request.method == "POST":
         getid = request.POST['procurementid']
@@ -379,7 +428,7 @@ def delete_procurements_for_work(request):
 
 
 
-
+@requires_procurement_perm
 def summery_for_work(request):
     if request.method == "GET":
         fromdate = request.GET.get('fromdate', datetime.today().strftime("%Y-%m-%d"))

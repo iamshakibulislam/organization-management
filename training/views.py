@@ -5,7 +5,39 @@ from django.shortcuts import redirect, render
 from django.contrib import messages
 from .models import *
 from .models import category as cats
+from django.db.models import Q
+from django.http import Http404
+from functools import wraps
 
+def requires_training_perm(view):
+    @wraps(view)
+    def _view(request, *args, **kwargs):
+        if request.user.has_training_perm != True and request.user.is_admin != True:   
+            raise Http404
+        return view(request, *args, **kwargs)
+    return _view
+
+
+def requires_edit_perm(view):
+    @wraps(view)
+    def _view(request, *args, **kwargs):
+        if request.user.has_edit_perm != True and request.user.is_admin != True:  
+            raise Http404
+        return view(request, *args, **kwargs)
+    return _view
+
+
+def requires_delete_perm(view):
+    @wraps(view)
+    def _view(request, *args, **kwargs):
+        if request.user.has_delete_perm != True and request.user.is_admin != True:  
+            raise Http404
+        return view(request, *args, **kwargs)
+    return _view
+
+
+
+@requires_training_perm
 def add_training(request):
     if request.method == "GET":
         cat = cats.objects.filter(organization=request.user.organization)
@@ -117,14 +149,18 @@ def add_training(request):
 
 
 
-
+@requires_training_perm
 def training_list(request):
     if request.method == 'GET':
         training_list = training.objects.filter(organization=request.user.organization) 
+
+        if request.user.is_officer == True:
+            training_list = training.objects.filter(Q(organization=request.user.organization) & Q(user=request.user))
        
         return render(request, 'training/training_list.html', {'training_list':training_list})
 
-
+@requires_training_perm
+@requires_edit_perm
 def training_edit(request,pk):
     if request.method == 'GET':
         sel_cat = cats.objects.filter(organization=request.user.organization)
@@ -254,13 +290,14 @@ def add_training_category(request):
         messages.success(request, 'Category Added Successfully')
         return redirect('add_training_category')
 
-
+@requires_training_perm
 def training_details(request,pk):
     if request.method == 'GET':
         sel_training = training.objects.get(id=int(pk))
         return render(request, 'training/training_details.html',{'procurement_data':sel_training})
 
-
+@requires_training_perm
+@requires_delete_perm
 def training_delete(request):
     if request.method == "POST":
         get_id = request.POST.get('procurement_id')

@@ -297,7 +297,7 @@
 							<!--Nav-->
 							<nav class="horizontalMenu clearfix">
 								<ul class="horizontalMenu-list">
-									{% if not "procurements" in request.path %}
+									{% if request.user.is_admin or request.user.is_moderator or request.user.has_tour_perm %}
 									<li aria-haspopup="true"><a href="{% url 'home' %}"><i class="fe fe-home"></i> Dashboard</a></li>
 
 									<li aria-haspopup="true"><a href="{% url 'tour' %}"><i class="fa fa-bus"></i>
@@ -306,12 +306,12 @@
 									<li aria-haspopup="true"><a href="{% url  'tourmanagement' %}"><i class="fa fa-bus"></i>
 									Tour Management</a></li>
 
+									
+
+									
 									{% endif %}
-
+									{% if request.user.is_admin or request.user.is_moderator or request.user.has_procurement_perm  %}
 									<li aria-haspopup="true"><a href="{% url 'main_procurement_page' %}"><i class="fa fa-sitemap"></i> Procurement Home</a></li>
-
-									{% if "procurements" in request.path %}
-
 									<!--here all the procurements tabs go there -->
 									<li aria-haspopup="true"><a href="index.html" class="sub-icon"><i class="fe fe-globe"></i> Add Procurement Data  <i class="fa fa-angle-down horizontal-icon"></i></a>
 										<ul class="sub-menu">
@@ -331,7 +331,7 @@
 									</li>
 
 									{% endif %}
-										{% if request.user.is_admin == 1 and "procurements" not in request.path %}
+										{% if request.user.is_admin == 1  %}
 
 									<li aria-haspopup="true"><a href="#" class="sub-icon"><i class="fe fe-globe"></i>Add Information <i class="fa fa-angle-down horizontal-icon"></i></a>
 										<ul class="sub-menu">
@@ -344,8 +344,11 @@
 
 									{% endif %}
 
+									{% if request.user.is_admin or request.user.is_moderator or request.user.has_training_perm %}
+
 									<li aria-haspopup="true"><a href="{% url 'training_list' %}"><i class="fas fa-user-graduate"></i> Training Home</a></li>
 									<li aria-haspopup="true"><a href="{% url 'add_training' %}"><i class="fas fa-user-graduate"></i>  Add Training</a></li>
+									{% endif %}
 
 
 
@@ -448,9 +451,29 @@
 			//starting ajax operation
 
 			$(document).ready(function(){
+				var has_tour_perm = 0;
+				var has_procurement_perm = 0;
+				var has_training_perm = 0;
+				var has_edit_perm = 0;
+				var has_delete_perm = 0;
 				$('#memberAddForm').on('submit',function(event){
 				event.preventDefault();
 				var role = $('#role').val();
+				if($("#has_tour_perm").is(':checked')){
+					has_tour_perm = 1;};
+
+				if($("#has_procurement_perm").is(':checked')){
+					has_procurement_perm = 1;};
+
+				if($("#has_training_perm").is(':checked')){
+					has_training_perm = 1;};
+
+				if($("#has_edit_perm").is(':checked')){
+					has_edit_perm = 1;};
+				
+				if($("#has_delete_perm").is(':checked')){
+					has_delete_perm = 1;};
+
 				if(role==''){alert('Role can not be blank !');return false;};
 				$('#save').text('Please wait .......');
 				$.ajax({
@@ -460,7 +483,14 @@
 			      		'email' : $('#email').val(),
 			      		'role' :role,
 			      		'password':$('#password').val(),
-			      		'phone':$('#phone').val()
+			      		'phone':$('#phone').val(),
+						'has_tour_perm':has_tour_perm,
+						'has_procurement_perm':has_procurement_perm,
+						'has_training_perm':has_training_perm,
+						'has_edit_perm':has_edit_perm,
+						'has_delete_perm':has_delete_perm,
+
+		
 
 			  		},
 			      type:'GET',
@@ -491,9 +521,16 @@
 
 
 			$(document).ready(function(){
+				var has_tour_perm_get = 0;
+				var has_procurement_perm_get = 0;
+				var has_training_perm_get = 0;
+				var has_edit_perm_get = 0;
+				var has_delete_perm_get = 0;
 				$('.editbtn').on('click',function(){
 				//event.preventDefault();
 				var role = $('#role_edit').val();
+
+				
 				
 				$('#save_edit').text('Please wait .......');
 				$.ajax({
@@ -503,7 +540,9 @@
 			      		'email' : $('#email_edit').val(),
 			      		'role' :role,
 			      		'password':$('#password_edit').val(),
-			      		'phone':$('#phone_edit').val()
+			      		'phone':$('#phone_edit').val(),
+						
+						
 
 			  		},
 			      type:'GET',
@@ -521,6 +560,27 @@
 			    			$('#email_edit').val(result.userdata.email);
 			    			$('#phone_edit').val(result.userdata.phone);
 			    			$('#useridinform').val(result.userdata.id);
+							has_tour_perm_get = result.userdata.has_tour_perm;
+							has_procurement_perm_get = result.userdata.has_procurement_perm;
+							has_training_perm_get = result.userdata.has_training_perm;
+							has_edit_perm_get = result.userdata.has_edit_perm;
+							has_delete_perm_get = result.userdata.has_delete_perm;
+							if(result.userdata.has_tour_perm == 1){
+								$('#has_tour_perm_edit').prop('checked',true);
+							}
+							if(result.userdata.has_procurement_perm == 1){
+								$('#has_procurement_perm_edit').prop('checked',true);
+							}
+							if(result.userdata.has_training_perm == 1){
+								$('#has_training_perm_edit').prop('checked',true);
+							}
+							if(result.userdata.has_edit_perm == 1){
+								$('#has_edit_perm_edit').prop('checked',true);
+							}
+							if(result.userdata.has_delete_perm == 1){
+								$('#has_delete_perm_edit').prop('checked',true);
+							}
+
 
 			    			if(result.userdata.role == "Administrator"){
 
@@ -552,9 +612,33 @@
 
 			
 			$(document).ready(function(){
+				var has_tour_perm_edit = 0;
+				var has_procurement_perm_edit = 0;
+				var has_training_perm_edit = 0;
+				var has_edit_perm_edit = 0;
+				var has_delete_perm_edit = 0;
+
+
+
 				$('#editMemberForm').on('submit',function(event){
 				event.preventDefault();
 				var role = $('#role_edit').val();
+				
+				if($("#has_tour_perm_edit").is(':checked')){
+					has_tour_perm_edit = 1;};
+
+				if($("#has_procurement_perm_edit").is(':checked')){
+					has_procurement_perm_edit = 1;};
+
+				if($("#has_training_perm_edit").is(':checked')){
+					has_training_perm_edit = 1;};
+
+				if($("#has_edit_perm_edit").is(':checked')){
+					has_edit_perm_edit = 1;};
+				
+				if($("#has_delete_perm_edit").is(':checked')){
+					has_delete_perm_edit = 1;};
+				
 				if(role==''){alert('Role can not be blank !');return false;};
 				$('#save_edit').text('Please wait .......');
 				$.ajax({
@@ -566,7 +650,12 @@
 			      		//'password':$('#password').val(),
 			      		'phone_edit':$('#phone_edit').val(),
 			      		'csrfmiddlewaretoken':$('[name="csrfmiddlewaretoken"]').val(),
-			      		'userid':$('#useridinform').val()
+			      		'userid':$('#useridinform').val(),
+						'has_tour_perm_edit':has_tour_perm_edit,
+						'has_procurement_perm_edit':has_procurement_perm_edit,
+						'has_training_perm_edit':has_training_perm_edit,
+						'has_edit_perm_edit':has_edit_perm_edit,
+						'has_delete_perm_edit':has_delete_perm_edit
 
 			  		},
 			      type:'POST',
@@ -592,7 +681,7 @@
 			});
 
 
-			//ending editing functionality of memers
+			//ending editing functionality of members
 
 
 			//deleteing members functionality starts here
@@ -1018,8 +1107,87 @@ $("#file_input").withDropZone("#drop_zone", {
 </script>
 
 
+<!-- starting auto calculation of perticipents-->
+
+<script>
+	$(document).ready(function(){
+	$("#male_pert").keyup(function(){
+		var male_pert = $("#male_pert").val();
+		var female_pert = $("#female_pert").val();
+		$("#total_pert").val(Number(male_pert)+Number(female_pert));
+		var totalp = Number($('#total_pert').val())+ Number($('#mes_total_pert').val()) + Number($('#other_total_pert').val());
+		
+
+		$('#total_pert_all').val(totalp);
+
+	}) ;
+
+	$("#female_pert").keyup(function(){
+		var male_pert = $("#male_pert").val();
+		var female_pert = $("#female_pert").val();
+		$("#total_pert").val(Number(male_pert)+Number(female_pert));
+
+		var totalp = Number($('#total_pert').val())+ Number($('#mes_total_pert').val()) + Number($('#other_total_pert').val());
+
+		$('#total_pert_all').val(totalp);
+
+	}) ;
 
 
+	$("#mes_male_pert").keyup(function(){
+		var mes_male_pert = $("#mes_male_pert").val();
+		var mes_female_pert = $("#mes_female_pert").val();
+		$("#mes_total_pert").val(Number(mes_male_pert)+Number(mes_female_pert));
+		var totalp = Number($('#total_pert').val())+ Number($('#mes_total_pert').val()) + Number($('#other_total_pert').val());
+
+		$('#total_pert_all').val(totalp);
+
+	}) ;
+
+
+	$("#mes_female_pert").keyup(function(){
+		var mes_male_pert = $("#mes_male_pert").val();
+		var mes_female_pert = $("#mes_female_pert").val();
+		$("#mes_total_pert").val(Number(mes_male_pert)+Number(mes_female_pert));
+
+		var totalp = Number($('#total_pert').val())+ Number($('#mes_total_pert').val()) + Number($('#other_total_pert').val());
+
+		$('#total_pert_all').val(totalp);
+
+	}) ;
+
+
+
+
+	$("#other_male_pert").keyup(function(){
+		var other_male_pert = $("#other_male_pert").val();
+		var other_female_pert = $("#other_female_pert").val();
+		$("#other_total_pert").val(Number(other_male_pert)+Number(other_female_pert));
+		var totalp = Number($('#total_pert').val())+ Number($('#mes_total_pert').val()) + Number($('#other_total_pert').val());
+
+		$('#total_pert_all').val(totalp);
+
+	}) ;
+
+
+	$("#other_female_pert").keyup(function(){
+		var other_male_pert = $("#other_male_pert").val();
+		var other_female_pert = $("#other_female_pert").val();
+		$("#other_total_pert").val(Number(other_male_pert)+Number(other_female_pert));
+
+		var totalp = Number($('#total_pert').val())+ Number($('#mes_total_pert').val()) + Number($('#other_total_pert').val());
+
+		$('#total_pert_all').val(totalp);
+	}) ;
+
+
+})
+	   
+</script>
+
+
+
+<!-- ending auto calculation of perticipents-->
 <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
 
 <script>

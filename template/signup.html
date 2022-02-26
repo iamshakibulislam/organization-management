@@ -13,7 +13,7 @@
 											{% endif %}
 											{% if success %}
 
-											<div class="alert alert-dark text-white">Account has been created ! please <a href="{% url 'login' %}" class="text-success"> Login</a> </div><br/>
+											<div class="alert alert-dark text-white">Account has been created ! please <a href="{% url 'index_page' %}" class="text-success"> Login</a> </div><br/>
 
 											{% endif %}
 											<form action="{% url 'signup'  %}" id="frmSignUp" method="post" class="needs-validation">
