@@ -140,7 +140,9 @@
 													<th class="bg-transparent border-bottom-0">Join Date</th>
 													<th class="bg-transparent border-bottom-0">Role</th>
 													<th class="bg-transparent border-bottom-0">email</th>
+													{% if request.user.has_tour_perm %}
 													<th class="bg-transparent border-bottom-0">Tour In 3 Months?</th>
+													{% endif %}
 													{% if request.user.is_admin == 1 or request.user.is_moderator == 1 %}
 													<th class="bg-transparent border-bottom-0">Action</th>
 
@@ -173,11 +175,14 @@
 															{% endif %}
 														</td>
 														<td class="text-success fs-15 fw-semibold">{{cont.email}}</td>
+														{% if request.user.has_tour_perm %}
 														{% if cont.tour_in_three_months %}
 														<td class="text-success fs-15 fw-semibold">YES</td>
 
 														{% else %}
 														<td class="text-danger fs-15 fw-semibold">NO</td>
+
+														{% endif %}
 
 														{% endif %}
 														

@@ -302,11 +302,14 @@ def tourmanagement(request):
 			pass
 		get_tour = TourManagement.objects.filter(organization = request.user.organization)
 
+		if request.user.is_officer == True:
+			get_tour = TourManagement.objects.filter(Q(tour_members = request.user) & Q(organization = request.user.organization))
+
 		if(request.user.is_officer == True and from_date != '' and to_date != ''):
-			get_tour = TourManagement.objects.filter(Q(tour_members = request.user) & Q(date__gte=from_date) & Q(date__lte=to_date))
+			get_tour = TourManagement.objects.filter(Q(tour_members = request.user) & Q(organization=request.user.organization) & Q(date__gte=from_date) & Q(date__lte=to_date))
 
 		elif request.user.is_officer == True and from_date=='' and to_date=='':
-			get_tour = TourManagement.objects.filter(Q(tour_members = request.user))
+			get_tour = TourManagement.objects.filter(Q(tour_members = request.user) & Q(organization=request.user.organization))
 
 		else:
 			pass
