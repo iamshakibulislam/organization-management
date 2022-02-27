@@ -157,6 +157,25 @@ def addMember(request):
 			has_edit_perm=has_edit_perm,
 			has_delete_perm=has_delete_perm)
 
+		if(role == 'PO User'):
+			User.objects.create_user(first_name=first_name,
+			last_name=last_name,
+			email=email,
+			is_officer=False,
+			is_moderator=False,
+			is_admin=False,
+			is_po_user=True,
+			password=password,
+			organization=request.user.organization,
+			phone=phone,
+			added_by_user_id=request.user.id,
+			has_tour_perm=has_tour_perm,
+			has_procurement_perm=has_procurement_perm,
+			has_training_perm=has_training_perm,
+			has_edit_perm=has_edit_perm,
+			has_delete_perm=has_delete_perm)
+
+
 
 
 		return JsonResponse({'status':'user created'})

@@ -52,6 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
       is_moderator=models.BooleanField(default=False)
       is_officer=models.BooleanField(default=False)
       is_admin=models.BooleanField(default=True)
+      is_po_user=models.BooleanField(default=False)
       is_active=models.BooleanField(default=True)
       is_staff = models.BooleanField(default=False)
       added_by_user_id = models.IntegerField(default=0)

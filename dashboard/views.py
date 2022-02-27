@@ -67,6 +67,9 @@ def home(request):
 
 			elif mem.is_moderator == 1:
 				role = "Moderator"
+			
+			elif mem.is_po_user == 1:
+				role = "PO User"
 
 			
 			three_months_status = False
@@ -108,6 +111,9 @@ def edit_members(request):
 
 		if sel_user.is_moderator == True:
 			role = 'Moderator'
+
+		if sel_user.is_po_user == True:
+			role = 'PO User'
 
 		user_data={'first_name':sel_user.first_name,
 		'last_name':sel_user.last_name,
