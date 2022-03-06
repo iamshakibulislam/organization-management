@@ -43,7 +43,7 @@ def requires_delete_perm(view):
 
 @login_required(login_url = '/users/login/')
 def home(request):
-	if(request.method == 'GET'):
+	if(request.method == 'GET') and (request.user.is_admin == True or request.user.is_moderator == True):
 
 		all_members =0
 		members = User.objects.filter(Q(organization=request.user.organization))
@@ -81,7 +81,8 @@ def home(request):
 
 			member_data.append({'id':mem.id,'email':mem.email,
 				'first_name':mem.first_name,'last_name':mem.last_name,
-				'join_date':mem.join_date,'role':role,'tour_in_three_months':three_months_status,'profile_picture':mem.profile_picture.url})
+				'join_date':mem.join_date,'role':role,'tour_in_three_months':three_months_status,'profile_picture':mem.profile_picture.url,
+				'is_active':mem.is_active})
 
 		context = {
 				'all_members':member_data,
@@ -92,6 +93,10 @@ def home(request):
 				}
 
 		return render(request,'dashboard/index.html',context)
+
+	
+	else:
+		raise Http404
 
 
 def edit_members(request):
@@ -194,6 +199,12 @@ def edit_members(request):
 			sel_user.is_officer = False
 			sel_user.is_moderator = True
 			sel_user.is_admin = False
+
+		if(role == "PO User"):
+			sel_user.is_officer = False
+			sel_user.is_moderator = False
+			sel_user.is_admin = False
+			sel_user.is_po_user = True
 
 
 
@@ -608,3 +619,238 @@ def get_logs(request,pk):
 
 
 
+def approve_member(request,pk):
+	if request.method == "GET":
+		if request.user.is_admin == False:
+			return JsonResponse({'status':'not admin'})
+
+		else:
+			sel_mem = User.objects.get(id=int(pk))
+			sel_mem.is_approved = True
+			sel_mem.is_active = True
+			sel_mem.save()
+
+			return redirect('home')
+
+
+
+
+@login_required(login_url = '/')
+def get_tour_users(request):
+	if(request.method == 'GET'):
+
+		all_members =0
+		members = User.objects.filter(Q(organization=request.user.organization))
+		officers_total = len(members.filter(is_officer=True))
+		moderators_total = len(members.filter(is_moderator=True))
+		admin_total = len(members.filter(is_admin=True))
+
+
+		if len(members) != 0:
+			all_members=members
+		member_data = []
+
+		for mem in members:
+
+			role = ""
+
+			if mem.is_admin == 1:
+				role = "Administrator"
+			elif mem.is_officer == 1:
+				role = "Officer"
+
+			elif mem.is_moderator == 1:
+				role = "Moderator"
+			
+			elif mem.is_po_user == 1:
+				role = "PO User"
+
+			
+			three_months_status = False
+			check_tour = len(TourManagement.objects.filter(Q(date__gte=datetime.now()-timedelta(days=92)) & Q(tour_members=mem)))
+
+			if check_tour > 0:
+				three_months_status = True
+
+
+			member_data.append({'id':mem.id,'email':mem.email,
+				'first_name':mem.first_name,'last_name':mem.last_name,
+				'join_date':mem.join_date,'role':role,'tour_in_three_months':three_months_status,'profile_picture':mem.profile_picture.url,
+				'is_active':mem.is_active,'has_tour_perm':mem.has_tour_perm})
+
+		context = {
+				'all_members':member_data,
+				'total_members':len(members),
+				'total_officers':officers_total,
+				'total_moderators':moderators_total,
+				'administrators_total':admin_total
+				}
+
+		return render(request,'dashboard/tour_users.html',context)
+
+
+
+@login_required(login_url = '/')
+def get_procurement_users(request):
+	if(request.method == 'GET'):
+
+		all_members =0
+		members = User.objects.filter(Q(organization=request.user.organization))
+		officers_total = len(members.filter(is_officer=True))
+		moderators_total = len(members.filter(is_moderator=True))
+		admin_total = len(members.filter(is_admin=True))
+
+
+		if len(members) != 0:
+			all_members=members
+		member_data = []
+
+		for mem in members:
+
+			role = ""
+
+			if mem.is_admin == 1:
+				role = "Administrator"
+			elif mem.is_officer == 1:
+				role = "Officer"
+
+			elif mem.is_moderator == 1:
+				role = "Moderator"
+			
+			elif mem.is_po_user == 1:
+				role = "PO User"
+
+			
+			three_months_status = False
+			check_tour = len(TourManagement.objects.filter(Q(date__gte=datetime.now()-timedelta(days=92)) & Q(tour_members=mem)))
+
+			if check_tour > 0:
+				three_months_status = True
+
+
+			member_data.append({'id':mem.id,'email':mem.email,
+				'first_name':mem.first_name,'last_name':mem.last_name,
+				'join_date':mem.join_date,'role':role,'tour_in_three_months':three_months_status,'profile_picture':mem.profile_picture.url,
+				'is_active':mem.is_active,'has_tour_perm':mem.has_tour_perm,'has_procurement_perm':mem.has_procurement_perm})
+
+		context = {
+				'all_members':member_data,
+				'total_members':len(members),
+				'total_officers':officers_total,
+				'total_moderators':moderators_total,
+				'administrators_total':admin_total
+				}
+
+		return render(request,'dashboard/procurement_users.html',context)
+
+
+
+
+
+
+@login_required(login_url = '/')
+def get_training_users(request):
+	if(request.method == 'GET'):
+
+		all_members =0
+		members = User.objects.filter(Q(organization=request.user.organization))
+		officers_total = len(members.filter(is_officer=True))
+		moderators_total = len(members.filter(is_moderator=True))
+		admin_total = len(members.filter(is_admin=True))
+
+
+		if len(members) != 0:
+			all_members=members
+		member_data = []
+
+		for mem in members:
+
+			role = ""
+
+			if mem.is_admin == 1:
+				role = "Administrator"
+			elif mem.is_officer == 1:
+				role = "Officer"
+
+			elif mem.is_moderator == 1:
+				role = "Moderator"
+			
+			elif mem.is_po_user == 1:
+				role = "PO User"
+
+			
+			three_months_status = False
+			check_tour = len(TourManagement.objects.filter(Q(date__gte=datetime.now()-timedelta(days=92)) & Q(tour_members=mem)))
+
+			if check_tour > 0:
+				three_months_status = True
+
+
+			member_data.append({'id':mem.id,'email':mem.email,
+				'first_name':mem.first_name,'last_name':mem.last_name,
+				'join_date':mem.join_date,'role':role,'tour_in_three_months':three_months_status,'profile_picture':mem.profile_picture.url,
+				'is_active':mem.is_active,'has_tour_perm':mem.has_tour_perm,'has_procurement_perm':mem.has_procurement_perm,'has_training_perm':mem.has_training_perm})
+
+		context = {
+				'all_members':member_data,
+				'total_members':len(members),
+				'total_officers':officers_total,
+				'total_moderators':moderators_total,
+				'administrators_total':admin_total
+				}
+
+		return render(request,'dashboard/training_users.html',context)
+
+
+@login_required(login_url = '/')
+def get_po_users(request):
+	if(request.method == 'GET'):
+
+		all_members =0
+		members = User.objects.filter(Q(organization=request.user.organization))
+		officers_total = len(members.filter(is_officer=True))
+		moderators_total = len(members.filter(is_moderator=True))
+		admin_total = len(members.filter(is_admin=True))
+
+
+		if len(members) != 0:
+			all_members=members
+		member_data = []
+
+		for mem in members:
+
+			role = ""
+
+			if mem.is_admin == 1:
+				role = "Administrator"
+			elif mem.is_officer == 1:
+				role = "Officer"
+
+			elif mem.is_moderator == 1:
+				role = "Moderator"
+			
+			elif mem.is_po_user == 1:
+				role = "PO User"
+
+			
+			three_months_status = False
+			check_tour = len(TourManagement.objects.filter(Q(date__gte=datetime.now()-timedelta(days=92)) & Q(tour_members=mem)))
+
+			if check_tour > 0:
+				three_months_status = True
+
+
+			member_data.append({'id':mem.id,'email':mem.email,
+				'first_name':mem.first_name,'last_name':mem.last_name,
+				'join_date':mem.join_date,'role':role,'tour_in_three_months':three_months_status,'profile_picture':mem.profile_picture.url,
+				'is_active':mem.is_active,'has_tour_perm':mem.has_tour_perm,'has_procurement_perm':mem.has_procurement_perm,'has_training_perm':mem.has_training_perm,'is_po_user':mem.is_po_user})
+
+		context = {
+				'all_members':member_data,
+				'total_members':len(members),
+				'total_officers':officers_total,
+				'total_moderators':moderators_total,
+				'administrators_total':admin_total
+				}
+
+		return render(request,'dashboard/po_users.html',context)

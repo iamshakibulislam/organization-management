@@ -1,0 +1,211 @@
+
+{% extends 'base_file/base_dashboard.html' %}
+{% block title %} Tour Members {% endblock title %}
+{% block content %}
+
+<div class="row mt-4">
+    <div class="col-12 col-sm-12">
+        <div class="card ">
+            <div class="card-header">
+                <h3 class="card-title mb-0">Training Members</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="tableone" class="table datatabletwo table-bordered text-nowrap mb-0">
+                        <thead class="border-top">
+                        <tr>
+                            
+                            <th class="bg-transparent border-bottom-0">Name</th>
+                            <th class="bg-transparent border-bottom-0">Join Date</th>
+                            <th class="bg-transparent border-bottom-0">Role</th>
+                            <th class="bg-transparent border-bottom-0">email</th>
+                           
+                            
+                           
+                            {% if request.user.is_admin == 1 or request.user.is_moderator == 1 %}
+                            <th class="bg-transparent border-bottom-0">Action</th>
+
+                            {% endif %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% if context.all_members != 0 %}
+
+                            {% for cont in all_members %}
+
+                            {% if cont.has_training_perm  %}
+                            <tr class="border-bottom">
+                                
+                                <td>
+                                    <div class="d-flex">
+                                        <span class="avatar avatar-md brround mt-1" style="background-image: url({{cont.profile_picture}})"></span>
+                                        <div class="ms-2 mt-0 mt-sm-2 d-block">
+                                            <h6 class="mb-0 fs-14 fw-semibold">{{cont.first_name }} {{cont.last_name}}  </h6>
+                                            
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-muted fs-15 fw-semibold">{{cont.join_date}} </td>
+                                <td class="text-muted fs-15 fw-semibold">
+                                    
+                                    {% if cont.role %}
+                                    {{cont.role}}
+
+                                    
+
+                                    {% endif %}
+                                </td>
+                                <td class="text-success fs-15 fw-semibold">{{cont.email}}</td>
+                               
+                               
+
+                               
+                                
+
+                                <td class="d-flex justify-content-between">
+                                    {% if request.user.is_admin == 1  %}
+                                    <a class="btn btn-primary btn-sm rounded-11 me-2 editbtn" memberid="{{cont.id}}" data-bs-target="#editMemberModal" data-bs-toggle="modal"> <i memberid="{{cont.id}}"><svg class="table-edit" xmlns="http://www.w3.org/2000/svg" memberid="{{cont.id}}" height="20" viewBox="0 0 24 24" width="16"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19zM20.71 5.63l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41z"/></svg></i></a>
+
+                                    {% endif %}
+
+                                {% if request.user.is_admin == 1 or request.user.is_moderator == 1 %}
+
+                                    <a class="btn btn-success" href="{% url 'tourmanagement' %}?user={{cont.id}}">History</a>
+
+                                    {% endif %}
+
+                                    {% if request.user.is_admin == 1 %}
+
+                                    <a class="btn btn-danger btn-sm rounded-11 deletebtn ml-1" memberid="{{cont.id}}"  data-bs-target="#membersDeleteModal" data-bs-toggle="modal" data-bs-original-title="Delete"><i memberid="{{cont.id}}" ><svg memberid="{{cont.id}}"  class="table-delete ml-1" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="16"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5z"/></svg></i></a>
+
+                                    {% endif %}
+                                </td>
+
+                                
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+
+                            {% endif %}
+                            
+                        </tbody>
+                    </table>
+
+
+                    
+                </div>
+            </div>
+        </div>
+    </div><!-- COL END -->
+</div><!-- ROW-5 END -->
+
+
+
+<!-- startinig editing modals -->
+    
+<div class="modal fade"  id="editMemberModal">
+    <div class="modal-dialog modal-dialog-centered text-center" role="document">
+<div class="modal-content modal-content-demo">
+    <div class="modal-header">
+        <h6 class="modal-title">Edit member</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
+    </div>
+    <form class="form" id="editMemberForm" method="post" action="#">
+    <div class="modal-body">
+        
+            {% csrf_token %}
+                
+                    <div class="form-group">
+                        
+                        <input type="text" class="form-control" name="first_name" id="first_name_edit"
+                        placeholder="Enter First Name" required />
+                    </div>
+                    <div class="form-group">
+                        
+                        <input type="text" class="form-control" name="last_name" id="last_name_edit" placeholder="Enter Last Name" required />
+                    </div>
+                    <div class="form-group">
+                        
+                        <input type="email" class="form-control" name="email" id="email_edit"
+                        placeholder="Enter Email" required />
+                    </div>
+
+                    <div class="form-group">
+                        
+                        <input type="phone" class="form-control" name="phone" id="phone_edit"
+                        placeholder="Enter Phone Number" required />
+                    </div>
+                    <div class="form-group">
+                    
+                    <select class="form-select" id="role_edit" name="role" required>
+                    
+                      <option value="Administrator">Administrator</option>
+                      <option value="Officer">Officer</option>
+                      <option value="Moderator">Moderator</option>
+                      <option value="PO User">PO User</option>
+                      
+                    </select>
+
+                  </div>
+
+                  <div class="form-group">
+                      <label>User Module Permissions</label><br>
+                    <label class="checkbox-inline" style="margin-right:1rem;">
+                        <input type="checkbox" id="has_tour_perm_edit" class=" mr-2 ml-2" style="margin-left:1rem;margin-right:0.5rem" value="has_tour_perm">Tour Module
+                      </label>
+                      <label class="checkbox-inline" style="margin-right:1rem;">
+                        <input type="checkbox" id="has_training_perm_edit" class="mr-2 ml-2" style="margin-left:1rem;margin-right:0.5rem" value="has_training_perm">Training Module
+                      </label>
+                      <label class="checkbox-inline" style="margin-right:1rem;">
+                        <input type="checkbox" id="has_procurement_perm_edit" class=" mr-2 ml-2" style="margin-left:1rem;margin-right:0.5rem" value="has_procurement_perm">Procurement Perm
+                      </label>
+                  </div>
+
+                  <div class="form-group mt-4">
+                    <label>User Action Permissions</label><br>
+                  <label class="checkbox-inline" style="margin-right:1rem;">
+                      <input type="checkbox" id="has_edit_perm_edit" class=" mr-2 ml-2" style="margin-left:1rem;margin-right:0.5rem" value="has_edit_perm">Can Edit
+                    </label>
+                    <label class="checkbox-inline" style="margin-right:1rem;">
+                      <input type="checkbox" id="has_delete_perm_edit" class="mr-2 ml-2" style="margin-left:1rem;margin-right:0.5rem" value="has_delete_perm">Can Delete
+                    </label>
+                    
+                </div>
+                  <input type="hidden" name="userid" id="useridinform"/>
+                  
+            
+                    
+                
+            
+        
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" id="save_edit">Save changes </button> 
+        <a class="btn btn-danger text-white" data-bs-dismiss="modal" >Close</a>
+    </div></form>
+</div>
+</div>
+</div>
+
+<!-- ending editing modals -->
+
+
+<!--starting deleting members modal -->
+
+<div class="modal fade"  id="membersDeleteModal">
+<div class="modal-dialog modal-dialog-centered text-center" role="document">
+<div class="modal-content tx-size-sm">
+    <div class="modal-body text-center p-4">
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
+        
+        <i class="fas fs-65 fa-exclamation-triangle lh-1 mb-4 d-inline-block text-danger"></i>
+        <h3 class="text-danger">Are you sure ?</h3>
+        {% csrf_token %}
+        <p class="mg-b-20 mg-x-20 text-danger">you are about to delete a member from the organization</p><button aria-label="Close" class="btn btn-info pd-x-25 m-4" id="confirmbtn">Confirm delete</button><button aria-label="Close" class="btn btn-danger pd-x-25 ml-4" data-bs-dismiss="modal" >Close</button>
+    </div>
+</div>
+</div>
+</div>
+
+<!-- ending deleting members modal -->
+
+{% endblock content %}

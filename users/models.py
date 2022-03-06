@@ -50,6 +50,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
       email = models.EmailField(max_length=255, unique=True, db_index=True)
       is_moderator=models.BooleanField(default=False)
+      is_approved = models.BooleanField(default=True)
       is_officer=models.BooleanField(default=False)
       is_admin=models.BooleanField(default=True)
       is_po_user=models.BooleanField(default=False)
@@ -60,7 +61,7 @@ class User(AbstractBaseUser, PermissionsMixin):
       address = models.CharField(max_length=500,default='',blank=True,null=True)
       profile_picture = models.ImageField(upload_to='profile_pictures/',default='profile_pictures/profile.jpg',blank=True,null=True)
       
-      phone = models.CharField(max_length=22,null=True)
+      phone = models.CharField(max_length=22,null=True,blank=True)
       created_at = models.DateTimeField(auto_now_add=True)
       updated_at=models.DateTimeField(auto_now=True)
 

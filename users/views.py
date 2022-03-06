@@ -7,6 +7,7 @@ import json
 
 from django.http import JsonResponse
 
+
 def signup(request):
 	if request.method == 'GET':
 		return render(request,'signup.html')
@@ -30,7 +31,9 @@ def signup(request):
 
 
 		if(len(User.objects.filter(organization=organization))!=0):
-			return render(request,'signup.html',{'error':'This organization is already registered.Contact Administrator to join you !'})
+			create_user=User.objects.create_user(email=email,organization=organization,first_name=first_name,last_name=last_name,password=password,is_active=False,is_admin=False,is_officer=False,is_moderator=False,has_tour_perm=False)
+			create_user.save()
+			return render(request,'signup.html',{'error':'Registration successful ! Please Wait For Admin Approval !'})
 
 
 
@@ -60,7 +63,11 @@ def login(request):
 		check_user = User.objects.filter(email=email)
 
 		if len(check_user) == 0:
-			return render(request,'login.html',{'alert':'Email or password is wrong !'})
+			return render(request,'index.html',{'alert':'Email or password is wrong !'})
+
+		
+		elif len(check_user) != 0 and check_user[0].is_active == False:
+			return render(request,'index.html',{'alert':'Your account is not approved yet !'})
 
 
 		else :
@@ -70,13 +77,28 @@ def login(request):
 			if authenticate is not None :
 
 				auth.login(request,authenticate)
-				print(authenticate)
+				
+				if request.user.is_admin:
+					return redirect('home')
+
+				if request.user.is_moderator:
+					return redirect('home')
+				
+				if request.user.has_tour_perm:
+					return redirect('tourmanagement')
+
+				if request.user.has_procurement_perm:
+					return redirect('main_procurement_page')
+
+				if request.user.has_training_perm:
+					return redirect('training_list')
+
 
 				return redirect('home')
 
 
 			else :
-				return render(request,'login.html',{'alert':'Email or password is wrong !'})
+				return render(request,'index.html',{'alert':'Email or password is wrong !'})
 
 
 

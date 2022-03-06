@@ -118,17 +118,100 @@
 						
 						<!-- ROW-1 END -->
 
-						<!-- ROW-3 -->
-						
-						<!-- ROW-3 END -->
-
-						<!-- ROW-5 -->
-						{% if not "procurements" in request.path %}
+						<!-- ROW-3  added waiting for approval -->
 						<div class="row mt-4">
 							<div class="col-12 col-sm-12">
 								<div class="card ">
 									<div class="card-header">
-										<h3 class="card-title mb-0">Organization Members</h3>
+										<h3 class="card-title mb-0">Users Pending Approval</h3>
+									</div>
+									<div class="card-body">
+										<div class="table-responsive">
+											<table id="tableone" class="table datatabletwo table-bordered text-nowrap mb-0">
+												<thead class="border-top">
+												<tr>
+													
+													<th class="bg-transparent border-bottom-0">Name</th>
+													<th class="bg-transparent border-bottom-0">Join Date</th>
+													
+													<th class="bg-transparent border-bottom-0">email</th>
+													
+													
+													{% if request.user.is_admin == 1 or request.user.is_moderator == 1 %}
+													<th class="bg-transparent border-bottom-0">Action</th>
+
+													{% endif %}
+												</tr>
+												</thead>
+												<tbody>
+													{% if context.all_members != 0 %}
+
+													{% for cont in all_members %}
+													{% if cont.is_active == False %}
+													<tr class="border-bottom">
+														
+														<td>
+															<div class="d-flex">
+																<span class="avatar avatar-md brround mt-1" style="background-image: url({{cont.profile_picture}})"></span>
+																<div class="ms-2 mt-0 mt-sm-2 d-block">
+																	<h6 class="mb-0 fs-14 fw-semibold">{{cont.first_name }} {{cont.last_name}}  </h6>
+																	
+																</div>
+															</div>
+														</td>
+														<td class="text-muted fs-15 fw-semibold">{{cont.join_date}} </td>
+														
+														<td class="text-success fs-15 fw-semibold">{{cont.email}}</td>
+														
+														
+														{% if request.user.is_admin == 1 or request.user.is_moderator == 1 %}
+														<td class="d-flex justify-content-around">
+															
+
+														{% if request.user.is_admin == 1 or request.user.is_moderator == 1 %}
+
+															<a class="btn btn-success" href="{% url 'approve_member' cont.id%}">Approve</a>
+
+															{% endif %}
+
+															{% if request.user.is_admin == 1 %}
+
+															<a class="btn btn-danger btn-sm rounded-11 deletebtn ml-1" memberid="{{cont.id}}"  data-bs-target="#membersDeleteModal" data-bs-toggle="modal" data-bs-original-title="Delete"><i memberid="{{cont.id}}" ><svg memberid="{{cont.id}}"  class="table-delete ml-1" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="16"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5z"/></svg></i></a>
+
+															{% endif %}
+														</td>
+
+														{% endif %}
+
+														
+													</tr>
+
+													{% endif %}
+
+													{% endfor %}
+
+													{% endif %}
+													
+												</tbody>
+											</table>
+
+
+											
+										</div>
+									</div>
+								</div>
+							</div><!-- COL END -->
+						</div><!-- ROW-5 END -->
+						<!-- ROW-3 END -->
+
+						<!-- showing all user here-->
+
+						
+						<div class="row mt-4">
+							<div class="col-12 col-sm-12">
+								<div class="card ">
+									<div class="card-header">
+										<h3 class="card-title mb-0">All Organization Members</h3>
 									</div>
 									<div class="card-body">
 										<div class="table-responsive">
@@ -140,9 +223,7 @@
 													<th class="bg-transparent border-bottom-0">Join Date</th>
 													<th class="bg-transparent border-bottom-0">Role</th>
 													<th class="bg-transparent border-bottom-0">email</th>
-													{% if request.user.has_tour_perm %}
-													<th class="bg-transparent border-bottom-0">Tour In 3 Months?</th>
-													{% endif %}
+													
 													{% if request.user.is_admin == 1 or request.user.is_moderator == 1 %}
 													<th class="bg-transparent border-bottom-0">Action</th>
 
@@ -153,6 +234,8 @@
 													{% if context.all_members != 0 %}
 
 													{% for cont in all_members %}
+
+													{% if cont.is_active == 1 %}
 													<tr class="border-bottom">
 														
 														<td>
@@ -167,7 +250,10 @@
 														<td class="text-muted fs-15 fw-semibold">{{cont.join_date}} </td>
 														<td class="text-muted fs-15 fw-semibold">
 															
-															{% if cont.role %}
+															{% if cont.role == "" %}
+															<font color="red">No Role Given</font>
+
+															{% else %}
 															{{cont.role}}
 
 															
@@ -175,16 +261,7 @@
 															{% endif %}
 														</td>
 														<td class="text-success fs-15 fw-semibold">{{cont.email}}</td>
-														{% if request.user.has_tour_perm %}
-														{% if cont.tour_in_three_months %}
-														<td class="text-success fs-15 fw-semibold">YES</td>
-
-														{% else %}
-														<td class="text-danger fs-15 fw-semibold">NO</td>
-
-														{% endif %}
-
-														{% endif %}
+														
 														
 
 														<td class="d-flex justify-content-between">
@@ -208,7 +285,7 @@
 
 														
 													</tr>
-
+													{% endif %}
 													{% endfor %}
 
 													{% endif %}
@@ -224,8 +301,10 @@
 							</div><!-- COL END -->
 						</div><!-- ROW-5 END -->
 
+						<!-- end all user here-->
 						
-						{% endif %}
+						<!-- ROW-5 -->
+						
 
 						<!--procurements data table starting-->
 
@@ -795,7 +874,7 @@
 									<div class="form-group">
 								    
 								    <select class="form-select" id="role_edit" name="role" required>
-								    	
+									
 								      <option value="Administrator">Administrator</option>
 								      <option value="Officer">Officer</option>
 								      <option value="Moderator">Moderator</option>

@@ -352,6 +352,18 @@
 
 
 
+									{% if request.user.is_admin or request.user.is_moderator %}
+
+									<li aria-haspopup="true"><a href="{% url 'get_tour_users' %}"><i class="fas fa-users"></i> Tour Users</a></li>
+									<li aria-haspopup="true"><a href="{% url 'get_procurement_users' %}"><i class="fas fa-users"></i>  Procurement Users</a></li>
+									<li aria-haspopup="true"><a href="{% url 'get_training_users' %}"><i class="fas fa-users"></i>  Training Users</a></li>
+									<li aria-haspopup="true"><a href="{% url 'get_po_users' %}"><i class="fas fa-users"></i>  PO Users</a></li>
+
+									{% endif %}
+
+
+
+
 
 								</ul>
 
@@ -599,6 +611,11 @@
 
 							else if(result.userdata.role == "PO User"){
 			    				$('#role_edit option[value="PO User"]').attr("selected", "selected");
+			    			}
+
+							else if(result.userdata.role == ""){
+								$('#role_edit').append('<option value="0">Select Role</option>');
+			    				$('#role_edit option[value="0"]').attr("selected", "selected");
 			    			}
 
 	}
